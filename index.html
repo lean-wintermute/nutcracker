@@ -512,26 +512,26 @@
             padding: 10px 0;
         }
 
-        /* Larger images on desktop - max 80% page width */
+        /* Larger images on desktop - max 80% page width, fewer columns */
         @media (min-width: 1024px) {
             .rankings-grid {
-                grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
                 gap: 24px;
                 max-width: 80%;
                 margin: 0 auto;
             }
         }
 
-        @media (min-width: 1400px) {
+        @media (min-width: 1600px) {
             .rankings-grid {
-                grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+                grid-template-columns: repeat(3, 1fr);
                 gap: 28px;
             }
         }
 
-        @media (min-width: 1800px) {
+        @media (min-width: 2200px) {
             .rankings-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 32px;
             }
         }

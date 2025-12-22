@@ -904,6 +904,19 @@
             aspect-ratio: 1408 / 768;
             object-fit: contain;
             border-radius: var(--radius-md);
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+            transform-origin: center center;
+        }
+
+        .lightbox-content img.zoomed {
+            cursor: zoom-out;
+            transform: scale(2);
+        }
+
+        .lightbox-content img.zoomed.panning {
+            cursor: grab;
+            transition: none;
         }
 
         .lightbox-actions {
@@ -1693,7 +1706,7 @@
             </header>
             <div class="help-messages" id="helpMessages" aria-live="polite" aria-atomic="false">
                 <div class="help-msg help-msg--system">
-                    Hi! I can help with questions about Christmas Stories or collect your feedback. What would you like to know?
+                    Hi there! I'm the Christmas Stories helper elf. Ask me anything about voting, rankings, or how the app works - or share your ideas for new features!
                 </div>
             </div>
             <form class="help-input-form" id="helpForm">
@@ -1714,6 +1727,7 @@
     <dialog class="lightbox" id="imageLightbox">
         <div class="lightbox-content">
             <img id="lightboxImg" src="" alt="" width="1408" height="768">
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin: 0;">Tap image to zoom</p>
             <div class="lightbox-actions">
                 <button id="lightboxShare" class="lightbox-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2197,9 +2211,25 @@
                 refillQueue();
             }
 
-            // Pop two images from queue
+            // Pop first image
             const first = unseenQueue.pop();
-            const second = unseenQueue.pop();
+
+            // Try to find a second image from a DIFFERENT category (better variety)
+            let secondIdx = -1;
+            for (let i = unseenQueue.length - 1; i >= 0; i--) {
+                if (unseenQueue[i].category !== first.category) {
+                    secondIdx = i;
+                    break;
+                }
+            }
+
+            // If no different category found, just take the next one
+            let second;
+            if (secondIdx >= 0) {
+                second = unseenQueue.splice(secondIdx, 1)[0];
+            } else {
+                second = unseenQueue.pop();
+            }
 
             return Math.random() > 0.5 ? [first, second] : [second, first];
         }
@@ -2859,8 +2889,44 @@
         }
 
         function closeLightbox() {
+            lightboxImg.classList.remove('zoomed', 'panning');
+            lightboxImg.style.transformOrigin = 'center center';
             lightbox.close();
         }
+
+        // Zoom on double-click/tap
+        lightboxImg.addEventListener('dblclick', (e) => {
+            if (lightboxImg.classList.contains('zoomed')) {
+                lightboxImg.classList.remove('zoomed', 'panning');
+                lightboxImg.style.transformOrigin = 'center center';
+            } else {
+                // Zoom to click point
+                const rect = lightboxImg.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                lightboxImg.style.transformOrigin = `${x}% ${y}%`;
+                lightboxImg.classList.add('zoomed');
+            }
+        });
+
+        // Single click toggles zoom (mobile-friendly)
+        lightboxImg.addEventListener('click', (e) => {
+            // Ignore if it was a double-click
+            if (e.detail === 2) return;
+
+            setTimeout(() => {
+                if (lightboxImg.classList.contains('zoomed')) {
+                    lightboxImg.classList.remove('zoomed', 'panning');
+                    lightboxImg.style.transformOrigin = 'center center';
+                } else {
+                    const rect = lightboxImg.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    lightboxImg.style.transformOrigin = `${x}% ${y}%`;
+                    lightboxImg.classList.add('zoomed');
+                }
+            }, 200);
+        });
 
         // Share button handler
         lightboxShare.addEventListener('click', async () => {

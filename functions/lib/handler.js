@@ -198,7 +198,7 @@ async function handleHelpbotRequest(body, db) {
   if (!classification.is_valid) {
     // Invalid/spam input
     response =
-      'I can only help with questions about the Christmas Stories app. Would you like to know about voting, rankings, or how the app works?';
+      "I'm here to help with Christmas Stories! I can explain voting, rankings, or how the app works. What would you like to know?";
   } else if (classification.type === 'bug' || classification.type === 'feedback') {
     // Create or update GitHub issue for bugs and feedback
     githubResult = await createOrUpdateIssue(
@@ -210,21 +210,27 @@ async function handleHelpbotRequest(body, db) {
     if (githubResult.action === 'CREATED') {
       response =
         classification.type === 'bug'
-          ? `Thank you for your bug report! It's been filed as issue #${githubResult.issueNumber} and our team will investigate.`
-          : `Thank you for your feedback! It's been filed as issue #${githubResult.issueNumber} and will be reviewed.`;
+          ? `Oh no, sorry you ran into that! I've logged this as issue #${githubResult.issueNumber} so we can look into it. In the meantime, try refreshing the page - that often helps!`
+          : `Love this idea! I've added it to our wishlist as #${githubResult.issueNumber}. We're always looking for ways to make Christmas Stories better. Keep the suggestions coming!`;
     } else if (githubResult.action === 'ADDED_TO_EXISTING') {
       const priorityNote = githubResult.priorityUpgraded
-        ? ' and its priority has been upgraded based on report frequency'
+        ? " - and since others have asked too, we've bumped up its priority!"
         : '';
-      response = `Your ${classification.type === 'bug' ? 'report' : 'feedback'} has been added to an existing issue (#${githubResult.issueNumber})${priorityNote}. Thank you for letting us know!`;
+      response =
+        classification.type === 'bug'
+          ? `Thanks for flagging this! We're already tracking this issue (#${githubResult.issueNumber})${priorityNote}. Your report helps us prioritize the fix.`
+          : `Great minds think alike! Others have suggested this too (#${githubResult.issueNumber})${priorityNote}. The more requests, the more likely it'll happen!`;
     } else {
       // Fallback if GitHub fails
-      response = `Thank you! Your ${classification.type === 'bug' ? 'report' : 'feedback'} has been recorded and will be reviewed by our team.`;
+      response =
+        classification.type === 'bug'
+          ? `Thanks for letting us know about this issue. We've noted it and will look into it. Try refreshing the page in the meantime!`
+          : `Thanks for the suggestion! We've noted it down. Love hearing ideas from our users!`;
     }
   } else if (classification.type === 'off_topic') {
-    // Redirect off-topic queries
+    // Redirect off-topic queries - friendly but firm
     response =
-      'I can only help with Christmas Stories questions. Would you like to know about voting, rankings, or how to use the app?';
+      "I'm just a humble elf who knows about Christmas Stories! I can help with voting between images, checking rankings, or explaining how the app works. What would you like to know?";
   } else {
     // General question - use Haiku for response
     response = await callHaiku(sanitizedMessage, validatedSystemContext, context);

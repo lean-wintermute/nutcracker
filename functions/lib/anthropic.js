@@ -14,6 +14,55 @@ function getApiKey() {
   return process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY;
 }
 
+/**
+ * Retry wrapper with exponential backoff for transient errors.
+ *
+ * @param {Function} fn - Async function to retry
+ * @param {number} maxRetries - Maximum retry attempts (default: 2)
+ * @param {number} baseDelay - Base delay in ms (default: 1000)
+ * @returns {Promise<*>} Result of fn
+ * @throws {Error} After maxRetries exhausted
+ */
+async function withRetry(fn, maxRetries = 2, baseDelay = 1000) {
+  const retryableStatuses = [429, 500, 502, 503, 504];
+  const nonRetryableStatuses = [400, 401, 403];
+
+  let lastError;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      const status = error.status || error.statusCode;
+
+      // Don't retry client errors or auth issues
+      if (nonRetryableStatuses.includes(status)) {
+        throw error;
+      }
+
+      // Only retry on known transient errors
+      const isRetryable =
+        retryableStatuses.includes(status) ||
+        error.code === 'ECONNRESET' ||
+        error.code === 'ETIMEDOUT' ||
+        error.code === 'ENOTFOUND';
+
+      if (!isRetryable || attempt >= maxRetries) {
+        throw error;
+      }
+
+      const delay = baseDelay * Math.pow(2, attempt);
+      console.log(
+        `Anthropic API retry ${attempt + 1}/${maxRetries} after ${delay}ms (${error.message})`
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+
+  throw lastError;
+}
+
 const SYSTEM_PROMPT = `You are the Christmas Stories help assistant. Your ONLY purpose is to answer questions about the Christmas Stories (Nutcracker) image ranking application.
 
 ABOUT THE APP:
@@ -76,13 +125,18 @@ async function callHaiku(message, _systemContext, _context) {
   const anthropic = new Anthropic({ apiKey });
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-haiku-20241022',
-      max_tokens: 300,
-      temperature: 0.3,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: message }],
-    });
+    const response = await withRetry(
+      () =>
+        anthropic.messages.create({
+          model: 'claude-3-5-haiku-20241022',
+          max_tokens: 300,
+          temperature: 0.3,
+          system: SYSTEM_PROMPT,
+          messages: [{ role: 'user', content: message }],
+        }),
+      2,
+      1000
+    );
 
     const text = response.content[0]?.text;
 
@@ -108,6 +162,66 @@ function getFallbackResponse(message) {
   const lowerMessage = message.toLowerCase();
 
   // Try to provide relevant help based on keywords
+
+  // Bug/issue responses - prioritize these for better user experience
+  if (lowerMessage.includes('crash') || lowerMessage.includes('crashed') || lowerMessage.includes('crashing')) {
+    return "Thanks for reporting this crash. Try refreshing the page or clearing your browser cache. If it persists, we'll look into it.";
+  }
+
+  if (
+    lowerMessage.includes('freeze') ||
+    lowerMessage.includes('frozen') ||
+    lowerMessage.includes('stuck') ||
+    lowerMessage.includes('not responding')
+  ) {
+    return 'Sorry the app froze. Try refreshing the page. If images are stuck loading, check your internet connection and try again.';
+  }
+
+  if (
+    lowerMessage.includes('slow') ||
+    lowerMessage.includes('lag') ||
+    lowerMessage.includes('laggy') ||
+    lowerMessage.includes('takes forever')
+  ) {
+    return 'If the app feels slow, try closing other browser tabs or refreshing the page. Performance can vary based on your connection speed.';
+  }
+
+  if (
+    lowerMessage.includes('data loss') ||
+    lowerMessage.includes('lost my') ||
+    lowerMessage.includes('disappeared') ||
+    lowerMessage.includes('all gone')
+  ) {
+    return "Sorry to hear about the data issue. Your votes are saved locally and sync when online. Try refreshing - if data is still missing, we'll investigate.";
+  }
+
+  if (
+    lowerMessage.includes('blank') ||
+    lowerMessage.includes('black screen') ||
+    lowerMessage.includes('white screen') ||
+    lowerMessage.includes('nothing showing')
+  ) {
+    return 'If you see a blank screen, try refreshing the page or clearing your browser cache. Make sure JavaScript is enabled in your browser.';
+  }
+
+  if (
+    lowerMessage.includes('loading') ||
+    lowerMessage.includes('spinning') ||
+    lowerMessage.includes('never loads')
+  ) {
+    return 'If content is not loading, check your internet connection and try refreshing. Images may take a moment to load on slower connections.';
+  }
+
+  if (
+    lowerMessage.includes('error') ||
+    lowerMessage.includes('broken') ||
+    lowerMessage.includes("doesn't work") ||
+    lowerMessage.includes('not working')
+  ) {
+    return "Thanks for reporting this issue. Try refreshing the page first. We'll look into it and work on a fix.";
+  }
+
+  // Feature/help responses
   if (lowerMessage.includes('vote') || lowerMessage.includes('voting')) {
     return 'To vote, simply tap or click on the image you prefer in each pair. Your votes build your personal ranking over time.';
   }
@@ -134,6 +248,14 @@ function getFallbackResponse(message) {
 
   if (lowerMessage.includes('privacy') || lowerMessage.includes('data')) {
     return 'Your privacy is protected. We only collect anonymous votes - no personal information. Data stays on your device and syncs securely.';
+  }
+
+  if (lowerMessage.includes('sync') || lowerMessage.includes('cloud') || lowerMessage.includes('save')) {
+    return 'Your votes are saved locally and sync to the cloud automatically when online. No account needed - syncing happens in the background.';
+  }
+
+  if (lowerMessage.includes('image') || lowerMessage.includes('picture') || lowerMessage.includes('photo')) {
+    return 'Images are loaded from our gallery of Nutcracker ballet scenes. If an image is not loading, try refreshing the page.';
   }
 
   // Generic fallback

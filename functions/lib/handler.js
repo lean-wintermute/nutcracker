@@ -11,6 +11,127 @@ const { createOrUpdateIssue } = require('./github');
 const { checkRateLimit } = require('./rate-limiter');
 
 /**
+ * Allowed fields in systemContext with their expected types.
+ * Used for validation to prevent type errors downstream.
+ */
+const SYSTEM_CONTEXT_SCHEMA = {
+  platform: 'string',
+  osVersion: 'string',
+  browser: 'string',
+  browserVersion: 'string',
+  deviceType: 'string',
+  isPWA: 'boolean',
+  isOnline: 'boolean',
+  screenWidth: 'number',
+  screenHeight: 'number',
+  // Additional optional fields
+  userAgent: 'string',
+  language: 'string',
+  timezone: 'string',
+};
+
+/**
+ * Validates and sanitizes the systemContext object from the request.
+ *
+ * @param {*} context - Raw systemContext from request body
+ * @returns {{ valid: boolean, context: Object, error?: string }}
+ *   - valid: true if context is usable (including null/undefined)
+ *   - context: sanitized context object (empty object if input was null/undefined)
+ *   - error: error message if validation failed
+ */
+function validateSystemContext(context) {
+  // Null/undefined is acceptable - return empty context
+  if (context === null || context === undefined) {
+    return { valid: true, context: {} };
+  }
+
+  // Must be a plain object (not array, not primitive)
+  if (typeof context !== 'object' || Array.isArray(context)) {
+    return {
+      valid: false,
+      context: {},
+      error: 'systemContext must be an object',
+    };
+  }
+
+  // Check for prototype pollution attempts
+  // Note: __proto__ as object literal key sets prototype (Node.js handles safely),
+  // but constructor/prototype as keys can still be dangerous
+  const dangerousKeys = ['constructor', 'prototype'];
+  const contextKeys = Object.keys(context);
+  for (const key of dangerousKeys) {
+    if (contextKeys.includes(key)) {
+      console.warn('Potential prototype pollution attempt detected', { key });
+      return {
+        valid: false,
+        context: {},
+        error: 'Invalid systemContext structure',
+      };
+    }
+  }
+
+  // Validate and coerce field types
+  const validated = {};
+  for (const [key, value] of Object.entries(context)) {
+    // Skip unknown fields (they won't be used downstream)
+    if (!Object.prototype.hasOwnProperty.call(SYSTEM_CONTEXT_SCHEMA, key)) {
+      continue;
+    }
+
+    const expectedType = SYSTEM_CONTEXT_SCHEMA[key];
+
+    // Allow null/undefined for any field - it will use defaults
+    if (value === null || value === undefined) {
+      continue;
+    }
+
+    // Type validation with safe coercion
+    switch (expectedType) {
+    case 'string':
+      if (typeof value === 'string') {
+        // Limit string length to prevent abuse
+        validated[key] = value.slice(0, 200);
+      } else if (typeof value === 'number' || typeof value === 'boolean') {
+        // Safe coercion from primitives
+        validated[key] = String(value).slice(0, 200);
+      }
+      // Silently drop objects/arrays/functions
+      break;
+
+    case 'boolean':
+      if (typeof value === 'boolean') {
+        validated[key] = value;
+      } else if (value === 'true' || value === 1) {
+        validated[key] = true;
+      } else if (value === 'false' || value === 0) {
+        validated[key] = false;
+      }
+      // Silently drop invalid values
+      break;
+
+    case 'number':
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        // Clamp to reasonable screen dimension range
+        validated[key] = Math.max(0, Math.min(value, 10000));
+      } else if (typeof value === 'string') {
+        const parsed = parseInt(value, 10);
+        if (Number.isFinite(parsed)) {
+          validated[key] = Math.max(0, Math.min(parsed, 10000));
+        }
+      }
+      // Silently drop invalid values
+      break;
+
+    default:
+      // Unknown type in schema - skip
+      break;
+    }
+  }
+
+  return { valid: true, context: validated };
+}
+
+/**
  * Handles an incoming helpbot request.
  *
  * @param {Object} body - Request body containing message and context
@@ -22,7 +143,7 @@ const { checkRateLimit } = require('./rate-limiter');
  * @returns {Promise<Object>} Response with message and classification
  */
 async function handleHelpbotRequest(body, db) {
-  const { sessionId, message, systemContext, context } = body;
+  const { sessionId, message, systemContext: rawSystemContext, context } = body;
 
   // Validate required fields
   if (!sessionId || typeof sessionId !== 'string') {
@@ -38,6 +159,16 @@ async function handleHelpbotRequest(body, db) {
       error: true,
     };
   }
+
+  // Validate and sanitize systemContext
+  const contextValidation = validateSystemContext(rawSystemContext);
+  if (!contextValidation.valid) {
+    return {
+      response: 'Invalid request format. Please refresh the page and try again.',
+      error: true,
+    };
+  }
+  const validatedSystemContext = contextValidation.context;
 
   // Sanitize message - limit length
   const sanitizedMessage = message.trim().slice(0, 2000);
@@ -56,7 +187,7 @@ async function handleHelpbotRequest(body, db) {
   // Classify the user's input using LLM
   const classification = await classifyInput(
     sanitizedMessage,
-    systemContext,
+    validatedSystemContext,
     context
   );
 
@@ -73,7 +204,7 @@ async function handleHelpbotRequest(body, db) {
     githubResult = await createOrUpdateIssue(
       classification,
       sanitizedMessage,
-      systemContext
+      validatedSystemContext
     );
 
     if (githubResult.action === 'CREATED') {
@@ -96,7 +227,7 @@ async function handleHelpbotRequest(body, db) {
       'I can only help with Christmas Stories questions. Would you like to know about voting, rankings, or how to use the app?';
   } else {
     // General question - use Haiku for response
-    response = await callHaiku(sanitizedMessage, systemContext, context);
+    response = await callHaiku(sanitizedMessage, validatedSystemContext, context);
   }
 
   // Log interaction to Firestore
@@ -110,11 +241,11 @@ async function handleHelpbotRequest(body, db) {
       component: classification.component,
     },
     response,
-    systemContext: sanitizeSystemContext(systemContext),
+    systemContext: validatedSystemContext,
     githubResult: githubResult
       ? {
         action: githubResult.action,
-        issueNumber: githubResult.issueNumber,
+        issueNumber: githubResult.issueNumber || null,
       }
       : null,
   });
@@ -148,29 +279,4 @@ async function logToFirestore(db, data) {
   }
 }
 
-/**
- * Sanitizes system context to prevent storing sensitive data.
- *
- * @param {Object} context - Raw system context
- * @returns {Object} Sanitized context
- */
-function sanitizeSystemContext(context) {
-  if (!context || typeof context !== 'object') {
-    return {};
-  }
-
-  // Only include safe, non-identifying fields
-  return {
-    platform: String(context.platform || 'Unknown').slice(0, 50),
-    osVersion: String(context.osVersion || '').slice(0, 20),
-    browser: String(context.browser || 'Unknown').slice(0, 50),
-    browserVersion: String(context.browserVersion || '').slice(0, 20),
-    deviceType: String(context.deviceType || 'Unknown').slice(0, 20),
-    isPWA: Boolean(context.isPWA),
-    isOnline: Boolean(context.isOnline),
-    screenWidth: context.screenWidth ? Number(context.screenWidth) : null,
-    screenHeight: context.screenHeight ? Number(context.screenHeight) : null,
-  };
-}
-
-module.exports = { handleHelpbotRequest };
+module.exports = { handleHelpbotRequest, validateSystemContext };

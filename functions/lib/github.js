@@ -21,6 +21,55 @@ function getGitHubToken() {
 }
 
 /**
+ * Retry wrapper with exponential backoff for transient errors.
+ *
+ * @param {Function} fn - Async function to retry
+ * @param {number} maxRetries - Maximum retry attempts (default: 2)
+ * @param {number} baseDelay - Base delay in ms (default: 1000)
+ * @returns {Promise<*>} Result of fn
+ * @throws {Error} After maxRetries exhausted
+ */
+async function withRetry(fn, maxRetries = 2, baseDelay = 1000) {
+  const retryableStatuses = [429, 500, 502, 503, 504];
+  const nonRetryableStatuses = [400, 401, 403];
+
+  let lastError;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      const status = error.status || error.statusCode;
+
+      // Don't retry client errors or auth issues
+      if (nonRetryableStatuses.includes(status)) {
+        throw error;
+      }
+
+      // Only retry on known transient errors
+      const isRetryable =
+        retryableStatuses.includes(status) ||
+        error.code === 'ECONNRESET' ||
+        error.code === 'ETIMEDOUT' ||
+        error.code === 'ENOTFOUND';
+
+      if (!isRetryable || attempt >= maxRetries) {
+        throw error;
+      }
+
+      const delay = baseDelay * Math.pow(2, attempt);
+      console.log(
+        `GitHub API retry ${attempt + 1}/${maxRetries} after ${delay}ms (${error.message})`
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+
+  throw lastError;
+}
+
+/**
  * Creates a new issue or updates an existing one.
  *
  * @param {Object} classification - LLM classification result
@@ -49,11 +98,13 @@ async function createOrUpdateIssue(classification, message, systemContext) {
       // Add comment to existing issue
       const existingIssue = dupeCheck.issue;
 
-      await octokit.issues.createComment({
-        ...GITHUB_CONFIG,
-        issue_number: existingIssue.number,
-        body: formatDuplicateComment(message, systemContext, classification),
-      });
+      await withRetry(() =>
+        octokit.issues.createComment({
+          ...GITHUB_CONFIG,
+          issue_number: existingIssue.number,
+          body: formatDuplicateComment(message, systemContext, classification),
+        })
+      );
 
       // Check if priority should be upgraded based on report frequency
       const upgrade = await checkPriorityUpgrade(
@@ -68,11 +119,13 @@ async function createOrUpdateIssue(classification, message, systemContext) {
           (Date.now() - new Date(existingIssue.closed_at).getTime()) /
           (1000 * 60 * 60 * 24);
         if (daysClosed < 30) {
-          await octokit.issues.update({
-            ...GITHUB_CONFIG,
-            issue_number: existingIssue.number,
-            state: 'open',
-          });
+          await withRetry(() =>
+            octokit.issues.update({
+              ...GITHUB_CONFIG,
+              issue_number: existingIssue.number,
+              state: 'open',
+            })
+          );
         }
       }
 
@@ -87,12 +140,14 @@ async function createOrUpdateIssue(classification, message, systemContext) {
     // Create new issue
     const issueData = formatNewIssue(classification, message, systemContext);
 
-    const response = await octokit.issues.create({
-      ...GITHUB_CONFIG,
-      title: issueData.title,
-      body: issueData.body,
-      labels: issueData.labels,
-    });
+    const response = await withRetry(() =>
+      octokit.issues.create({
+        ...GITHUB_CONFIG,
+        title: issueData.title,
+        body: issueData.body,
+        labels: issueData.labels,
+      })
+    );
 
     return {
       action: 'CREATED',

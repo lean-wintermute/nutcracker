@@ -1,0 +1,12 @@
+# Deploy directory is a separate git repo for GitHub Pages
+deploy/
+
+# Analytics exports (can be large, export locally as needed)
+analytics/
+!analytics/README.md
+
+# Node modules for scripts
+node_modules/
+
+# Lighthouse reports (generate locally as needed)
+lighthouse-*.report.*

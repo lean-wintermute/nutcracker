@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Votes collection - anyone authenticated can write, anyone can read (for aggregation)
+    // Delete allowed for admin clearing (testing only - tighten for production)
+    match /votes/{voteId} {
+      allow create: if request.auth != null;
+      allow read: if true;  // Public read for global ranking aggregation
+      allow delete: if request.auth != null;  // Admin clear function
+    }
+
+    // Feedback collection
+    match /feedback/{feedbackId} {
+      allow create: if request.auth != null &&
+                      request.resource.data.visitorId == request.auth.uid;
+      allow read: if request.auth != null;
+    }
+
+    // Suggestions collection - queued for human review
+    match /suggestions/{suggestionId} {
+      allow create: if request.auth != null &&
+                      request.resource.data.text.size() <= 500;
+      allow read: if request.auth != null;  // Allow read for review UI
+    }
+
+    // Aggregated rankings (read-only, updated by cloud function if added later)
+    match /rankings/{imageId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Helpbot logs - written by cloud function only
+    // No client access - cloud functions use admin SDK which bypasses rules
+    match /helpbot_logs/{logId} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}

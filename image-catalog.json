@@ -1,0 +1,910 @@
+{
+  "images": [
+    {
+      "filename": "01_child_shares.png",
+      "displayName": "Shared Joy",
+      "description": "Child sharing with whale",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_folding_together.png",
+      "displayName": "Folding Day",
+      "description": "Folding laundry together",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_laundromat.png",
+      "displayName": "Spin Cycle",
+      "description": "Whale at laundromat",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_lighthouse_keeper.png",
+      "displayName": "Keeper's Light",
+      "description": "Lighthouse keeper whale",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_rooftop_dawn.png",
+      "displayName": "Dawn Watch",
+      "description": "Whale at rooftop dawn",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_sharing_bench.png",
+      "displayName": "Shared Bench",
+      "description": "Sharing a park bench",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_train_platform.png",
+      "displayName": "Morning Platform",
+      "description": "Whale at train platform",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "01_window_looking_in.png",
+      "displayName": "Outside Looking",
+      "description": "Whale looking through window",
+      "category": "whale",
+      "series": "01"
+    },
+    {
+      "filename": "02_apartment_landing.png",
+      "displayName": "Landing Rest",
+      "description": "Whale on apartment landing",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_busker_duet.png",
+      "displayName": "Street Duet",
+      "description": "Busker duet with whale",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_cafe_window.png",
+      "displayName": "Cafe Moment",
+      "description": "Whale at cafe window",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_empty_theater.png",
+      "displayName": "Empty House",
+      "description": "Whale in empty theater",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_lost_sock_search.png",
+      "displayName": "Lost Sock",
+      "description": "Lost sock search together",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_night_bus.png",
+      "displayName": "Night Route",
+      "description": "Whale on night bus",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_platform_vendor.png",
+      "displayName": "Platform Snack",
+      "description": "Whale with platform vendor",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "02_seagull_friend.png",
+      "displayName": "Unlikely Friends",
+      "description": "Whale befriends a seagull",
+      "category": "whale",
+      "series": "02"
+    },
+    {
+      "filename": "03_bookshop_reader.png",
+      "displayName": "Between Pages",
+      "description": "Whale reading in bookshop",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_ferry_deck.png",
+      "displayName": "Deck Passage",
+      "description": "Whale on ferry deck",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_hospital_corridor.png",
+      "displayName": "Quiet Corridor",
+      "description": "Whale in hospital corridor",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_kitchen_table.png",
+      "displayName": "Kitchen Light",
+      "description": "Whale at kitchen table",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_lost_child_found.png",
+      "displayName": "Found Again",
+      "description": "Whale finds lost child",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_phone_booth.png",
+      "displayName": "Distant Call",
+      "description": "Whale in phone booth",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_seasick_comfort.png",
+      "displayName": "Rough Seas",
+      "description": "Comforting seasick friend",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "03_sleeping_child.png",
+      "displayName": "Gentle Watch",
+      "description": "Whale with sleeping child",
+      "category": "whale",
+      "series": "03"
+    },
+    {
+      "filename": "04_deck_hands_break.png",
+      "displayName": "Crew Break",
+      "description": "Deck hands taking break",
+      "category": "whale",
+      "series": "04"
+    },
+    {
+      "filename": "04_porter_assistance.png",
+      "displayName": "Helping Hand",
+      "description": "Whale helping as porter",
+      "category": "whale",
+      "series": "04"
+    },
+    {
+      "filename": "04_stray_cat_company.png",
+      "displayName": "Stray Company",
+      "description": "Whale with stray cat",
+      "category": "whale",
+      "series": "04"
+    },
+    {
+      "filename": "05_teaching_quarters.png",
+      "displayName": "Lesson Time",
+      "description": "Whale in teaching quarters",
+      "category": "whale",
+      "series": "05"
+    },
+    {
+      "filename": "05_train_window_wave.png",
+      "displayName": "Window Wave",
+      "description": "Waving from train window",
+      "category": "whale",
+      "series": "05"
+    },
+    {
+      "filename": "05_violin_on_water.png",
+      "displayName": "Water Song",
+      "description": "Violin playing on water",
+      "category": "whale",
+      "series": "05"
+    },
+    {
+      "filename": "06_closing_time.png",
+      "displayName": "Closing Time",
+      "description": "Whale at closing time",
+      "category": "whale",
+      "series": "06"
+    },
+    {
+      "filename": "06_docking_goodbye.png",
+      "displayName": "Dockside Farewell",
+      "description": "Goodbye at the dock",
+      "category": "whale",
+      "series": "06"
+    },
+    {
+      "filename": "06_midnight_arrival.png",
+      "displayName": "Midnight Port",
+      "description": "Midnight arrival scene",
+      "category": "whale",
+      "series": "06"
+    },
+    {
+      "filename": "alive_01_invisible_among_crowd_01_busy_street_082316.png",
+      "displayName": "Unseen Crowd",
+      "description": "Invisible on busy street",
+      "category": "alive",
+      "series": "01"
+    },
+    {
+      "filename": "alive_01_invisible_among_crowd_02_train_station_082316.png",
+      "displayName": "Station Ghost",
+      "description": "Invisible at train station",
+      "category": "alive",
+      "series": "01"
+    },
+    {
+      "filename": "alive_02_awkward_interactions_01_bartender_stare_082316.png",
+      "displayName": "Awkward Glance",
+      "description": "Bartender staring awkwardly",
+      "category": "alive",
+      "series": "02"
+    },
+    {
+      "filename": "alive_02_awkward_interactions_02_bus_driver_082316.png",
+      "displayName": "Driver Pause",
+      "description": "Bus driver encounter",
+      "category": "alive",
+      "series": "02"
+    },
+    {
+      "filename": "alive_03_one_kind_soul_01_child_waves_082316.png",
+      "displayName": "Kind Wave",
+      "description": "Kind child waves hello",
+      "category": "alive",
+      "series": "03"
+    },
+    {
+      "filename": "alive_03_one_kind_soul_02_old_man_bench_082316.png",
+      "displayName": "Bench Companion",
+      "description": "Old man on bench",
+      "category": "alive",
+      "series": "03"
+    },
+    {
+      "filename": "alive_04_complete_solitude_01_empty_playground_082316.png",
+      "displayName": "Empty Swings",
+      "description": "Alone in empty playground",
+      "category": "alive",
+      "series": "04"
+    },
+    {
+      "filename": "alive_04_complete_solitude_02_closed_shop_082316.png",
+      "displayName": "Closed Hours",
+      "description": "Outside closed shop",
+      "category": "alive",
+      "series": "04"
+    },
+    {
+      "filename": "animated_01_invisible_crowd_01_shopping_street_082316.png",
+      "displayName": "Shopping Phantom",
+      "description": "Invisible on shopping street",
+      "category": "animated",
+      "series": "01"
+    },
+    {
+      "filename": "animated_02_awkward_notice_01_hotel_desk_082316.png",
+      "displayName": "Check-In Pause",
+      "description": "Noticed at hotel desk",
+      "category": "animated",
+      "series": "02"
+    },
+    {
+      "filename": "animated_03_finding_kindness_01_child_secret_082316.png",
+      "displayName": "Whispered Secret",
+      "description": "Child shares a secret",
+      "category": "animated",
+      "series": "03"
+    },
+    {
+      "filename": "animated_04_total_solitude_01_diner_3am_082316.png",
+      "displayName": "3AM Diner",
+      "description": "Alone at 3am diner",
+      "category": "animated",
+      "series": "04"
+    },
+    {
+      "filename": "living_01_tiny_hiding_01_sugar_bowl_082316.png",
+      "displayName": "Sugar Hideaway",
+      "description": "Tiny bear in sugar bowl",
+      "category": "living",
+      "series": "01"
+    },
+    {
+      "filename": "living_01_tiny_hiding_02_coat_pocket_082316.png",
+      "displayName": "Pocket Refuge",
+      "description": "Hiding in coat pocket",
+      "category": "living",
+      "series": "01"
+    },
+    {
+      "filename": "living_01_tiny_hiding_03_shelf_peek_082316.png",
+      "displayName": "Shelf Spy",
+      "description": "Peeking from shelf",
+      "category": "living",
+      "series": "01"
+    },
+    {
+      "filename": "living_01_tiny_hiding_04_table_dash_082316.png",
+      "displayName": "Table Dash",
+      "description": "Dashing across table",
+      "category": "living",
+      "series": "01"
+    },
+    {
+      "filename": "living_02_child_wandering_01_crosswalk_082316.png",
+      "displayName": "Street Crossing",
+      "description": "Child bear at crosswalk",
+      "category": "living",
+      "series": "02"
+    },
+    {
+      "filename": "living_02_child_wandering_02_diner_slide_082316.png",
+      "displayName": "Booth Slide",
+      "description": "Bear sliding in diner",
+      "category": "living",
+      "series": "02"
+    },
+    {
+      "filename": "living_02_child_wandering_03_bench_slump_082316.png",
+      "displayName": "Tired Slump",
+      "description": "Slumped on bench",
+      "category": "living",
+      "series": "02"
+    },
+    {
+      "filename": "living_02_child_wandering_04_door_pushing_082316.png",
+      "displayName": "Heavy Door",
+      "description": "Pushing heavy door",
+      "category": "living",
+      "series": "02"
+    },
+    {
+      "filename": "living_03_human_confronting_01_bar_lean_082316.png",
+      "displayName": "Bar Lean",
+      "description": "Leaning at bar",
+      "category": "living",
+      "series": "03"
+    },
+    {
+      "filename": "living_03_human_confronting_02_bus_boarding_082316.png",
+      "displayName": "Boarding Time",
+      "description": "Boarding the bus",
+      "category": "living",
+      "series": "03"
+    },
+    {
+      "filename": "living_03_human_confronting_03_elevator_nod_082316.png",
+      "displayName": "Elevator Nod",
+      "description": "Nodding in elevator",
+      "category": "living",
+      "series": "03"
+    },
+    {
+      "filename": "living_03_human_confronting_04_bench_sitting_082316.png",
+      "displayName": "Shared Seat",
+      "description": "Sitting on bench",
+      "category": "living",
+      "series": "03"
+    },
+    {
+      "filename": "living_03_human_confronting_05_window_reflection_082316.png",
+      "displayName": "Glass Self",
+      "description": "Reflection in window",
+      "category": "living",
+      "series": "03"
+    },
+    {
+      "filename": "living_04_giant_gentle_01_door_ducking_082316.png",
+      "displayName": "Careful Duck",
+      "description": "Giant bear ducking door",
+      "category": "living",
+      "series": "04"
+    },
+    {
+      "filename": "living_04_giant_gentle_02_stool_perching_082316.png",
+      "displayName": "Tiny Perch",
+      "description": "Perching on small stool",
+      "category": "living",
+      "series": "04"
+    },
+    {
+      "filename": "living_04_giant_gentle_03_child_kneeling_082316.png",
+      "displayName": "Gentle Giant",
+      "description": "Kneeling beside child",
+      "category": "living",
+      "series": "04"
+    },
+    {
+      "filename": "living_04_giant_gentle_04_phone_booth_082316.png",
+      "displayName": "Tight Squeeze",
+      "description": "Squeezed in phone booth",
+      "category": "living",
+      "series": "04"
+    },
+    {
+      "filename": "realistic_01_tiny_unnoticed_01_cafe_table_082316.png",
+      "displayName": "Cafe Observer",
+      "description": "Tiny bear on cafe table",
+      "category": "realistic",
+      "series": "01"
+    },
+    {
+      "filename": "realistic_02_child_sized_01_park_bench_082316.png",
+      "displayName": "Park Rest",
+      "description": "Child-sized on park bench",
+      "category": "realistic",
+      "series": "02"
+    },
+    {
+      "filename": "realistic_02_child_sized_02_diner_booth_082316.png",
+      "displayName": "Diner Guest",
+      "description": "Child-sized in diner booth",
+      "category": "realistic",
+      "series": "02"
+    },
+    {
+      "filename": "realistic_03_human_scale_01_bar_ordering_082316.png",
+      "displayName": "Last Orders",
+      "description": "Human-sized ordering at bar",
+      "category": "realistic",
+      "series": "03"
+    },
+    {
+      "filename": "realistic_04_giant_looming_01_convenience_store_082316.png",
+      "displayName": "Corner Store",
+      "description": "Giant in convenience store",
+      "category": "realistic",
+      "series": "04"
+    },
+    {
+      "filename": "realistic_04_giant_looming_02_subway_car_082316.png",
+      "displayName": "Subway Giant",
+      "description": "Giant in subway car",
+      "category": "realistic",
+      "series": "04"
+    },
+    {
+      "filename": "solitude_01_alone_in_house_01_frosted_window_082316.png",
+      "displayName": "Frosted View",
+      "description": "Alone at frosted window",
+      "category": "solitude",
+      "series": "01"
+    },
+    {
+      "filename": "solitude_01_alone_in_house_02_fireplace_082316.png",
+      "displayName": "Hearth Glow",
+      "description": "Alone by the fireplace",
+      "category": "solitude",
+      "series": "01"
+    },
+    {
+      "filename": "solitude_02_bar_christmas_01_bar_end_082316.png",
+      "displayName": "End Stool",
+      "description": "Alone at bar end",
+      "category": "solitude",
+      "series": "02"
+    },
+    {
+      "filename": "solitude_02_bar_christmas_02_piano_corner_082316.png",
+      "displayName": "Piano Corner",
+      "description": "Alone in piano corner",
+      "category": "solitude",
+      "series": "02"
+    },
+    {
+      "filename": "solitude_03_riding_bus_01_rain_window_082316.png",
+      "displayName": "Rain Watch",
+      "description": "Watching rain on bus",
+      "category": "solitude",
+      "series": "03"
+    },
+    {
+      "filename": "solitude_03_riding_bus_02_back_row_082316.png",
+      "displayName": "Back Row",
+      "description": "Alone in back row",
+      "category": "solitude",
+      "series": "03"
+    },
+    {
+      "filename": "solitude_04_office_alone_01_desk_lamp_082316.png",
+      "displayName": "Late Shift",
+      "description": "Alone at desk lamp",
+      "category": "solitude",
+      "series": "04"
+    },
+    {
+      "filename": "styles_01_stop_motion_01_bar_stool_082316.png",
+      "displayName": "Stop-Motion Stool",
+      "description": "Stop-motion bar stool",
+      "category": "styles",
+      "series": "01"
+    },
+    {
+      "filename": "styles_01_stop_motion_02_bus_window_082316.png",
+      "displayName": "Stop-Motion Window",
+      "description": "Stop-motion bus window",
+      "category": "styles",
+      "series": "01"
+    },
+    {
+      "filename": "styles_01_stop_motion_03_diner_booth_082316.png",
+      "displayName": "Stop-Motion Booth",
+      "description": "Stop-motion diner booth",
+      "category": "styles",
+      "series": "01"
+    },
+    {
+      "filename": "styles_01_stop_motion_04_phone_booth_082316.png",
+      "displayName": "Stop-Motion Call",
+      "description": "Stop-motion phone booth",
+      "category": "styles",
+      "series": "01"
+    },
+    {
+      "filename": "styles_02_claymation_01_park_bench_082316.png",
+      "displayName": "Clay Park",
+      "description": "Claymation park bench",
+      "category": "styles",
+      "series": "02"
+    },
+    {
+      "filename": "styles_02_claymation_02_subway_platform_082316.png",
+      "displayName": "Clay Platform",
+      "description": "Claymation subway platform",
+      "category": "styles",
+      "series": "02"
+    },
+    {
+      "filename": "styles_02_claymation_03_laundromat_082316.png",
+      "displayName": "Clay Laundry",
+      "description": "Claymation at laundromat",
+      "category": "styles",
+      "series": "02"
+    },
+    {
+      "filename": "styles_03_cgi_paddington_01_hotel_lobby_082316.png",
+      "displayName": "CGI Lobby",
+      "description": "CGI bear hotel lobby",
+      "category": "styles",
+      "series": "03"
+    },
+    {
+      "filename": "styles_03_cgi_paddington_02_train_station_082316.png",
+      "displayName": "CGI Station",
+      "description": "CGI bear train station",
+      "category": "styles",
+      "series": "03"
+    },
+    {
+      "filename": "styles_03_cgi_paddington_03_cafe_window_082316.png",
+      "displayName": "CGI Cafe",
+      "description": "CGI bear cafe window",
+      "category": "styles",
+      "series": "03"
+    },
+    {
+      "filename": "styles_04_practical_puppet_01_elevator_082316.png",
+      "displayName": "Puppet Lift",
+      "description": "Puppet bear in elevator",
+      "category": "styles",
+      "series": "04"
+    },
+    {
+      "filename": "styles_04_practical_puppet_02_hospital_waiting_082316.png",
+      "displayName": "Puppet Wait",
+      "description": "Puppet bear hospital waiting",
+      "category": "styles",
+      "series": "04"
+    },
+    {
+      "filename": "styles_04_practical_puppet_03_empty_theater_082316.png",
+      "displayName": "Puppet Theater",
+      "description": "Puppet bear empty theater",
+      "category": "styles",
+      "series": "04"
+    },
+    {
+      "filename": "styles_04_practical_puppet_04_parking_garage_082316.png",
+      "displayName": "Puppet Garage",
+      "description": "Puppet bear parking garage",
+      "category": "styles",
+      "series": "04"
+    },
+    {
+      "filename": "styles_05_handdrawn_composite_01_city_street_082316.png",
+      "displayName": "Drawn Street",
+      "description": "Hand-drawn city street",
+      "category": "styles",
+      "series": "05"
+    },
+    {
+      "filename": "styles_05_handdrawn_composite_02_dive_bar_082316.png",
+      "displayName": "Drawn Dive",
+      "description": "Hand-drawn dive bar",
+      "category": "styles",
+      "series": "05"
+    },
+    {
+      "filename": "styles_05_handdrawn_composite_03_rooftop_082316.png",
+      "displayName": "Drawn Rooftop",
+      "description": "Hand-drawn rooftop scene",
+      "category": "styles",
+      "series": "05"
+    },
+    {
+      "filename": "styles_06_fabric_stopmotion_01_bookshop_082316.png",
+      "displayName": "Fabric Books",
+      "description": "Fabric stop-motion bookshop",
+      "category": "styles",
+      "series": "06"
+    },
+    {
+      "filename": "styles_06_fabric_stopmotion_02_late_diner_082316.png",
+      "displayName": "Fabric Diner",
+      "description": "Fabric stop-motion late diner",
+      "category": "styles",
+      "series": "06"
+    },
+    {
+      "filename": "styles_06_fabric_stopmotion_03_ferry_deck_082316.png",
+      "displayName": "Fabric Ferry",
+      "description": "Fabric stop-motion ferry deck",
+      "category": "styles",
+      "series": "06"
+    },
+    {
+      "filename": "styles_06_fabric_stopmotion_04_church_pew_082316.png",
+      "displayName": "Fabric Pew",
+      "description": "Fabric stop-motion church pew",
+      "category": "styles",
+      "series": "06"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_01_window_watching_082316.png",
+      "displayName": "Window Vigil",
+      "description": "Bear watching from window",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_02_empty_chair_082316.png",
+      "displayName": "Empty Chair",
+      "description": "Bear by empty chair",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_03_kitchen_table_082316.png",
+      "displayName": "Kitchen Quiet",
+      "description": "Bear at kitchen table",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_04_old_photos_082316.png",
+      "displayName": "Old Memories",
+      "description": "Bear looking at old photos",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_05_stairs_sitting_082316.png",
+      "displayName": "Stairway Rest",
+      "description": "Bear sitting on stairs",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_06_bedroom_dawn_082316.png",
+      "displayName": "Dawn Light",
+      "description": "Bear in bedroom at dawn",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_07_piano_keys_082316.png",
+      "displayName": "Silent Keys",
+      "description": "Bear at piano keys",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_08_doorway_leaving_082316.png",
+      "displayName": "Threshold",
+      "description": "Bear leaving through doorway",
+      "category": "teddy",
+      "series": "01"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_01_bar_stool_082316.png",
+      "displayName": "Corner Stool",
+      "description": "Sad bear on bar stool",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_02_jukebox_glow_082316.png",
+      "displayName": "Jukebox Glow",
+      "description": "Bear by jukebox glow",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_03_bartender_chat_082316.png",
+      "displayName": "Bar Talk",
+      "description": "Bear chatting with bartender",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_04_window_booth_082316.png",
+      "displayName": "Booth View",
+      "description": "Bear in window booth",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_05_last_call_082316.png",
+      "displayName": "Last Call",
+      "description": "Bear at last call",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_06_mirror_behind_bar_082316.png",
+      "displayName": "Mirror Self",
+      "description": "Bear reflection behind bar",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_07_payphone_082316.png",
+      "displayName": "Unanswered Call",
+      "description": "Bear at payphone",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_02_bar_christmas_08_putting_on_coat_082316.png",
+      "displayName": "Coat On",
+      "description": "Bear putting on coat",
+      "category": "teddy",
+      "series": "02"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_01_window_seat_082316.png",
+      "displayName": "Window Seat",
+      "description": "Bear in window seat",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_02_back_seat_082316.png",
+      "displayName": "Rear View",
+      "description": "Bear in back seat",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_03_bus_stop_082316.png",
+      "displayName": "Waiting Stop",
+      "description": "Bear at bus stop",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_04_fluorescent_082316.png",
+      "displayName": "Harsh Light",
+      "description": "Bear under fluorescent lights",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_05_driver_nod_082316.png",
+      "displayName": "Driver Nod",
+      "description": "Bear nodding to driver",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_06_shopping_bags_082316.png",
+      "displayName": "Laden Arms",
+      "description": "Bear with shopping bags",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_07_sleeping_082316.png",
+      "displayName": "Transit Sleep",
+      "description": "Bear sleeping on bus",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_08_end_of_line_082316.png",
+      "displayName": "End of Line",
+      "description": "Bear at end of line",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_01_desk_lamp_082316.png",
+      "displayName": "Desk Lamp",
+      "description": "Bear alone at desk lamp",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_02_computer_glow_082316.png",
+      "displayName": "Screen Glow",
+      "description": "Bear in computer glow",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_03_break_room_082316.png",
+      "displayName": "Break Room",
+      "description": "Bear in break room",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_04_window_view_082316.png",
+      "displayName": "Office View",
+      "description": "Bear at window view",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_05_conference_room_082316.png",
+      "displayName": "Empty Meeting",
+      "description": "Bear in conference room",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_06_elevator_082316.png",
+      "displayName": "Going Down",
+      "description": "Bear alone in elevator",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_07_parking_garage_082316.png",
+      "displayName": "Parking Concrete",
+      "description": "Bear in parking garage",
+      "category": "teddy",
+      "series": "04"
+    },
+    {
+      "filename": "teddy_melancholy_04_office_alone_08_security_desk_082316.png",
+      "displayName": "Night Guard",
+      "description": "Bear at security desk",
+      "category": "teddy",
+      "series": "04"
+    }
+  ],
+  "categories": {
+    "whale": "Whale in human world",
+    "teddy": "Melancholy teddy bear",
+    "living": "Living giant bear",
+    "styles": "Animation style experiments",
+    "solitude": "Scenes of solitude",
+    "realistic": "Photorealistic style",
+    "alive": "Alive bear series",
+    "animated": "Animated style"
+  }
+}

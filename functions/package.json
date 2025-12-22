@@ -1,0 +1,26 @@
+{
+  "name": "nutcracker-helpbot",
+  "version": "1.0.0",
+  "description": "Helpbot backend for Nutcracker app",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.10.2",
+    "@octokit/rest": "^20.0.2",
+    "firebase-admin": "^11.11.0",
+    "firebase-functions": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "eslint": "^8.57.0",
+    "markdown-it": "^14.1.0"
+  },
+  "private": true
+}

@@ -18,7 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { spawnSync } = require('child_process');
 
 // Configuration
 const GITHUB_REPO = 'lean-wintermute/nutcracker';
@@ -116,13 +116,19 @@ ${suggestion.text}
     }
 
     try {
-        // Escape the body for shell
-        const escapedBody = body.replace(/'/g, "'\\''");
+        // Use spawnSync with array args to avoid shell escaping issues
+        const result = spawnSync('gh', [
+            'issue', 'create',
+            '--repo', GITHUB_REPO,
+            '--title', title,
+            '--body', body,
+            '--label', labels
+        ], { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
 
-        const cmd = `gh issue create --repo "${GITHUB_REPO}" --title "${title.replace(/"/g, '\\"')}" --body '${escapedBody}' --label "${labels}"`;
-
-        const result = execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
-        console.log(`Created issue: ${result.trim()}`);
+        if (result.status !== 0) {
+            throw new Error(result.stderr || 'gh command failed');
+        }
+        console.log(`Created issue: ${result.stdout.trim()}`);
         return true;
     } catch (e) {
         console.error(`Failed to create issue for ${suggestion.id}:`, e.message);

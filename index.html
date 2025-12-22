@@ -3596,12 +3596,12 @@
 
             async function submitBugReport() {
                 try {
-                    await callHelpbotAPI('BUG_REPORT', {
+                    const result = await callHelpbotAPI('BUG_REPORT', {
                         type: 'bug_report',
                         ...bugReportData
                     });
 
-                    addMessage("Thank you for reporting this issue. Your feedback has been recorded and will be reviewed by the development team. Is there anything else about the app I can help you with?", false);
+                    addMessage(result.response || "Thank you for reporting this issue. Your feedback has been recorded and will be reviewed by the development team. Is there anything else about the app I can help you with?", false);
                 } catch (error) {
                     console.error('[Help] Bug report submission failed:', error);
                     // Store locally for later sync
@@ -3627,12 +3627,12 @@
                 feedbackFlowActive = false;
 
                 try {
-                    await callHelpbotAPI('FEEDBACK', {
+                    const result = await callHelpbotAPI('FEEDBACK', {
                         type: 'feedback',
                         message: input,
                         systemContext: captureSystemContext()
                     });
-                    addMessage("Thank you for your feedback! Your suggestion has been recorded. Is there anything else about the app I can help with?", false);
+                    addMessage(result.response || "Thank you for your feedback! Your suggestion has been recorded. Is there anything else about the app I can help with?", false);
                 } catch (error) {
                     console.error('[Help] Feedback submission failed:', error);
                     storePendingSubmission('feedback', { message: input, systemContext: captureSystemContext() });

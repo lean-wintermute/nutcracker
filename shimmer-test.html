@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uncle Elmo Shimmer Options</title>
+    <title>Uncle Elmo Branding - Design Options</title>
     <style>
         :root {
             --color-bg: #1a1a2e;
             --color-accent-alt: #f093fb;
+            --color-accent-faded: rgba(240, 147, 251, 0.5);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,391 +17,425 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            padding: 40px;
+            padding: 40px 20px;
             color: #e0e0e0;
         }
 
         h1 {
             text-align: center;
             margin-bottom: 40px;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
+            color: #888;
         }
 
-        .options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .options-grid {
+            display: flex;
+            flex-direction: column;
             gap: 40px;
-            max-width: 1000px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
         .option {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
             border-radius: 16px;
             padding: 30px;
-            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .option h2 {
+        .option-label {
             font-size: 0.9rem;
-            color: #a0a0a0;
+            color: #666;
             margin-bottom: 20px;
-            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-label::before {
+            content: attr(data-letter);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--color-accent-alt);
+            color: #1a1a2e;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.75rem;
         }
 
         .demo-area {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border-radius: 12px;
-            padding: 40px 20px;
-            margin-bottom: 20px;
-            position: relative;
+            text-align: center;
+            padding: 20px 0;
         }
 
         .demo-title {
             font-size: 1.8rem;
             color: #e0e0e0;
-            text-align: center;
+            margin-top: 16px;
         }
 
-        /* Base brand style */
+        /* Common brand styling */
         .production-brand {
-            font-size: 0.65rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
             font-weight: 500;
             letter-spacing: 0.02em;
             white-space: nowrap;
-            display: inline-block;
         }
 
-        /* Base for split text - "an" and "production" stay normal */
-        .production-brand {
-            color: var(--color-accent-alt);
-            opacity: 0.85;
+        /* Elmo icon - sized to match text + thin circle */
+        .elmo-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            padding: 1px;
         }
 
-        /* B1: Pink → Gold gradient + shimmer */
-        .option-b1 .uncle-elmo {
-            display: inline-block;
-            background:
-                linear-gradient(90deg,
-                    var(--color-accent-alt) 0%,
-                    var(--color-accent-alt) 40%,
-                    #fff 50%,
-                    var(--color-accent-alt) 60%,
-                    var(--color-accent-alt) 100%),
-                linear-gradient(90deg, var(--color-accent-alt) 0%, #ffd700 100%);
-            background-size: 200% 100%, 100% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite;
-            background-blend-mode: overlay;
+        /* Icon size variants (text fixed at 12px) */
+        .icon-12 .elmo-icon { width: 12px; height: 12px; }
+        .icon-14 .elmo-icon { width: 14px; height: 14px; }
+        .icon-16 .elmo-icon { width: 16px; height: 16px; }
+        .icon-18 .elmo-icon { width: 18px; height: 18px; }
+        .icon-20 .elmo-icon { width: 20px; height: 20px; }
+
+        /* ============================================
+           OPTION A: Selective Shimmer (RECOMMENDED)
+           - Shimmer ONLY on "Uncle Elmo"
+           - Faded solid pink for "an" and "production"
+           ============================================ */
+        .option-a .brand-faded {
+            color: var(--color-accent-faded);
         }
 
-        /* B2: Gold → Pink gradient + shimmer */
-        .option-b2 .uncle-elmo {
-            display: inline-block;
-            background:
-                linear-gradient(90deg,
-                    transparent 0%,
-                    transparent 40%,
-                    rgba(255,255,255,0.6) 50%,
-                    transparent 60%,
-                    transparent 100%),
-                linear-gradient(90deg, #ffd700 0%, var(--color-accent-alt) 100%);
-            background-size: 200% 100%, 100% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite;
-        }
-
-        /* B3: Pink → Gold → Pink gradient + shimmer */
-        .option-b3 .uncle-elmo {
-            display: inline-block;
-            background:
-                linear-gradient(90deg,
-                    transparent 0%,
-                    transparent 40%,
-                    rgba(255,255,255,0.5) 50%,
-                    transparent 60%,
-                    transparent 100%),
-                linear-gradient(90deg, var(--color-accent-alt) 0%, #ffd700 50%, var(--color-accent-alt) 100%);
-            background-size: 200% 100%, 100% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite;
-        }
-
-        /* B4: Warm gradient (coral → gold) + shimmer */
-        .option-b4 .uncle-elmo {
-            display: inline-block;
-            background:
-                linear-gradient(90deg,
-                    transparent 0%,
-                    transparent 40%,
-                    rgba(255,255,255,0.5) 50%,
-                    transparent 60%,
-                    transparent 100%),
-                linear-gradient(90deg, #f5576c 0%, #ffd700 100%);
-            background-size: 200% 100%, 100% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite;
-        }
-
-        /* Option A: Gradient Sweep + Variable Opacity */
-        .option-a .production-brand {
+        .option-a .brand-shimmer {
+            display: inline;
             background: linear-gradient(
                 90deg,
                 var(--color-accent-alt) 0%,
                 var(--color-accent-alt) 40%,
-                #ffd700 50%,
+                #ffd700 48%,
+                #ffd700 52%,
                 var(--color-accent-alt) 60%,
                 var(--color-accent-alt) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite, opacity-breathe 6s ease-in-out infinite;
-        }
-
-        @keyframes shimmer-sweep {
-            0%, 100% { background-position: 100% 0; }
-            50% { background-position: -100% 0; }
-        }
-
-        @keyframes opacity-breathe {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        /* A2: Faster opacity cycle */
-        .option-a2 .production-brand {
-            background: linear-gradient(
-                90deg,
-                var(--color-accent-alt) 0%,
-                var(--color-accent-alt) 40%,
-                #ffd700 50%,
-                var(--color-accent-alt) 60%,
-                var(--color-accent-alt) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite, opacity-breathe-fast 3s ease-in-out infinite;
-        }
-
-        @keyframes opacity-breathe-fast {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* A3: Synced - opacity peaks with shimmer */
-        .option-a3 .production-brand {
-            background: linear-gradient(
-                90deg,
-                var(--color-accent-alt) 0%,
-                var(--color-accent-alt) 40%,
-                #ffd700 50%,
-                var(--color-accent-alt) 60%,
-                var(--color-accent-alt) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-opacity-synced 4s ease-in-out infinite;
-        }
-
-        @keyframes shimmer-opacity-synced {
-            0%, 100% {
-                background-position: 100% 0;
-                opacity: 0.6;
-            }
-            50% {
-                background-position: -100% 0;
-                opacity: 1;
-            }
-        }
-
-        /* A4: Subtle - less opacity variation */
-        .option-a4 .production-brand {
-            background: linear-gradient(
-                90deg,
-                var(--color-accent-alt) 0%,
-                var(--color-accent-alt) 40%,
-                #ffd700 50%,
-                var(--color-accent-alt) 60%,
-                var(--color-accent-alt) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite, opacity-subtle 5s ease-in-out infinite;
-        }
-
-        @keyframes opacity-subtle {
-            0%, 100% { opacity: 0.75; }
-            50% { opacity: 0.95; }
-        }
-
-        /* Option B: Soft Glow Pulse */
-        .option-b .production-brand {
-            color: var(--color-accent-alt);
-            animation: glow-pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% {
-                opacity: 0.7;
-                text-shadow: 0 0 0 transparent;
-            }
-            50% {
-                opacity: 1;
-                text-shadow: 0 0 8px var(--color-accent-alt);
-            }
-        }
-
-        /* Option C: Metallic Sheen (Static) */
-        .option-c .production-brand {
-            background: linear-gradient(
-                135deg,
-                var(--color-accent-alt) 0%,
-                #e8b4d8 25%,
-                var(--color-accent-alt) 50%,
-                #d4a5c9 75%,
-                var(--color-accent-alt) 100%
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Option D: Sparkle Twinkle */
-        .option-d .production-brand {
-            color: var(--color-accent-alt);
-            opacity: 0.85;
-            position: relative;
-        }
-
-        .option-d .production-brand::after {
-            content: '✦';
-            position: absolute;
-            right: -12px;
-            top: -2px;
-            font-size: 0.5em;
-            opacity: 0;
-            animation: twinkle 3s ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 80%, 100% { opacity: 0; transform: scale(0.8); }
-            90% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Option E: Combo (Sweep + Sparkle) */
-        .option-e .production-brand {
-            background: linear-gradient(
-                90deg,
-                var(--color-accent-alt) 0%,
-                var(--color-accent-alt) 40%,
-                #ffd700 50%,
-                var(--color-accent-alt) 60%,
-                var(--color-accent-alt) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-sweep 4s ease-in-out infinite;
-            position: relative;
-        }
-
-        .option-e .production-brand::after {
-            content: '✦';
-            position: absolute;
-            right: -12px;
-            top: -2px;
-            font-size: 0.5em;
-            color: #ffd700;
-            opacity: 0;
-            animation: twinkle 3s ease-in-out infinite;
-            animation-delay: 2s;
-        }
-
-        /* Option F: Gentle Rainbow */
-        .option-f .production-brand {
-            background: linear-gradient(
-                90deg,
-                #f093fb 0%,
-                #f5576c 25%,
-                #ffd700 50%,
-                #4facfe 75%,
-                #f093fb 100%
             );
             background-size: 300% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: rainbow-shift 8s ease-in-out infinite;
+            animation: shimmer-sweep 3s ease-in-out infinite alternate;
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
         }
 
-        @keyframes rainbow-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        /* ============================================
+           OPTION B: Color-based fade (no opacity)
+           - Different pink intensities
+           - Uniform shimmer across all
+           ============================================ */
+        .option-b .brand-text {
+            display: inline-block;
+            background: linear-gradient(
+                90deg,
+                rgba(240, 147, 251, 0.5) 0%,
+                rgba(240, 147, 251, 0.5) 8%,
+                var(--color-accent-alt) 12%,
+                var(--color-accent-alt) 55%,
+                #ffd700 58%,
+                var(--color-accent-alt) 61%,
+                var(--color-accent-alt) 75%,
+                rgba(240, 147, 251, 0.5) 80%,
+                rgba(240, 147, 251, 0.5) 100%
+            );
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-sweep-wide 5s ease-in-out infinite;
         }
 
-        .note {
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 10px;
+        /* ============================================
+           OPTION C: Uniform shimmer (current)
+           - All text same intensity
+           - Clean but doesn't emphasize "Uncle Elmo"
+           ============================================ */
+        .option-c .brand-text {
+            display: inline-block;
+            background: linear-gradient(
+                90deg,
+                var(--color-accent-alt) 0%,
+                var(--color-accent-alt) 40%,
+                #ffd700 50%,
+                var(--color-accent-alt) 60%,
+                var(--color-accent-alt) 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-sweep 4s ease-in-out infinite;
+        }
+
+        /* ============================================
+           OPTION D: Solid pink, no shimmer (minimal)
+           - Production-safe, accessible
+           - Current deployed version
+           ============================================ */
+        .option-d .brand-text {
+            color: var(--color-accent-alt);
+            opacity: 0.85;
+        }
+
+        @keyframes shimmer-sweep {
+            0% { background-position: 100% 0; }
+            100% { background-position: 0% 0; }
+        }
+
+        @keyframes shimmer-sweep-wide {
+            0%, 100% { background-position: 100% 0; }
+            50% { background-position: -100% 0; }
+        }
+
+        /* Recommendation badge */
+        .recommended {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .current {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Notes section */
+        .notes {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border-left: 3px solid var(--color-accent-alt);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .notes h2 {
+            font-size: 0.9rem;
+            color: var(--color-accent-alt);
+            margin-bottom: 12px;
+        }
+
+        .notes ul {
+            font-size: 0.85rem;
+            color: #999;
+            padding-left: 20px;
+        }
+
+        .notes li {
+            margin-bottom: 6px;
         }
     </style>
 </head>
 <body>
-    <h1>Uncle Elmo - Color Gradient + Shimmer</h1>
+    <h1>Uncle Elmo Branding - Icon Size (12px text)</h1>
 
-    <div class="options">
-        <div class="option option-b1">
-            <h2>B1: Pink → Gold</h2>
+    <div class="options-grid">
+        <!-- Icon Size 1: 12px -->
+        <div class="option option-a icon-12">
+            <div class="option-label" data-letter="1">Icon 12px</div>
             <div class="demo-area">
-                <span class="production-brand">an <span class="uncle-elmo">Uncle Elmo</span> production</span>
+                <span class="production-brand">
+                    <span class="brand-faded">an </span><span class="brand-shimmer">Uncle Elmo</span><span class="brand-faded"> production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
                 <div class="demo-title">Christmas Stories</div>
             </div>
-            <p class="note">Pink to gold gradient + white shimmer sweep</p>
         </div>
 
-        <div class="option option-b2">
-            <h2>B2: Gold → Pink</h2>
+        <!-- Icon Size 2: 14px -->
+        <div class="option option-a icon-14">
+            <div class="option-label" data-letter="2">Icon 14px <span class="recommended">Recommended</span></div>
             <div class="demo-area">
-                <span class="production-brand">an <span class="uncle-elmo">Uncle Elmo</span> production</span>
+                <span class="production-brand">
+                    <span class="brand-faded">an </span><span class="brand-shimmer">Uncle Elmo</span><span class="brand-faded"> production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
                 <div class="demo-title">Christmas Stories</div>
             </div>
-            <p class="note">Gold to pink gradient + shimmer</p>
         </div>
 
-        <div class="option option-b3">
-            <h2>B3: Pink → Gold → Pink</h2>
+        <!-- Icon Size 3: 16px -->
+        <div class="option option-a icon-16">
+            <div class="option-label" data-letter="3">Icon 16px</div>
             <div class="demo-area">
-                <span class="production-brand">an <span class="uncle-elmo">Uncle Elmo</span> production</span>
+                <span class="production-brand">
+                    <span class="brand-faded">an </span><span class="brand-shimmer">Uncle Elmo</span><span class="brand-faded"> production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
                 <div class="demo-title">Christmas Stories</div>
             </div>
-            <p class="note">Gold center peak + shimmer</p>
         </div>
 
-        <div class="option option-b4">
-            <h2>B4: Coral → Gold</h2>
+        <!-- Icon Size 4: 18px -->
+        <div class="option option-a icon-18">
+            <div class="option-label" data-letter="4">Icon 18px</div>
             <div class="demo-area">
-                <span class="production-brand">an <span class="uncle-elmo">Uncle Elmo</span> production</span>
+                <span class="production-brand">
+                    <span class="brand-faded">an </span><span class="brand-shimmer">Uncle Elmo</span><span class="brand-faded"> production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
                 <div class="demo-title">Christmas Stories</div>
             </div>
-            <p class="note">Warm coral to gold + shimmer</p>
         </div>
+
+        <!-- Icon Size 5: 20px -->
+        <div class="option option-a icon-20">
+            <div class="option-label" data-letter="5">Icon 20px</div>
+            <div class="demo-area">
+                <span class="production-brand">
+                    <span class="brand-faded">an </span><span class="brand-shimmer">Uncle Elmo</span><span class="brand-faded"> production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
+                <div class="demo-title">Christmas Stories</div>
+            </div>
+        </div>
+
+        <!-- Option B: Color-based fade -->
+        <div class="option option-b">
+            <div class="option-label" data-letter="B">Gradient Fade (experimental)</div>
+            <div class="demo-area">
+                <span class="production-brand">
+                    <span class="brand-text">an Uncle Elmo production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
+                <div class="demo-title">Christmas Stories</div>
+            </div>
+        </div>
+
+        <!-- Option C: Uniform shimmer -->
+        <div class="option option-c">
+            <div class="option-label" data-letter="C">Uniform Shimmer</div>
+            <div class="demo-area">
+                <span class="production-brand">
+                    <span class="brand-text">an Uncle Elmo production</span>
+                    <svg class="elmo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+                        <g transform="rotate(30, 32, 32)">
+                            <ellipse cx="25" cy="18" rx="10" ry="11" fill="white"/>
+                            <ellipse cx="39" cy="18" rx="10" ry="11" fill="white"/>
+                            <circle cx="28" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <circle cx="36" cy="18" r="4.5" fill="#1a1a1a"/>
+                            <ellipse cx="32" cy="40" rx="9" ry="6" fill="white"/>
+                            <path d="M 18 52 Q 32 62 46 52" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </span>
+                <div class="demo-title">Christmas Stories</div>
+            </div>
+        </div>
+
+        <!-- Option D: Solid (current) -->
+        <div class="option option-d">
+            <div class="option-label" data-letter="D">Solid Pink (no animation) <span class="current">Current</span></div>
+            <div class="demo-area">
+                <span class="production-brand">
+                    <span class="brand-text">an Uncle Elmo production</span>
+                    <!-- No icon in current version -->
+                </span>
+                <div class="demo-title">Christmas Stories</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notes">
+        <h2>Design Notes</h2>
+        <ul>
+            <li><strong>Option A</strong> solves the opacity/shimmer conflict by only applying shimmer to "Uncle Elmo"</li>
+            <li><strong>Option B</strong> bakes the fade into the gradient itself - more complex, harder to tune</li>
+            <li><strong>Option C</strong> was the previous test - works but doesn't emphasize the brand name</li>
+            <li><strong>Option D</strong> is what's currently deployed - no animation, accessible-safe</li>
+            <li>All options include the Elmo icon except D (to match current production)</li>
+        </ul>
     </div>
 </body>
 </html>

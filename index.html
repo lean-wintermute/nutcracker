@@ -3596,7 +3596,10 @@
 
             async function submitBugReport() {
                 try {
-                    const result = await callHelpbotAPI('BUG_REPORT', {
+                    // Construct message from collected bug report data
+                    const bugMessage = `Bug report: Tried to ${bugReportData.action || 'use the app'}. Instead: ${bugReportData.observed || 'unexpected behavior'}${bugReportData.additionalContext ? '. Additional context: ' + bugReportData.additionalContext : ''}`;
+
+                    const result = await callHelpbotAPI(bugMessage, {
                         type: 'bug_report',
                         ...bugReportData
                     });
@@ -3627,9 +3630,9 @@
                 feedbackFlowActive = false;
 
                 try {
-                    const result = await callHelpbotAPI('FEEDBACK', {
+                    // Send actual user input as the message for classification
+                    const result = await callHelpbotAPI(input, {
                         type: 'feedback',
-                        message: input,
                         systemContext: captureSystemContext()
                     });
                     addMessage(result.response || "Thank you for your feedback! Your suggestion has been recorded. Is there anything else about the app I can help with?", false);

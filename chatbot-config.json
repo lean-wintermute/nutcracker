@@ -45,7 +45,7 @@
         },
         {
           "q": "Can I undo a vote?",
-          "a": "Yes! After voting, a notification appears with an 'Undo' button. Click it within 8 seconds to reverse the vote and restore the previous ratings. You can also press 'Z' or Ctrl+Z (Cmd+Z on Mac) to undo. Only the most recent vote can be undone, and the option expires after 30 seconds."
+          "a": "No, votes cannot be undone. Once you vote, the ratings are updated immediately. This keeps the voting process simple and final. If you're unsure about a matchup, you can use the Skip button (or press 'S') to move on without voting."
         },
         {
           "q": "How does the theme toggle work?",
@@ -111,7 +111,7 @@
         },
         {
           "q": "Are keyboard shortcuts available?",
-          "a": "Yes! Use Left Arrow or 'A' to vote left, Right Arrow or 'D' to vote right, 'S' or Down Arrow to skip, and 'Z' or Ctrl/Cmd+Z to undo. Tab navigates between elements, Enter activates buttons, and Escape closes dialogs. The app is fully keyboard accessible."
+          "a": "Yes! Use Left Arrow or 'A' to vote left, Right Arrow or 'D' to vote right, and 'S' or Down Arrow to skip. Tab navigates between elements, Enter activates buttons, and Escape closes dialogs. The app is fully keyboard accessible."
         }
       ]
     },
@@ -149,11 +149,11 @@
       "questions": [
         {
           "q": "Is the app accessible to screen readers?",
-          "a": "Yes. The app uses proper semantic HTML, ARIA labels, and live regions for announcements. All interactive elements have accessible names, and images include alt text. Voting results and undo options are announced to screen readers."
+          "a": "Yes. The app uses proper semantic HTML, ARIA labels, and live regions for announcements. All interactive elements have accessible names, and images include alt text. Voting results are announced to screen readers."
         },
         {
           "q": "Can I use the app with keyboard only?",
-          "a": "Absolutely. All features are keyboard accessible. Tab moves between elements, Enter activates buttons, Arrow keys vote in the arena, Escape closes dialogs, and Z undoes votes. Focus indicators are visible at 3px accent outline on focused elements."
+          "a": "Absolutely. All features are keyboard accessible. Tab moves between elements, Enter activates buttons, Arrow keys vote in the arena (A/D also work), S skips matchups, and Escape closes dialogs. Focus indicators are visible at 3px accent outline on focused elements."
         },
         {
           "q": "Does the app respect reduced motion preferences?",

@@ -212,13 +212,27 @@
 
         @media (max-width: 480px) {
             .production-brand {
-                font-size: 10px;
-                top: 8px;
+                /* Proportional sizing: scales from 7px at 320px to 10px at 480px */
+                font-size: clamp(7px, 2vw, 10px);
+                top: 6px;
                 left: 4px;
+                gap: 4px;
             }
             .elmo-icon {
-                width: 14px;
-                height: 14px;
+                width: clamp(10px, 3vw, 14px);
+                height: clamp(10px, 3vw, 14px);
+            }
+        }
+
+        /* Very small screens: hide completely or show minimal version */
+        @media (max-width: 350px) {
+            .production-brand {
+                font-size: 6px;
+                gap: 3px;
+            }
+            .elmo-icon {
+                width: 9px;
+                height: 9px;
             }
         }
 

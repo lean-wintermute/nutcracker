@@ -24,7 +24,7 @@
         },
         {
           "q": "How many images are there?",
-          "a": "There are 96 AI-generated images across multiple categories including whales in human settings, teddy bears, various animation styles (stop-motion, claymation, CGI), and scenes of solitude. Each image has a unique display name and description."
+          "a": "There are 128 AI-generated images across multiple categories including whales in human settings, teddy bears, various animation styles (stop-motion, claymation, CGI), and scenes of solitude. Each image has a unique display name and description. We welcome requests for additional images!"
         }
       ]
     },
@@ -95,7 +95,7 @@
         },
         {
           "q": "Does it work offline?",
-          "a": "Yes, once you've visited the app while online, the service worker caches all 96 images and the app itself. You can then vote and view rankings completely offline. When you reconnect, any pending data syncs to Firebase if enabled."
+          "a": "Yes, once you've visited the app while online, the service worker caches all 128 images and the app itself. You can then vote and view rankings completely offline. When you reconnect, any pending data syncs to Firebase if enabled."
         },
         {
           "q": "Why do images look stretched or small?",

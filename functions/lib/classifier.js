@@ -54,11 +54,8 @@ Example 7 (off_topic): "What's the weather like today?"
 Example 8 (off_topic): "Can you help me book a flight to Paris?"
 {"type":"off_topic","confidence":0.99,"priority":"P4","component":"other","labels":[],"title":"Off-topic: travel booking request","summary":"Message completely unrelated to the Nutcracker app.","is_valid":false}
 
-Example 9 (question - NOT feedback): "I'd like to see more animals" or "Can you add more images?"
-{"type":"question","confidence":0.9,"priority":"P4","component":"images","labels":[],"title":"Question about image collection","summary":"User asking about adding images - should be answered that collection is fixed.","is_valid":true}
-
-Example 10 (question - NOT feedback): "Add more whale pictures" or "I want different animals"
-{"type":"question","confidence":0.85,"priority":"P4","component":"images","labels":[],"title":"Request for different images","summary":"User wants different content - should explain the fixed 96-image collection.","is_valid":true}
+Example 9 (feedback): "I'd like to see more animals" or "Can you add more images?"
+{"type":"feedback","confidence":0.9,"priority":"P4","component":"images","labels":["enhancement"],"title":"Request for additional animal images","summary":"User requesting more animal-themed images be added to the collection.","is_valid":true}
 </few_shot_examples>
 
 Output this JSON structure ONLY (no other text):
@@ -75,12 +72,9 @@ Output this JSON structure ONLY (no other text):
 
 Classification rules:
 - type="bug" if something is broken, not working, crashes, shows errors
-- type="feedback" if suggestion for APP FUNCTIONALITY (UI, features, UX) that developers can implement
-- type="question" if asking how to use the app, how something works, OR requesting content changes (more images, different animals) - these get answered, not filed as issues
+- type="feedback" if suggestion, feature request, opinion, improvement idea, OR content requests (more images, different animals)
+- type="question" if asking how to use the app or how something works
 - type="off_topic" if completely unrelated to the app (weather, jokes, etc.)
-
-IMPORTANT: Requests for "more images", "different animals", "add pictures" are type="question" NOT "feedback".
-The app has a fixed collection of 96 images - content requests cannot be actioned and should be answered with an explanation.
 
 Validation rules:
 - is_valid=false for spam, abuse, gibberish, or completely off-topic

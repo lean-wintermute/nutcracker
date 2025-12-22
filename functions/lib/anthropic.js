@@ -128,7 +128,7 @@ async function callHaiku(message, _systemContext, _context) {
     const response = await withRetry(
       () =>
         anthropic.messages.create({
-          model: 'claude-3-5-haiku-20241022',
+          model: 'claude-haiku-4-5',
           max_tokens: 300,
           temperature: 0.3,
           system: SYSTEM_PROMPT,

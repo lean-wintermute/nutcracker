@@ -147,7 +147,7 @@ async function classifyInput(message, systemContext, _additionalContext) {
 
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-3-5-haiku-20241022',
+      model: 'claude-haiku-4-5',
       max_tokens: 400,
       temperature: 0.2,
       messages: [{ role: 'user', content: prompt }],

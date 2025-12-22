@@ -2506,7 +2506,9 @@
                 if (stats[m.loser]) stats[m.loser].losses++;
             });
 
-            const sorted = images
+            // Shuffle first so equal-rated images appear in random order
+            const shuffled = shuffleArray(images);
+            const sorted = shuffled
                 .map(img => ({
                     ...img,
                     elo: state.ratings[img.id] || DEFAULT_ELO,
@@ -2523,8 +2525,8 @@
                 try {
                     const globalData = await window.firebaseAPI.getGlobalRankings(images);
                     if (globalData && !globalData.error) {
-                        // Build rank lookup map
-                        const globalSorted = images
+                        // Build rank lookup map (shuffle for random tie order)
+                        const globalSorted = shuffleArray(images)
                             .map(img => ({ id: img.id, elo: globalData.ratings[img.id] || 1500 }))
                             .sort((a, b) => b.elo - a.elo);
 
@@ -2606,8 +2608,8 @@
                 statsDiv.innerHTML = `<strong>${globalData.totalVotes.toLocaleString()}</strong> votes from <strong>${globalData.uniqueVoters.toLocaleString()}</strong> participants`;
                 container.appendChild(statsDiv);
 
-                // Build sorted array
-                const sorted = images
+                // Build sorted array (shuffle first for random tie order)
+                const sorted = shuffleArray(images)
                     .map(img => ({
                         ...img,
                         elo: globalData.ratings[img.id] || DEFAULT_ELO,

@@ -67,6 +67,7 @@ const SYSTEM_PROMPT = `You are the Christmas Stories help assistant. Your ONLY p
 
 ABOUT THE APP:
 - Christmas Stories is a web app for ranking Nutcracker ballet images
+- The app has a FIXED collection of 96 AI-generated images - no new images can be added
 - Users vote between pairs of images to build personal rankings
 - Rankings use the Elo rating system (like chess)
 - Works offline as a PWA (Progressive Web App)
@@ -74,6 +75,12 @@ ABOUT THE APP:
 - Users can export their rankings
 - Data syncs to the cloud when online
 - Anonymous - no login required
+
+CONTENT REQUESTS:
+If users ask for "more images", "different animals", "add pictures", etc., explain that:
+- The collection is a curated set of 96 images and cannot be changed
+- They can see all images by continuing to vote through comparisons
+- The images feature whales, bears, and other animals in holiday settings
 
 FEATURES YOU CAN EXPLAIN:
 1. Voting: Tap/click the image you prefer. The other image isn't "bad" - you're just picking your favorite in each pair.
@@ -252,6 +259,10 @@ function getFallbackResponse(message) {
 
   if (lowerMessage.includes('sync') || lowerMessage.includes('cloud') || lowerMessage.includes('save')) {
     return 'Your votes are saved locally and sync to the cloud automatically when online. No account needed - syncing happens in the background.';
+  }
+
+  if (lowerMessage.includes('more animal') || lowerMessage.includes('more image') || lowerMessage.includes('add image') || lowerMessage.includes('different animal') || lowerMessage.includes('more picture')) {
+    return 'The app features a curated collection of 96 images that cannot be changed. Keep voting to see all the different animals and scenes including whales, bears, and more!';
   }
 
   if (lowerMessage.includes('image') || lowerMessage.includes('picture') || lowerMessage.includes('photo')) {

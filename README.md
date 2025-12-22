@@ -104,10 +104,10 @@ Bug reports and feedback are automatically synced to GitHub Issues with:
 | **0.7.0** | 2025-12-22 | Uncle Elmo branding, shimmer effects, UI polish |
 | **0.6.0** | 2025-12-22 | WCAG 2.1 AA accessibility, keyboard navigation |
 | **0.5.0** | 2025-12-22 | Firebase + Firestore integration, cloud backup |
-| **0.4.0** | 2025-12-21 | Feedback collection, tag-based voting reasons |
-| **0.3.0** | 2025-12-21 | Rankings gallery, lightbox viewer, image download |
-| **0.2.0** | 2025-12-21 | Smart pairing algorithm, under-voted image priority |
-| **0.1.0** | 2025-12-21 | Initial PWA: Elo ratings, pairwise voting, light/dark mode |
+| **0.4.0** | 2025-12-22 | Feedback collection, tag-based voting reasons |
+| **0.3.0** | 2025-12-22 | Rankings gallery, lightbox viewer, image download |
+| **0.2.0** | 2025-12-22 | Smart pairing algorithm, under-voted image priority |
+| **0.1.0** | 2025-12-22 | Initial PWA: Elo ratings, pairwise voting, light/dark mode |
 
 ## Adding Your Own Images
 

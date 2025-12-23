@@ -3056,6 +3056,13 @@
             // Don't capture if user is in an input
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
+            // Don't capture if ninja-keys omnibar is open (fixes keyboard conflict)
+            const ninjaKeys = document.getElementById('imagineOmnibar');
+            if (ninjaKeys && ninjaKeys.opened) return;
+
+            // Don't capture if user is inside ninja-keys shadow DOM
+            if (e.target.closest('ninja-keys')) return;
+
             const arenaVisible = !document.querySelector('.arena-view').classList.contains('hidden');
             if (!arenaVisible) return;
 
@@ -5407,6 +5414,30 @@
             if (stub) {
                 stub.addEventListener('click', () => ninja.open());
             }
+
+            // Focus the search input when ninja-keys opens (fixes direct input issue)
+            ninja.addEventListener('change', (e) => {
+                if (e.detail?.open) {
+                    // Wait for animation then focus the input inside shadow DOM
+                    requestAnimationFrame(() => {
+                        const input = ninja.shadowRoot?.querySelector('input');
+                        if (input) input.focus();
+                    });
+                }
+            });
+
+            // Handle item selection (fixes handler not triggering)
+            ninja.addEventListener('selected', async (e) => {
+                const action = e.detail;
+                if (action?.handler) {
+                    ninja.close();
+                    try {
+                        await action.handler();
+                    } catch (err) {
+                        console.error('[ImagineBar] Handler error:', err);
+                    }
+                }
+            });
 
             // Error close button
             document.getElementById('imagine-error-close')?.addEventListener('click', () => {

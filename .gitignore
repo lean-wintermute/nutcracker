@@ -17,3 +17,6 @@ logs/
 
 # OS files
 .DS_Store
+
+# Firebase cache
+.firebase/

@@ -1,6 +1,6 @@
 # Christmas Stories
 
-> **Version**: 2.0.0 | **Status**: Production | **Updated**: 2025-12-22
+> **Version**: 1.3.0 | **Status**: Production | **Updated**: 2025-12-23
 
 A holiday-themed image ranking tool using Elo ratings with AI image generation
 
@@ -21,10 +21,15 @@ A progressive web app for ranking images using the Elo rating system. Features h
 - **Rankings Gallery** - View sorted results with lightbox viewer + download
 - **Offline-First** - All data stored in localStorage
 
-### V2.0 Features
-- **Imagine Scenes** - AI-powered custom scene generation with Gemini
+### V1.3 Features
+- **Audio Stories** - AI-narrated stories for any image via Cmd+K omnibar
+- **Floating Audio Player** - Persistent playback with seek, play/pause controls
+- **TTS Integration** - Google Cloud TTS with WAV audio generation
+
+### V1.2 Features
+- **Imagine Bar (Mode A)** - Quick story generation for current voting images
+- **Imagine Bar (Mode B)** - Create custom scenes with animal selection + seed prompts
 - **Unified Image Catalog** - Generated images compete alongside static corpus
-- **Firebase Hosting** - Fast global CDN with offline PWA support
 - **Per-User Quotas** - 24 images/day with atomic reservation system
 
 ### V1.0 Features
@@ -121,7 +126,8 @@ Bug reports and feedback are automatically synced to GitHub Issues with:
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| **2.0.0** | 2025-12-22 | Firebase Hosting migration, Imagine Scenes (AI image generation), unified image catalog, per-user quotas |
+| **1.3.0** | 2025-12-23 | Audio Stories with AI narration, floating audio player, TTS integration |
+| **1.2.0** | 2025-12-22 | Imagine Bar (Mode A/B), quick story generation, custom scene creation, unified image catalog |
 | **1.1.0** | 2025-12-22 | Corpus rebalance: replaced 32 style duplicates with varied scenes (action, weather, night, interaction), dynamic catalog loading, sync tooling |
 | **1.0.0** | 2025-12-22 | Production release with all V1.0 features |
 | **0.9.0** | 2025-12-22 | Compare With Global, social sharing, analytics export |
@@ -166,7 +172,7 @@ Chrome/Edge 88+, Firefox 78+, Safari 14+, iOS Safari 14+
 
 ## License
 
-**Christmas Stories v2.0.0 © 2025 by Trey Herr** | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+**Christmas Stories v1.3.0 © 2025 by Trey Herr** | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 SPDX-License-Identifier: CC-BY-NC-SA-4.0
 

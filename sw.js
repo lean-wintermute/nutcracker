@@ -10,7 +10,7 @@
 'use strict';
 
 // Cache version - increment to invalidate old caches
-const CACHE_VERSION = 'v22';
+const CACHE_VERSION = 'v23';
 const CACHE_NAME = `nutcracker-${CACHE_VERSION}`;
 
 // Static assets to cache on install

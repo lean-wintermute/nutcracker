@@ -2149,7 +2149,7 @@
             margin-top: 20px;
         }
 
-        /* Imagine Audio Player */
+        /* Imagine Audio Player - Enhanced with image */
         .imagine-audio-player {
             position: fixed;
             bottom: 100px;
@@ -2157,15 +2157,64 @@
             transform: translateX(-50%);
             background: #1a1a2e;
             border: 1px solid #333;
-            border-radius: 12px;
-            padding: 16px 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             z-index: 999;
-            min-width: 320px;
-            max-width: 400px;
+            min-width: 340px;
+            max-width: 420px;
+            overflow: hidden;
         }
 
         .imagine-audio-player.hidden { display: none; }
+
+        .imagine-audio-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .imagine-audio-body {
+            padding: 12px 16px 16px;
+        }
+
+        /* Loading state for audio player */
+        .imagine-audio-player.loading .imagine-audio-controls {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .imagine-audio-loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 0 4px;
+            color: var(--color-text-dim);
+            font-size: 13px;
+        }
+
+        .imagine-audio-player.loading .imagine-audio-loading {
+            display: flex;
+        }
+
+        .imagine-audio-player.loading .imagine-audio-controls {
+            display: none;
+        }
+
+        .imagine-audio-loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: var(--color-accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
         .imagine-audio-header {
             display: flex;
@@ -2485,6 +2534,7 @@
                     id="imagineInput"
                     placeholder="Search for an image to hear its story..."
                     autocomplete="off"
+                    aria-label="Search images for audio stories"
                 >
                 <button class="imagine-bar-submit" id="imagineSubmit" disabled>Search</button>
             </div>
@@ -2502,23 +2552,32 @@
             </div>
         </div>
 
-        <!-- Imagine Audio Player -->
+        <!-- Imagine Audio Player - Shows image being narrated -->
         <div id="imagine-audio-player" class="imagine-audio-player hidden">
-            <div class="imagine-audio-header">
-                <span id="imagine-audio-title">Story</span>
-                <button id="imagine-audio-close" class="imagine-audio-close" aria-label="Close">×</button>
-            </div>
-            <div class="imagine-audio-controls">
-                <button id="imagine-play-btn" class="imagine-play-btn" aria-label="Play">
-                    <svg id="imagine-play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    <svg id="imagine-pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none">
-                        <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
-                    </svg>
-                </button>
-                <input type="range" id="imagine-seek-slider" class="imagine-seek-slider" min="0" max="100" value="0">
-                <span id="imagine-time" class="imagine-time">0:00 / 0:00</span>
+            <img id="imagine-audio-image" class="imagine-audio-image" src="" alt="">
+            <div class="imagine-audio-body">
+                <div class="imagine-audio-header">
+                    <span id="imagine-audio-title">Story</span>
+                    <button id="imagine-audio-close" class="imagine-audio-close" aria-label="Close">×</button>
+                </div>
+                <!-- Loading state -->
+                <div class="imagine-audio-loading" id="imagine-audio-loading">
+                    <div class="imagine-audio-loading-spinner"></div>
+                    <span>Generating story...</span>
+                </div>
+                <!-- Playback controls (shown when loaded) -->
+                <div class="imagine-audio-controls">
+                    <button id="imagine-play-btn" class="imagine-play-btn" aria-label="Play">
+                        <svg id="imagine-play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg id="imagine-pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+                            <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+                        </svg>
+                    </button>
+                    <input type="range" id="imagine-seek-slider" class="imagine-seek-slider" min="0" max="100" value="0" aria-label="Seek audio position">
+                    <span id="imagine-time" class="imagine-time">0:00 / 0:00</span>
+                </div>
             </div>
             <audio id="imagine-audio" preload="metadata"></audio>
         </div>
@@ -5161,11 +5220,12 @@
             return new Blob([wavHeader, bytes], { type: 'audio/wav' });
         }
 
-        // Audio Player
+        // Audio Player - Enhanced with image display
         const imagineAudioPlayer = {
             audio: null,
             isPlaying: false,
             blobUrl: null,
+            currentImageId: null,
 
             init() {
                 this.audio = document.getElementById('imagine-audio');
@@ -5176,6 +5236,7 @@
                 this.timeDisplay = document.getElementById('imagine-time');
                 this.playerEl = document.getElementById('imagine-audio-player');
                 this.titleEl = document.getElementById('imagine-audio-title');
+                this.imageEl = document.getElementById('imagine-audio-image');
                 this.closeBtn = document.getElementById('imagine-audio-close');
                 if (this.playBtn) this.bindEvents();
             },
@@ -5227,12 +5288,17 @@
                 this.updatePlayButton();
             },
 
-            play(audioBase64, title) {
+            play(audioBase64, title, imageUrl, imageId) {
                 if (this.blobUrl) URL.revokeObjectURL(this.blobUrl);
                 const wavBlob = base64ToWavBlob(audioBase64);
                 this.blobUrl = URL.createObjectURL(wavBlob);
                 this.audio.src = this.blobUrl;
                 this.titleEl.textContent = title;
+                this.currentImageId = imageId;
+                if (imageUrl && this.imageEl) {
+                    this.imageEl.src = imageUrl;
+                    this.imageEl.alt = title;
+                }
                 this.show();
                 this.audio.play();
                 this.isPlaying = true;
@@ -5242,9 +5308,26 @@
             show() { this.playerEl.classList.remove('hidden'); },
             hide() {
                 this.playerEl.classList.add('hidden');
+                this.playerEl.classList.remove('loading');
                 this.audio.pause();
                 this.isPlaying = false;
                 this.updatePlayButton();
+            },
+
+            // Show player in loading state with image preview
+            showLoading(title, imageUrl) {
+                this.titleEl.textContent = title;
+                if (imageUrl && this.imageEl) {
+                    this.imageEl.src = imageUrl;
+                    this.imageEl.alt = title;
+                }
+                this.playerEl.classList.add('loading');
+                this.show();
+            },
+
+            // Transition from loading to playing
+            finishLoading() {
+                this.playerEl.classList.remove('loading');
             }
         };
 
@@ -5296,19 +5379,21 @@
             }
         }
 
-        // Generate story
+        // Generate story - shows inline loading in audio player
         async function imagineGenerateStory(imageId) {
             if (!imagineAuthReady || !imagineIdToken) {
                 throw new Error('Not authenticated');
             }
-            const currentToken = await auth.currentUser.getIdToken();
-            const loadingEl = document.getElementById('imagine-loading');
-            const progressEl = document.getElementById('imagine-progress');
-            const remainingEl = document.getElementById('imagine-remaining');
 
-            loadingEl.classList.remove('hidden');
-            progressEl.textContent = 'Generating your story...';
-            remainingEl.textContent = '';
+            // Find the image to get its URL and title for the player
+            const image = images.find(img => img.id === imageId);
+            const imageUrl = image?.src || `images/${imageId}`;
+            const imageTitle = image?.name || formatImagineTitle(imageId);
+
+            // Show audio player immediately in loading state (visual continuity)
+            imagineAudioPlayer.showLoading(imageTitle, imageUrl);
+
+            const currentToken = await auth.currentUser.getIdToken();
 
             try {
                 const response = await fetch(IMAGINE_FUNCTION_URL, {
@@ -5323,21 +5408,22 @@
                 if (!response.ok || result.error) {
                     throw { code: result.code || 'unknown', message: result.message || 'Generation failed' };
                 }
-                const { audioBase64, duration, imageTitle, remaining } = result;
-                remainingEl.textContent = `${remaining} stories remaining`;
-                progressEl.textContent = 'Playing...';
-                imagineAudioPlayer.play(audioBase64, imageTitle);
+                const { audioBase64, duration, imageTitle: serverTitle, remaining } = result;
+                // Transition to playing state
+                imagineAudioPlayer.finishLoading();
+                imagineAudioPlayer.play(audioBase64, serverTitle || imageTitle, imageUrl, imageId);
+                console.log(`[ImagineBar] Story playing, ${remaining} remaining`);
                 return { success: true };
             } catch (error) {
                 console.error('[ImagineBar] Generation failed', error);
+                // Hide player and show error toast
+                imagineAudioPlayer.hide();
                 const errorEl = document.getElementById('imagine-error');
                 const msgEl = document.getElementById('imagine-error-message');
                 msgEl.textContent = error.message || 'Generation failed. Please try again.';
                 errorEl.classList.remove('hidden');
                 setTimeout(() => errorEl.classList.add('hidden'), 5000);
                 throw error;
-            } finally {
-                loadingEl.classList.add('hidden');
             }
         }
 

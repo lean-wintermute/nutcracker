@@ -1616,86 +1616,254 @@
         }
 
         /* ============================================
-           IMAGINE BAR (pinned at bottom)
+           IMAGINE BAR - Chat-style Input
            ============================================ */
-        .imagine-bar {
+        .imagine-container {
             position: relative;
             margin: 32px auto calc(16px + env(safe-area-inset-bottom, 0px));
+            max-width: 480px;
+            width: calc(100% - 32px);
+            z-index: 900;
+        }
+
+        /* Context Panel - appears when focused */
+        .imagine-context {
             background: var(--color-bg);
             border: 1px solid var(--color-border);
-            border-radius: 24px;
-            padding: 12px 20px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            z-index: 900;
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+            padding: 16px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+        }
+
+        .imagine-container.focused .imagine-context {
+            opacity: 1;
+            max-height: 300px;
+            padding: 16px;
+        }
+
+        .imagine-context-section {
+            margin-bottom: 12px;
+        }
+
+        .imagine-context-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .imagine-context-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-dim);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
+            gap: 6px;
+        }
+
+        /* Current pair thumbnails */
+        .imagine-pair {
+            display: flex;
+            gap: 12px;
             justify-content: center;
-            gap: 10px;
+        }
+
+        .imagine-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
             cursor: pointer;
+            border: 2px solid transparent;
             transition: all 0.2s;
-            max-width: calc(100vw - 32px);
-            width: fit-content;
+            position: relative;
+            background: var(--color-bg-alt);
         }
 
-        .imagine-bar:hover {
+        .imagine-thumb:hover {
             border-color: var(--color-accent);
-            color: var(--color-text);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transform: scale(1.05);
         }
 
-        .imagine-bar svg {
-            color: var(--color-accent-alt);
-            flex-shrink: 0;
+        .imagine-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .imagine-bar span {
+        .imagine-thumb-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+            font-size: 10px;
+            padding: 16px 6px 4px;
+            text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
+        /* Animal chips for scene creation */
+        .imagine-animals {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .imagine-animal-chip {
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .imagine-animal-chip:hover {
+            background: var(--color-accent);
+            color: #000;
+            border-color: var(--color-accent);
+        }
+
+        /* Main input bar */
+        .imagine-bar {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 24px;
+            padding: 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 0;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .imagine-container.focused .imagine-bar {
+            border-radius: 0 0 24px 24px;
+            border-color: var(--color-accent);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+        }
+
+        .imagine-bar-icon {
+            padding: 12px 0 12px 16px;
+            color: var(--color-accent-alt);
+            flex-shrink: 0;
+        }
+
+        .imagine-bar-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            padding: 14px 12px;
+            color: var(--color-text);
+            font-family: inherit;
+        }
+
+        .imagine-bar-input::placeholder {
+            color: var(--color-text-dim);
+        }
+
+        .imagine-bar-submit {
+            background: var(--color-accent);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin: 6px 8px 6px 0;
+            color: #000;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .imagine-bar-submit:hover {
+            background: var(--color-accent-alt);
+        }
+
+        .imagine-bar-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Search suggestions dropdown */
+        .imagine-suggestions {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.2);
+        }
+
+        .imagine-suggestions.visible {
+            display: block;
+        }
+
+        .imagine-suggestion {
+            padding: 10px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.15s;
+        }
+
+        .imagine-suggestion:hover {
+            background: var(--color-bg-alt);
+        }
+
+        .imagine-suggestion-icon {
+            font-size: 18px;
+        }
+
+        .imagine-suggestion-text {
+            flex: 1;
+            font-size: 14px;
+        }
+
         @media (max-width: 480px) {
-            .imagine-bar {
-                padding: 10px 16px;
-                font-size: 0.8rem;
-                gap: 8px;
+            .imagine-container {
+                width: calc(100% - 24px);
+            }
+            .imagine-thumb {
+                width: 70px;
+                height: 70px;
+            }
+            .imagine-bar-input {
+                font-size: 14px;
+                padding: 12px 10px;
+            }
+            .imagine-bar-submit {
+                padding: 6px 12px;
+                font-size: 12px;
             }
         }
 
-
-        /* Imagine Bar keyboard hint */
-        .imagine-kbd {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-family: monospace;
-            margin-left: 8px;
-        }
-
-        /* Ninja Keys Theming */
-        ninja-keys {
-            --ninja-width: 640px;
-            --ninja-accent-color: #c9a227;
-            --ninja-modal-background: #1a1a2e;
-            --ninja-text-color: #eee;
-            --ninja-selected-background: rgba(201, 162, 39, 0.2);
-            --ninja-secondary-text-color: #888;
-            --ninja-footer-background: #16213e;
-            --ninja-z-index: 1000;
-        }
-
-        ninja-keys::part(ninja-input) {
-            font-size: 16px;
-            padding: 16px 20px;
-        }
-
-        ninja-keys::part(ninja-action) {
-            padding: 12px 16px;
-            border-radius: 8px;
-        }
+        /* Legacy support - hide old elements */
+        .imagine-kbd { display: none; }
+        ninja-keys { display: none; }
 
         /* Imagine Loading Overlay */
         .imagine-loading {
@@ -2233,22 +2401,57 @@
         <footer class="site-footer">
         </footer>
 
-        <!-- Imagine bar (at bottom of page content) -->
-        <button class="imagine-bar" id="imagineBar" aria-label="Generate AI stories">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/>
-            </svg>
-            <span>Generate Stories <span class="imagine-kbd">⌘K</span></span>
-        </button>
+        <!-- Imagine Bar - Chat-style Input -->
+        <div class="imagine-container" id="imagineContainer">
+            <!-- Context Panel (appears on focus) -->
+            <div class="imagine-context" id="imagineContext">
+                <!-- Current voting pair -->
+                <div class="imagine-context-section" id="imagineCurrentPair">
+                    <div class="imagine-context-label">
+                        <span>📖</span> Tell a story about...
+                    </div>
+                    <div class="imagine-pair" id="imaginePairThumbs">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
 
-        <!-- Ninja Keys Omnibar -->
-        <ninja-keys
-            id="imagineOmnibar"
-            class="dark"
-            placeholder="Search stories or press ↵ to generate..."
-            openHotkey="cmd+k,ctrl+k"
-            closeHotkey="esc">
-        </ninja-keys>
+                <!-- Create new scene -->
+                <div class="imagine-context-section">
+                    <div class="imagine-context-label">
+                        <span>🎨</span> Create a new scene with...
+                    </div>
+                    <div class="imagine-animals" id="imagineAnimals">
+                        <button class="imagine-animal-chip" data-animal="whale">🐋 Whale</button>
+                        <button class="imagine-animal-chip" data-animal="panda">🐼 Panda</button>
+                        <button class="imagine-animal-chip" data-animal="bear">🐻 Bear</button>
+                        <button class="imagine-animal-chip" data-animal="lion">🦁 Lion</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Suggestions -->
+            <div class="imagine-suggestions" id="imagineSuggestions"></div>
+
+            <!-- Main Input Bar -->
+            <div class="imagine-bar" id="imagineBar">
+                <div class="imagine-bar-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/>
+                    </svg>
+                </div>
+                <input
+                    type="text"
+                    class="imagine-bar-input"
+                    id="imagineInput"
+                    placeholder="Search images or tap above..."
+                    autocomplete="off"
+                >
+                <button class="imagine-bar-submit" id="imagineSubmit" disabled>Search</button>
+            </div>
+        </div>
+
+        <!-- Legacy: Keep ninja-keys for hotkey support but hidden -->
+        <ninja-keys id="imagineOmnibar" class="dark" style="display:none"></ninja-keys>
 
         <!-- Imagine Loading State -->
         <div id="imagine-loading" class="imagine-loading hidden">
@@ -5299,150 +5502,235 @@
         // Initialize seed dialog on load
         initSeedDialog();
 
-        // Initialize Imagine Bar
+        // Initialize Imagine Bar - Chat-style Input
+        let imagineImageDescriptions = {};
+
         async function initImagineBar() {
-            const ninja = document.getElementById('imagineOmnibar');
-            const stub = document.getElementById('imagineBar');
-            if (!ninja) {
-                console.log('[ImagineBar] ninja-keys element not found');
+            const container = document.getElementById('imagineContainer');
+            const input = document.getElementById('imagineInput');
+            const submitBtn = document.getElementById('imagineSubmit');
+            const suggestions = document.getElementById('imagineSuggestions');
+            const pairThumbs = document.getElementById('imaginePairThumbs');
+            const animalsContainer = document.getElementById('imagineAnimals');
+
+            if (!container || !input) {
+                console.log('[ImagineBar] Elements not found');
                 return;
             }
 
-            // Offline detection - hide bar when offline
+            // Offline detection
             const updateOfflineState = () => {
                 if (!navigator.onLine) {
-                    if (stub) stub.style.display = 'none';
-                    ninja.close();
+                    container.style.display = 'none';
                     console.log('[ImagineBar] Offline - hidden');
-                } else {
-                    // Only show if we have access or haven't checked yet
-                    if (stub && (imagineHasAccess || !imagineAccessChecked || imagineTestMode)) {
-                        stub.style.display = '';
-                    }
+                } else if (imagineHasAccess || !imagineAccessChecked || imagineTestMode) {
+                    container.style.display = '';
                 }
             };
-
             window.addEventListener('online', updateOfflineState);
             window.addEventListener('offline', updateOfflineState);
 
-            // Initial offline check
             if (!navigator.onLine) {
-                if (stub) stub.style.display = 'none';
-                console.log('[ImagineBar] Offline on init - hidden');
+                container.style.display = 'none';
                 return;
             }
 
-            // Load image catalog
-            let imageDescriptions = {};
+            // Load image catalog for search
             try {
                 const response = await fetch('image-descriptions.json');
-                imageDescriptions = await response.json();
+                imagineImageDescriptions = await response.json();
             } catch (error) {
                 console.error('[ImagineBar] Failed to load catalog', error);
-                return;
             }
 
-            // Build quick actions for currently displayed images (Mode A fix)
-            const quickActions = [];
-            if (state.currentPair?.left) {
-                quickActions.push({
-                    id: 'current-left',
-                    title: `Story for: ${state.currentPair.left.name}`,
-                    section: 'Current Images',
-                    icon: '◀',
-                    handler: async () => {
-                        try {
-                            await imagineGenerateStory(state.currentPair.left.id);
-                        } catch (e) { /* handled */ }
-                    }
-                });
-            }
-            if (state.currentPair?.right) {
-                quickActions.push({
-                    id: 'current-right',
-                    title: `Story for: ${state.currentPair.right.name}`,
-                    section: 'Current Images',
-                    icon: '▶',
-                    handler: async () => {
-                        try {
-                            await imagineGenerateStory(state.currentPair.right.id);
-                        } catch (e) { /* handled */ }
-                    }
-                });
-            }
+            // Focus/blur handling for context panel
+            input.addEventListener('focus', () => {
+                container.classList.add('focused');
+                updatePairThumbnails();
+            });
 
-            // Build scene generation actions (Mode B)
-            const sceneActions = Object.values(SCENE_ANIMALS).map(animal => ({
-                id: `scene-${animal.id}`,
-                title: `Create ${animal.name} Scene`,
-                section: 'Create New Scene',
-                icon: animal.icon,
-                keywords: `generate new image ${animal.name} ${animal.id}`,
-                handler: () => {
-                    openSeedDialog(animal.id);
+            input.addEventListener('blur', (e) => {
+                // Delay to allow click events on context panel
+                setTimeout(() => {
+                    if (!container.contains(document.activeElement)) {
+                        container.classList.remove('focused');
+                        suggestions.classList.remove('visible');
+                    }
+                }, 150);
+            });
+
+            // Keep focus when clicking inside container
+            container.addEventListener('mousedown', (e) => {
+                if (e.target !== input && !e.target.closest('.imagine-thumb') &&
+                    !e.target.closest('.imagine-animal-chip') && !e.target.closest('.imagine-suggestion')) {
+                    e.preventDefault();
                 }
-            }));
+            });
 
-            // Build story actions from image catalog
-            const imageActions = Object.entries(imageDescriptions).map(([id, description]) => ({
-                id: `image-${id}`,
-                title: formatImagineTitle(id),
-                section: 'Generate Story',
-                keywords: description,
-                handler: async () => {
-                    // Check access on action (not on load)
+            // Update pair thumbnails
+            function updatePairThumbnails() {
+                if (!pairThumbs) return;
+                pairThumbs.innerHTML = '';
+
+                if (state.currentPair?.left) {
+                    const thumb = createThumb(state.currentPair.left);
+                    pairThumbs.appendChild(thumb);
+                }
+                if (state.currentPair?.right) {
+                    const thumb = createThumb(state.currentPair.right);
+                    pairThumbs.appendChild(thumb);
+                }
+            }
+
+            function createThumb(image) {
+                const thumb = document.createElement('div');
+                thumb.className = 'imagine-thumb';
+                thumb.innerHTML = `
+                    <img src="${image.src}" alt="${image.name}" loading="lazy">
+                    <div class="imagine-thumb-label">${image.name}</div>
+                `;
+                thumb.addEventListener('click', async () => {
+                    container.classList.remove('focused');
                     const hasAccess = await checkImagineAccess();
                     if (!hasAccess) {
-                        const errorEl = document.getElementById('imagine-error');
-                        const msgEl = document.getElementById('imagine-error-message');
-                        msgEl.textContent = 'This feature is not available yet. Stay tuned!';
-                        errorEl.classList.remove('hidden');
-                        setTimeout(() => errorEl.classList.add('hidden'), 5000);
+                        showImagineError('This feature is not available yet. Stay tuned!');
                         return;
                     }
                     try {
-                        await imagineGenerateStory(id);
+                        await imagineGenerateStory(image.id);
                     } catch (e) { /* handled */ }
-                }
-            }));
-
-            // Combine: Quick Actions first, then Scene Actions, then all images
-            ninja.data = [...quickActions, ...sceneActions, ...imageActions];
-            console.log(`[ImagineBar] Loaded ${quickActions.length} quick + ${sceneActions.length} scenes + ${imageActions.length} images`);
-
-            // Click handler for stub button
-            if (stub) {
-                stub.addEventListener('click', () => ninja.open());
+                });
+                return thumb;
             }
 
-            // Focus the search input when ninja-keys opens (fixes direct input issue)
-            ninja.addEventListener('change', (e) => {
-                if (e.detail?.open) {
-                    // Wait for animation then focus the input inside shadow DOM
-                    requestAnimationFrame(() => {
-                        const input = ninja.shadowRoot?.querySelector('input');
-                        if (input) input.focus();
+            // Animal chip handlers
+            animalsContainer?.querySelectorAll('.imagine-animal-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const animal = chip.dataset.animal;
+                    container.classList.remove('focused');
+                    openSeedDialog(animal);
+                });
+            });
+
+            // Search input handling
+            let searchTimeout;
+            input.addEventListener('input', () => {
+                const query = input.value.trim().toLowerCase();
+                submitBtn.disabled = query.length === 0;
+
+                clearTimeout(searchTimeout);
+                if (query.length < 2) {
+                    suggestions.classList.remove('visible');
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => {
+                    showSuggestions(query);
+                }, 150);
+            });
+
+            function showSuggestions(query) {
+                const matches = Object.entries(imagineImageDescriptions)
+                    .filter(([id, desc]) => {
+                        const name = formatImagineTitle(id).toLowerCase();
+                        const description = (desc || '').toLowerCase();
+                        return name.includes(query) || description.includes(query);
+                    })
+                    .slice(0, 6);
+
+                if (matches.length === 0) {
+                    suggestions.classList.remove('visible');
+                    return;
+                }
+
+                suggestions.innerHTML = matches.map(([id, desc]) => `
+                    <div class="imagine-suggestion" data-id="${id}">
+                        <span class="imagine-suggestion-icon">📖</span>
+                        <span class="imagine-suggestion-text">${formatImagineTitle(id)}</span>
+                    </div>
+                `).join('');
+
+                suggestions.querySelectorAll('.imagine-suggestion').forEach(el => {
+                    el.addEventListener('click', async () => {
+                        const id = el.dataset.id;
+                        container.classList.remove('focused');
+                        suggestions.classList.remove('visible');
+                        input.value = '';
+                        submitBtn.disabled = true;
+
+                        const hasAccess = await checkImagineAccess();
+                        if (!hasAccess) {
+                            showImagineError('This feature is not available yet. Stay tuned!');
+                            return;
+                        }
+                        try {
+                            await imagineGenerateStory(id);
+                        } catch (e) { /* handled */ }
                     });
+                });
+
+                suggestions.classList.add('visible');
+            }
+
+            // Submit button / Enter key
+            submitBtn.addEventListener('click', () => handleSearch());
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !submitBtn.disabled) {
+                    handleSearch();
+                }
+                if (e.key === 'Escape') {
+                    container.classList.remove('focused');
+                    suggestions.classList.remove('visible');
+                    input.blur();
                 }
             });
 
-            // Handle item selection (fixes handler not triggering)
-            ninja.addEventListener('selected', async (e) => {
-                const action = e.detail;
-                if (action?.handler) {
-                    ninja.close();
-                    try {
-                        await action.handler();
-                    } catch (err) {
-                        console.error('[ImagineBar] Handler error:', err);
+            async function handleSearch() {
+                const query = input.value.trim().toLowerCase();
+                if (!query) return;
+
+                // Find best match
+                const match = Object.entries(imagineImageDescriptions)
+                    .find(([id, desc]) => {
+                        const name = formatImagineTitle(id).toLowerCase();
+                        return name.includes(query);
+                    });
+
+                if (match) {
+                    container.classList.remove('focused');
+                    suggestions.classList.remove('visible');
+                    input.value = '';
+                    submitBtn.disabled = true;
+
+                    const hasAccess = await checkImagineAccess();
+                    if (!hasAccess) {
+                        showImagineError('This feature is not available yet. Stay tuned!');
+                        return;
                     }
+                    try {
+                        await imagineGenerateStory(match[0]);
+                    } catch (e) { /* handled */ }
+                } else {
+                    showImagineError('No matching image found. Try clicking a thumbnail above.');
                 }
-            });
+            }
+
+            function showImagineError(msg) {
+                const errorEl = document.getElementById('imagine-error');
+                const msgEl = document.getElementById('imagine-error-message');
+                if (errorEl && msgEl) {
+                    msgEl.textContent = msg;
+                    errorEl.classList.remove('hidden');
+                    setTimeout(() => errorEl.classList.add('hidden'), 5000);
+                }
+            }
 
             // Error close button
             document.getElementById('imagine-error-close')?.addEventListener('click', () => {
                 document.getElementById('imagine-error').classList.add('hidden');
             });
+
+            console.log('[ImagineBar] Chat-style input initialized');
         }
 
         // Auth state listener for Imagine Bar
@@ -5460,8 +5748,8 @@
                 // Check access in background to update UI if needed
                 const hasAccess = await checkImagineAccess();
                 if (!hasAccess && !imagineTestMode) {
-                    const stub = document.getElementById('imagineBar');
-                    if (stub) stub.style.display = 'none';
+                    const container = document.getElementById('imagineContainer');
+                    if (container) container.style.display = 'none';
                     console.log('[ImagineBar] Access denied - bar hidden');
                 }
             }

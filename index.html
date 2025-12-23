@@ -1619,8 +1619,10 @@
            IMAGINE BAR - Chat-style Input
            ============================================ */
         .imagine-container {
-            position: relative;
-            margin: 32px auto calc(16px + env(safe-area-inset-bottom, 0px));
+            position: fixed;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            left: 50%;
+            transform: translateX(-50%);
             max-width: 480px;
             width: calc(100% - 32px);
             z-index: 900;
@@ -1628,8 +1630,8 @@
 
         /* Context Panel - appears when focused */
         .imagine-context {
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
+            background: #ffffff;
+            border: 2px solid var(--color-border);
             border-bottom: none;
             border-radius: 16px 16px 0 0;
             padding: 16px;
@@ -1640,10 +1642,99 @@
             box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
         }
 
+        [data-theme="dark"] .imagine-context {
+            background: #2a2a4e;
+        }
+
         .imagine-container.focused .imagine-context {
             opacity: 1;
-            max-height: 300px;
-            padding: 16px;
+            max-height: 350px;
+            padding: 12px;
+        }
+
+        /* Chat Messages */
+        .imagine-chat {
+            max-height: 180px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding-right: 4px;
+        }
+
+        .imagine-chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .imagine-chat-message {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .imagine-chat-message.user {
+            align-items: flex-end;
+        }
+
+        .imagine-chat-message.assistant {
+            align-items: flex-start;
+        }
+
+        .imagine-chat-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .imagine-chat-message.user .imagine-chat-bubble {
+            background: var(--color-accent);
+            color: #000;
+            border-bottom-right-radius: 4px;
+        }
+
+        .imagine-chat-message.assistant .imagine-chat-bubble {
+            background: var(--color-bg-alt);
+            color: var(--color-text);
+            border-bottom-left-radius: 4px;
+        }
+
+        .imagine-chat-bubble ul {
+            margin: 8px 0 0 0;
+            padding-left: 16px;
+        }
+
+        .imagine-chat-bubble li {
+            margin: 4px 0;
+        }
+
+        .imagine-chat-typing {
+            display: flex;
+            gap: 4px;
+            padding: 10px 14px;
+        }
+
+        .imagine-chat-typing span {
+            width: 6px;
+            height: 6px;
+            background: var(--color-text-dim);
+            border-radius: 50%;
+            animation: imagineBounce 1.4s infinite ease-in-out;
+        }
+
+        .imagine-chat-typing span:nth-child(1) { animation-delay: -0.32s; }
+        .imagine-chat-typing span:nth-child(2) { animation-delay: -0.16s; }
+        .imagine-chat-typing span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes imagineBounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+        }
+
+        /* Quick Actions */
+        .imagine-quick-actions {
+            border-top: 1px solid var(--color-border);
+            padding-top: 12px;
         }
 
         .imagine-context-section {
@@ -1778,16 +1869,20 @@
 
         /* Main input bar */
         .imagine-bar {
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
+            background: #ffffff;
+            border: 2px solid var(--color-border);
             border-radius: 24px;
             padding: 0;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
             gap: 0;
             transition: all 0.2s;
             overflow: hidden;
+        }
+
+        [data-theme="dark"] .imagine-bar {
+            background: #2a2a4e;
         }
 
         .imagine-container.focused .imagine-bar {
@@ -2493,33 +2588,49 @@
         <div class="imagine-container" id="imagineContainer">
             <!-- Context Panel (appears on focus) -->
             <div class="imagine-context" id="imagineContext">
-                <!-- Current voting pair - Audio Stories -->
-                <div class="imagine-context-section" id="imagineCurrentPair">
-                    <div class="imagine-context-label">
-                        <span>🔊</span> Hear a story about...
+                <!-- Chat Messages -->
+                <div class="imagine-chat" id="imagineChat">
+                    <div class="imagine-chat-messages" id="imagineChatMessages">
+                        <!-- Welcome message -->
+                        <div class="imagine-chat-message assistant">
+                            <div class="imagine-chat-bubble">
+                                Hi! I can help you explore stories. Try:
+                                <ul>
+                                    <li>🔊 "Tell me a story about the whale"</li>
+                                    <li>🎨 "Create a panda at a cafe"</li>
+                                    <li>📋 "What images are available?"</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="imagine-pair" id="imaginePairThumbs">
-                        <!-- Populated dynamically with play overlays -->
-                    </div>
-                    <div class="imagine-hint">Tap an image to hear its story</div>
                 </div>
 
-                <!-- Create new scene -->
-                <div class="imagine-context-section">
-                    <div class="imagine-context-label">
-                        <span>🎨</span> Create a new scene with...
+                <!-- Quick Actions -->
+                <div class="imagine-quick-actions" id="imagineQuickActions">
+                    <!-- Current voting pair - Audio Stories -->
+                    <div class="imagine-context-section" id="imagineCurrentPair">
+                        <div class="imagine-context-label">
+                            <span>🔊</span> Quick: Hear a story
+                        </div>
+                        <div class="imagine-pair" id="imaginePairThumbs">
+                            <!-- Populated dynamically with play overlays -->
+                        </div>
                     </div>
-                    <div class="imagine-animals" id="imagineAnimals">
-                        <button class="imagine-animal-chip" data-animal="whale">🐋 Whale</button>
-                        <button class="imagine-animal-chip" data-animal="panda">🐼 Panda</button>
-                        <button class="imagine-animal-chip" data-animal="bear">🐻 Bear</button>
-                        <button class="imagine-animal-chip" data-animal="lion">🦁 Lion</button>
+
+                    <!-- Create new scene -->
+                    <div class="imagine-context-section">
+                        <div class="imagine-context-label">
+                            <span>🎨</span> Quick: Create a scene
+                        </div>
+                        <div class="imagine-animals" id="imagineAnimals">
+                            <button class="imagine-animal-chip" data-animal="whale">🐋 Whale</button>
+                            <button class="imagine-animal-chip" data-animal="panda">🐼 Panda</button>
+                            <button class="imagine-animal-chip" data-animal="bear">🐻 Bear</button>
+                            <button class="imagine-animal-chip" data-animal="lion">🦁 Lion</button>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Search Suggestions -->
-            <div class="imagine-suggestions" id="imagineSuggestions"></div>
 
             <!-- Main Input Bar -->
             <div class="imagine-bar" id="imagineBar">
@@ -2532,11 +2643,11 @@
                     type="text"
                     class="imagine-bar-input"
                     id="imagineInput"
-                    placeholder="Search for an image to hear its story..."
+                    placeholder="Ask me anything about stories..."
                     autocomplete="off"
-                    aria-label="Search images for audio stories"
+                    aria-label="Chat with Imagine assistant"
                 >
-                <button class="imagine-bar-submit" id="imagineSubmit" disabled>Search</button>
+                <button class="imagine-bar-submit" id="imagineSubmit">Send</button>
             </div>
         </div>
 
@@ -5396,13 +5507,15 @@
             const currentToken = await auth.currentUser.getIdToken();
 
             try {
+                // Backend expects imageId with .png extension
+                const normalizedImageId = imageId.endsWith('.png') ? imageId : `${imageId}.png`;
                 const response = await fetch(IMAGINE_FUNCTION_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${currentToken}`
                     },
-                    body: JSON.stringify({ imageId })
+                    body: JSON.stringify({ imageId: normalizedImageId })
                 });
                 const result = await response.json();
                 if (!response.ok || result.error) {
@@ -5497,10 +5610,13 @@
                 const response = await fetch(IMAGINE_SCENES_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${currentToken}`
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ animalId, seed: seed.trim() })
+                    body: JSON.stringify({
+                        animal: animalId,  // Backend expects 'animal' not 'animalId'
+                        seed: seed.trim(),
+                        idToken: currentToken  // Backend expects token in body
+                    })
                 });
 
                 const result = await response.json();
@@ -5801,47 +5917,172 @@
                 suggestions.classList.add('visible');
             }
 
+            // Chat elements
+            const chatMessages = document.getElementById('imagineChatMessages');
+
             // Submit button / Enter key
-            submitBtn.addEventListener('click', () => handleSearch());
+            submitBtn.addEventListener('click', () => handleChat());
             input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !submitBtn.disabled) {
-                    handleSearch();
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleChat();
                 }
                 if (e.key === 'Escape') {
                     container.classList.remove('focused');
-                    suggestions.classList.remove('visible');
                     input.blur();
                 }
             });
 
-            async function handleSearch() {
-                const query = input.value.trim().toLowerCase();
+            // Add message to chat
+            function addChatMessage(text, isUser = false) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `imagine-chat-message ${isUser ? 'user' : 'assistant'}`;
+                msgDiv.innerHTML = `<div class="imagine-chat-bubble">${text}</div>`;
+                chatMessages.appendChild(msgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Show typing indicator
+            function showTyping() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'imagine-chat-message assistant';
+                typingDiv.id = 'imagine-typing';
+                typingDiv.innerHTML = `
+                    <div class="imagine-chat-bubble imagine-chat-typing">
+                        <span></span><span></span><span></span>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function hideTyping() {
+                document.getElementById('imagine-typing')?.remove();
+            }
+
+            // Main chat handler
+            async function handleChat() {
+                const query = input.value.trim();
                 if (!query) return;
 
-                // Find best match
-                const match = Object.entries(imagineImageDescriptions)
-                    .find(([id, desc]) => {
-                        const name = formatImagineTitle(id).toLowerCase();
-                        return name.includes(query);
+                // Add user message
+                addChatMessage(query, true);
+                input.value = '';
+
+                // Show typing
+                showTyping();
+
+                try {
+                    // Call helpbot with imagine context
+                    const response = await fetch('https://us-central1-nutcracker-3e8fb.cloudfunctions.net/helpbot', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sessionId: getOrCreateSessionId(),
+                            message: query,
+                            context: {
+                                type: 'imagine_chat',
+                                availableImages: Object.keys(imagineImageDescriptions).slice(0, 20),
+                                animals: ['whale', 'panda', 'bear', 'lion', 'penguin', 'fox']
+                            }
+                        })
                     });
 
-                if (match) {
-                    container.classList.remove('focused');
-                    suggestions.classList.remove('visible');
-                    input.value = '';
-                    submitBtn.disabled = true;
+                    hideTyping();
 
-                    const hasAccess = await checkImagineAccess();
-                    if (!hasAccess) {
-                        showImagineError('This feature is not available yet. Stay tuned!');
+                    if (!response.ok) {
+                        addChatMessage("I'm having trouble right now. Try tapping an image above!");
                         return;
                     }
-                    try {
-                        await imagineGenerateStory(match[0]);
-                    } catch (e) { /* handled */ }
-                } else {
-                    showImagineError('No matching image found. Try clicking a thumbnail above.');
+
+                    const result = await response.json();
+                    const reply = result.response || "I can help you explore stories. Try tapping an image above!";
+
+                    // Parse for actions in the response
+                    const actionMatch = parseImagineAction(query, reply);
+
+                    if (actionMatch.action === 'story') {
+                        addChatMessage(`🔊 Generating a story about "${actionMatch.target}"...`);
+                        try {
+                            await imagineGenerateStory(actionMatch.imageId);
+                        } catch (e) {
+                            addChatMessage("Couldn't generate that story. Try tapping an image directly!");
+                        }
+                    } else if (actionMatch.action === 'create') {
+                        addChatMessage(`🎨 Opening scene creator for ${actionMatch.animal}...`);
+                        // Use existing openSeedDialog function
+                        openSeedDialog(actionMatch.animal);
+                        // If user provided a prompt, pre-fill the input
+                        if (actionMatch.prompt) {
+                            setTimeout(() => {
+                                const inputEl = document.getElementById('seedDialogInput');
+                                if (inputEl) inputEl.value = actionMatch.prompt.slice(0, 40);
+                            }, 100);
+                        }
+                    } else if (actionMatch.action === 'list') {
+                        const imageList = Object.keys(imagineImageDescriptions).slice(0, 8)
+                            .map(id => formatImagineTitle(id)).join(', ');
+                        addChatMessage(`📋 Available images: ${imageList}... and more! Tap one to hear its story.`);
+                    } else {
+                        addChatMessage(reply);
+                    }
+
+                } catch (error) {
+                    hideTyping();
+                    console.error('[ImagineChat] Error:', error);
+                    addChatMessage("Hmm, something went wrong. Try tapping an image above!");
                 }
+            }
+
+            // Parse user query and LLM response for actions
+            function parseImagineAction(query, reply) {
+                const q = query.toLowerCase();
+
+                // Check for story intent
+                if (q.includes('story') || q.includes('tell me') || q.includes('hear')) {
+                    // Find matching image
+                    for (const [id, desc] of Object.entries(imagineImageDescriptions)) {
+                        const name = formatImagineTitle(id).toLowerCase();
+                        if (q.includes(name.split(' ')[0]) || q.includes(name)) {
+                            return { action: 'story', imageId: id, target: formatImagineTitle(id) };
+                        }
+                    }
+                    // Check for animal names
+                    const animals = ['whale', 'panda', 'bear', 'lion', 'penguin', 'fox', 'deer', 'cat'];
+                    for (const animal of animals) {
+                        if (q.includes(animal)) {
+                            // Find first image matching this animal
+                            const match = Object.entries(imagineImageDescriptions)
+                                .find(([id]) => id.toLowerCase().includes(animal));
+                            if (match) {
+                                return { action: 'story', imageId: match[0], target: formatImagineTitle(match[0]) };
+                            }
+                        }
+                    }
+                }
+
+                // Check for create intent
+                if (q.includes('create') || q.includes('make') || q.includes('generate') || q.includes('imagine')) {
+                    const animals = ['whale', 'panda', 'bear', 'lion'];
+                    for (const animal of animals) {
+                        if (q.includes(animal)) {
+                            // Extract scene description
+                            const sceneMatch = q.match(/(?:at|in|on|with|doing)\s+(.+)/i);
+                            const prompt = sceneMatch ? sceneMatch[1] : '';
+                            return { action: 'create', animal, prompt };
+                        }
+                    }
+                }
+
+                // Check for list intent
+                if (q.includes('what') && (q.includes('image') || q.includes('available') || q.includes('option'))) {
+                    return { action: 'list' };
+                }
+                if (q.includes('show') && q.includes('image')) {
+                    return { action: 'list' };
+                }
+
+                return { action: 'chat' };
             }
 
             function showImagineError(msg) {
@@ -5862,17 +6103,21 @@
             console.log('[ImagineBar] Chat-style input initialized');
         }
 
-        // Auth state listener for Imagine Bar
+        // Initialize Imagine Bar UI immediately (don't wait for auth)
+        // This ensures the bar is visible and interactive right away
+        document.addEventListener('DOMContentLoaded', () => {
+            imagineAudioPlayer.init();
+            initImagineBar();
+            console.log('[ImagineBar] UI initialized');
+        });
+
+        // Auth state listener - updates auth tokens for actual generation
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 imagineAuthReady = true;
                 imagineUserId = user.uid;
                 imagineIdToken = await user.getIdToken();
                 console.log('[ImagineBar] Auth ready, UID:', user.uid);
-
-                // Always initialize audio player and bar
-                imagineAudioPlayer.init();
-                initImagineBar();
 
                 // Check access in background to update UI if needed
                 const hasAccess = await checkImagineAccess();

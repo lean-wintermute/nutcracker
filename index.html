@@ -1710,6 +1710,45 @@
             text-overflow: ellipsis;
         }
 
+        /* Play overlay on thumbnails */
+        .imagine-thumb-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: all 0.2s;
+        }
+
+        .imagine-thumb:hover .imagine-thumb-play {
+            opacity: 1;
+            background: var(--color-accent);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .imagine-thumb-play svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
+            margin-left: 2px;
+        }
+
+        /* Hint text */
+        .imagine-hint {
+            text-align: center;
+            font-size: 11px;
+            color: var(--color-text-dim);
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+
         /* Animal chips for scene creation */
         .imagine-animals {
             display: flex;
@@ -2405,14 +2444,15 @@
         <div class="imagine-container" id="imagineContainer">
             <!-- Context Panel (appears on focus) -->
             <div class="imagine-context" id="imagineContext">
-                <!-- Current voting pair -->
+                <!-- Current voting pair - Audio Stories -->
                 <div class="imagine-context-section" id="imagineCurrentPair">
                     <div class="imagine-context-label">
-                        <span>📖</span> Tell a story about...
+                        <span>🔊</span> Hear a story about...
                     </div>
                     <div class="imagine-pair" id="imaginePairThumbs">
-                        <!-- Populated dynamically -->
+                        <!-- Populated dynamically with play overlays -->
                     </div>
+                    <div class="imagine-hint">Tap an image to hear its story</div>
                 </div>
 
                 <!-- Create new scene -->
@@ -2443,7 +2483,7 @@
                     type="text"
                     class="imagine-bar-input"
                     id="imagineInput"
-                    placeholder="Search images or tap above..."
+                    placeholder="Search for an image to hear its story..."
                     autocomplete="off"
                 >
                 <button class="imagine-bar-submit" id="imagineSubmit" disabled>Search</button>
@@ -5587,6 +5627,9 @@
                 thumb.className = 'imagine-thumb';
                 thumb.innerHTML = `
                     <img src="${image.src}" alt="${image.name}" loading="lazy">
+                    <div class="imagine-thumb-play">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
                     <div class="imagine-thumb-label">${image.name}</div>
                 `;
                 thumb.addEventListener('click', async () => {
@@ -5645,7 +5688,7 @@
 
                 suggestions.innerHTML = matches.map(([id, desc]) => `
                     <div class="imagine-suggestion" data-id="${id}">
-                        <span class="imagine-suggestion-icon">📖</span>
+                        <span class="imagine-suggestion-icon">🔊</span>
                         <span class="imagine-suggestion-text">${formatImagineTitle(id)}</span>
                     </div>
                 `).join('');

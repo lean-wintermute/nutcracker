@@ -70,11 +70,11 @@ async function generateTTS(apiKey, narrative) {
   const model = genAI.getGenerativeModel({
     model: MODELS.tts,
     generationConfig: {
-      response_modalities: ['AUDIO'],
-      speech_config: {
-        voice_config: {
-          prebuilt_voice_config: {
-            voice_name: TTS_CONFIG.voice
+      responseModalities: ['AUDIO'],
+      speechConfig: {
+        voiceConfig: {
+          prebuiltVoiceConfig: {
+            voiceName: TTS_CONFIG.voice
           }
         }
       }
@@ -84,6 +84,9 @@ async function generateTTS(apiKey, narrative) {
   const result = await model.generateContent(narrative);
   const response = result.response;
 
+  // Debug log the full response structure
+  console.log('[ImagineBar TTS Debug] Response candidates:', JSON.stringify(response.candidates, null, 2).substring(0, 2000));
+
   // Extract audio from response
   const candidates = response.candidates;
   if (!candidates || candidates.length === 0) {
@@ -92,16 +95,29 @@ async function generateTTS(apiKey, narrative) {
 
   const parts = candidates[0].content?.parts;
   if (!parts || parts.length === 0) {
+    console.log('[ImagineBar TTS Debug] Candidate content:', JSON.stringify(candidates[0].content, null, 2));
     throw new Error('No TTS response parts');
   }
 
-  // Find inline_data part with audio
-  const audioPart = parts.find(p => p.inline_data?.mime_type?.startsWith('audio/'));
+  console.log('[ImagineBar TTS Debug] Parts:', parts.map(p => ({ 
+    hasInlineData: !!p.inline_data || !!p.inlineData,
+    mimeType: p.inline_data?.mime_type || p.inline_data?.mimeType || p.inlineData?.mimeType,
+    dataLength: (p.inline_data?.data || p.inlineData?.data)?.length || 0
+  })));
+
+  // Find inline_data part with audio (check both snake_case and camelCase)
+  const audioPart = parts.find(p => {
+    const inlineData = p.inline_data || p.inlineData;
+    const mimeType = inlineData?.mime_type || inlineData?.mimeType;
+    return mimeType?.startsWith('audio/');
+  });
+
   if (!audioPart) {
     throw new Error('No audio data in TTS response');
   }
 
-  return audioPart.inline_data.data; // Base64 PCM
+  const inlineData = audioPart.inline_data || audioPart.inlineData;
+  return inlineData.data; // Base64 PCM
 }
 
 /**

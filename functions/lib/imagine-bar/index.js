@@ -20,7 +20,7 @@ let catalogLoaded = false;
 function ensureCatalogLoaded() {
   if (!catalogLoaded) {
     try {
-      const catalog = require('../../../image-descriptions.json');
+      const catalog = require('../../image-descriptions.json');
       loadCatalog(catalog);
       catalogLoaded = true;
     } catch (error) {

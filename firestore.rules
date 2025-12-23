@@ -37,7 +37,7 @@ service cloud.firestore {
     }
 
     // ============================================
-    // Imagine Bar Collections
+    // Imagine Bar Collections (Mode A - Story Scrapbook)
     // ============================================
 
     // imagine_config - Feature flags and test user whitelist
@@ -62,11 +62,35 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // imagine_logs - Generation logs with 30-day TTL
-    // Written by cloud function only
+    // ============================================
+    // Mode B: Imagine Scenes Collections
+    // ============================================
+
+    // Imagine quota tracking - read by owner, write by Cloud Function only
+    match /imagine_users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;  // Cloud Function uses Admin SDK
+    }
+
+    // System budget tracking - admin only
+    match /system/{docId} {
+      allow read: if false;
+      allow write: if false;  // Admin SDK only
+    }
+
+    // Generated images - public read, owner manage
+    match /imagined_images/{imageId} {
+      allow read: if true;  // Public for gallery/voting
+      allow create: if request.auth != null &&
+                       request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null &&
+                              resource.data.userId == request.auth.uid;
+    }
+
+    // Imagine logs - Cloud Function only
     match /imagine_logs/{logId} {
       allow read: if false;
-      allow write: if false;
+      allow write: if false;  // Cloud Function uses Admin SDK
     }
   }
 }

@@ -21,8 +21,13 @@ const { generateStory } = require('./lib/imagine-bar');
 // Define secrets for v2 functions
 const anthropicKey = defineSecret('ANTHROPIC_KEY');
 const githubToken = defineSecret('GITHUB_TOKEN');
+// Note: GEMINI_API_KEY is defined in imagineScenes.js
 
 admin.initializeApp();
+
+// Import imagineScenes Cloud Function
+const { imagineScenes } = require('./imagineScenes');
+exports.imagineScenes = imagineScenes;
 
 /**
  * HTTPS Cloud Function for the helpbot endpoint.

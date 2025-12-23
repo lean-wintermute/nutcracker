@@ -1,25 +1,27 @@
 {
   "indexes": [
     {
-      "collectionGroup": "votes",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "timestamp", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "suggestions",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "timestamp", "order": "DESCENDING" }
-      ]
-    },
-    {
       "collectionGroup": "feedback",
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "imageId", "order": "ASCENDING" },
         { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "imagined_images",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "imagined_images",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "animal", "order": "ASCENDING" },
+        { "fieldPath": "eloScore", "order": "DESCENDING" }
       ]
     }
   ],

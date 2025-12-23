@@ -18,4 +18,13 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'array-bracket-spacing': ['error', 'never'],
   },
+  overrides: [
+    {
+      // Jest test files
+      files: ['test/**/*.js', '**/*.test.js', '**/*.spec.js'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };

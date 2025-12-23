@@ -6124,9 +6124,28 @@
             console.log('[ImagineBar] Chat-style input initialized');
         }
 
-        // Initialize Imagine Bar UI immediately (don't wait for auth)
-        // This ensures the bar is visible and interactive right away
+        // DISABLED: ImagineBar has critical bugs - showing "Coming Soon" stub
+        // Bugs: 1) Unrecognized image on story click, 2) Penguin hidden by fixed UX, 3) Generation always fails
+        // TODO: Fix these issues before re-enabling
+        const IMAGINEBAR_DISABLED = true;
+
         document.addEventListener('DOMContentLoaded', () => {
+            if (IMAGINEBAR_DISABLED) {
+                // Show "Coming Soon" placeholder instead of broken ImagineBar
+                const container = document.getElementById('imagineContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center;
+                                    padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    border-radius: 24px; color: white; font-size: 14px; gap: 8px;">
+                            <span style="font-size: 20px;">✨</span>
+                            <span><strong>Imagine Bar</strong> - Coming Soon!</span>
+                        </div>
+                    `;
+                }
+                console.log('[ImagineBar] Feature disabled - showing Coming Soon stub');
+                return;
+            }
             imagineAudioPlayer.init();
             initImagineBar();
             console.log('[ImagineBar] UI initialized');

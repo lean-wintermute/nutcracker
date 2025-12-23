@@ -379,8 +379,165 @@ exports.aggregateRankings = functions.firestore
 - **Dark/Light Toggle**: System preference detection with manual override
 - **Image Catalog**: Display names and descriptions for all 128 images
 
+## Mode B: Imagine Scenes (Image Generation)
+
+### Overview
+
+Mode B allows users to generate custom scenes featuring supported animals using a 40-character seed prompt. Generated images integrate with the existing Elo voting system.
+
+### User Flow
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Select Animal   │───►│ Enter Seed      │───►│ Click Imagine   │
+│ (dropdown)      │    │ (40 chars max)  │    │ (button)        │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                                      │
+                              ┌───────────────────────┘
+                              ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Enhance Prompt  │───►│ Generate Image  │───►│ Add to Gallery  │
+│ (gemini-2.5-pro)│    │ (gemini-3-pro)  │    │ (✨ sparkle)    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### Architecture
+
+```
+functions/
+├── imagineScenes.js          # Main Cloud Function entry point
+└── lib/
+    ├── animals.js            # Animal configurations + style hints
+    ├── constants.js          # Rate limits, costs, timeouts
+    ├── gemini.js             # Gemini API client (text + image)
+    ├── scene-enhancer.js     # VALOR-style prompt enhancement
+    ├── image-generator.js    # Image generation with retry
+    ├── quota-manager.js      # Per-user + global budget tracking
+    └── storage-manager.js    # Firebase Storage upload
+```
+
+### Data Flow
+
+```
+Request                 Cloud Function                      Gemini API
+   │                         │                                  │
+   ├─ animal, seed, token ──►│                                  │
+   │                         ├─ verifyIdToken() ───────────────►│ Firebase Auth
+   │                         ├─ reserveQuota() ────────────────►│ Firestore
+   │                         ├─ enhanceScene() ────────────────►│ gemini-2.5-pro
+   │                         ├─ generateImage() ───────────────►│ gemini-3-pro-image
+   │                         ├─ uploadImage() ─────────────────►│ Storage
+   │                         ├─ confirmReservation() ──────────►│ Firestore
+   │◄── imageUrl, remaining ─┤                                  │
+```
+
+### Quota System
+
+Atomic reserve-then-confirm pattern prevents race conditions:
+
+```javascript
+// 1. Reserve slot atomically BEFORE generation
+const reservation = await reserveQuota(userId);  // Firestore transaction
+if (!reservation.allowed) return { error: reservation.reason };
+
+try {
+  // 2. Generate image (expensive operation)
+  const image = await generateImage(prompt);
+
+  // 3. Confirm reservation (move from reserved → confirmed)
+  await confirmReservation(userId, reservation.id);
+  return { success: true, image };
+} catch (error) {
+  // 4. Release reservation on failure (rollback)
+  await releaseReservation(userId, reservation.id);
+  throw error;
+}
+```
+
+**Limits**:
+- User daily limit: 24 images/day
+- Global budget cap: $20/day
+- Image cost: $0.134/image (gemini-3-pro-image-preview)
+
+### Error Handling
+
+| Error Type | Response | Retry Strategy |
+|------------|----------|----------------|
+| Safety filter | "Try a different seed" | Auto-retry with "illustration" style |
+| Rate limit (429) | "Slow down" | Exponential backoff (2s, 4s, 10s max) |
+| Timeout (504) | "Try again" | Exponential backoff |
+| Budget cap | "Engine resting" | No retry, wait until midnight |
+| Auth failure | "Please try again" | No retry, user action needed |
+
+### Security
+
+| Layer | Protection |
+|-------|------------|
+| Input | 40-char max, blocklist for injection keywords |
+| Auth | Firebase ID token verification |
+| Quota | Atomic Firestore transactions |
+| Budget | Admin SDK only (client can't modify) |
+| Storage | Signed URLs with 7-day expiry |
+| Prompt | VALOR-style redirect (enhance, not block) |
+
+### Firestore Collections
+
+```
+imagine_users/{userId}
+├── imagesGenerated: number     # Confirmed generations today
+├── reserved: number            # Pending reservations
+├── lastReset: "YYYY-MM-DD"     # Last quota reset date
+└── lastGeneratedAt: Timestamp
+
+system/budget_{date}
+├── spent: number               # Confirmed spend today
+├── reserved: number            # Pending spend
+└── lastUpdated: Timestamp
+
+imagined_images/{imageId}
+├── userId: string
+├── animal: string
+├── seed: string
+├── enhancedPrompt: string
+├── storagePath: string
+├── imageUrl: string
+├── eloScore: number            # Default 1200
+├── createdAt: Timestamp
+└── expiresAt: Timestamp        # 90 days
+```
+
+### UI Components
+
+```html
+<div class="imagine-bar">
+  <select id="animal-selector">...</select>
+  <input type="text" id="scene-seed" maxlength="40">
+  <span class="char-counter">0/40</span>
+  <button id="imagine-btn">Imagine It</button>
+  <div class="quota-display">24 remaining</div>
+</div>
+```
+
+Generated images in gallery receive `class="generated"` for sparkle badge (✨).
+
+### Configuration
+
+```javascript
+// Cloud Function
+{
+  region: 'us-central1',
+  timeoutSeconds: 120,       // Image generation is slow
+  memory: '512MiB',          // Image processing
+  secrets: ['GEMINI_API_KEY'],
+  invoker: 'public'
+}
+```
+
+---
+
 ## Future Considerations
 
 - **Image Lazy Generation**: Generate pairs on-demand for large image sets
-- **Imagine Bar AI**: Connect to Haiku for prompt enhancement
-- **Help Chatbot AI**: Connect to Haiku for FAQ responses
+- **Mode A (New Animals)**: AI-generated animal variants
+- **Mode C (Audio Stories)**: Audio narratives for scenes
+- **Gallery Filtering**: Separate generated vs. original images

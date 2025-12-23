@@ -5445,7 +5445,18 @@
         // Check feature access
         async function checkImagineAccess() {
             if (imagineAccessChecked) return imagineHasAccess;
-            if (!imagineUserId) return false;
+
+            // Wait for auth if not ready yet (up to 5 seconds)
+            if (!imagineUserId) {
+                for (let i = 0; i < 50; i++) {
+                    await new Promise(r => setTimeout(r, 100));
+                    if (imagineUserId) break;
+                }
+                if (!imagineUserId) {
+                    console.log('[ImagineBar] Auth timeout - user not signed in');
+                    return false;
+                }
+            }
 
             // Test mode bypass via URL param
             if (imagineTestMode) {
@@ -5835,12 +5846,13 @@
                     <div class="imagine-thumb-label">${image.name}</div>
                 `;
                 thumb.addEventListener('click', async () => {
-                    container.classList.remove('focused');
+                    // Check access FIRST, before closing panel
                     const hasAccess = await checkImagineAccess();
                     if (!hasAccess) {
                         showImagineError('This feature is not available yet. Stay tuned!');
                         return;
                     }
+                    container.classList.remove('focused');
                     try {
                         await imagineGenerateStory(image.id);
                     } catch (e) { /* handled */ }
@@ -5850,7 +5862,13 @@
 
             // Animal chip handlers
             animalsContainer?.querySelectorAll('.imagine-animal-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
+                chip.addEventListener('click', async () => {
+                    // Check access FIRST, before closing panel
+                    const hasAccess = await checkImagineAccess();
+                    if (!hasAccess) {
+                        showImagineError('This feature is not available yet. Stay tuned!');
+                        return;
+                    }
                     const animal = chip.dataset.animal;
                     container.classList.remove('focused');
                     openSeedDialog(animal);
@@ -5898,16 +5916,19 @@
                 suggestions.querySelectorAll('.imagine-suggestion').forEach(el => {
                     el.addEventListener('click', async () => {
                         const id = el.dataset.id;
-                        container.classList.remove('focused');
-                        suggestions.classList.remove('visible');
-                        input.value = '';
-                        submitBtn.disabled = true;
 
+                        // Check access FIRST, before closing panel
                         const hasAccess = await checkImagineAccess();
                         if (!hasAccess) {
                             showImagineError('This feature is not available yet. Stay tuned!');
                             return;
                         }
+
+                        container.classList.remove('focused');
+                        suggestions.classList.remove('visible');
+                        input.value = '';
+                        submitBtn.disabled = true;
+
                         try {
                             await imagineGenerateStory(id);
                         } catch (e) { /* handled */ }

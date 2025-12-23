@@ -1658,6 +1658,27 @@
       "description": "Stopmotion lion at train platform",
       "category": "lion",
       "series": "stopmotion"
+    },
+    {
+      "filename": "animated_02_awkward_notice_01_hotel_desk_082316.png",
+      "displayName": "Check-In Pause",
+      "description": "Noticed at hotel desk",
+      "category": "animated",
+      "series": "02"
+    },
+    {
+      "filename": "animated_03_finding_kindness_01_child_secret_082316.png",
+      "displayName": "Whispered Secret",
+      "description": "Child shares a secret",
+      "category": "animated",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_01_alone_in_house_04_old_photos_082316.png",
+      "displayName": "Old Memories",
+      "description": "Bear looking at old photos",
+      "category": "teddy",
+      "series": "01"
     }
   ],
   "categories": {

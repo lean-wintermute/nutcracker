@@ -10,7 +10,7 @@
 'use strict';
 
 // Cache version - increment to invalidate old caches
-const CACHE_VERSION = 'v21';
+const CACHE_VERSION = 'v22';
 const CACHE_NAME = `nutcracker-${CACHE_VERSION}`;
 
 // Static assets to cache on install
@@ -22,7 +22,7 @@ const STATIC_ASSETS = [
   './icon-512.png'
 ];
 
-// Image files to cache (237 images - updated 2025-12-22)
+// Image files to cache (240 images - updated 2025-12-22)
 const IMAGE_FILES = [
   '01_child_shares.png',
   '01_folding_together.png',
@@ -62,6 +62,8 @@ const IMAGE_FILES = [
   'alive_03_one_kind_soul_01_child_waves_082316.png',
   'alive_04_complete_solitude_01_empty_playground_082316.png',
   'animated_01_invisible_crowd_01_shopping_street_082316.png',
+  'animated_02_awkward_notice_01_hotel_desk_082316.png',
+  'animated_03_finding_kindness_01_child_secret_082316.png',
   'animated_04_total_solitude_01_diner_3am_082316.png',
   'bear_cgi_park_bench.png',
   'bear_cgi_rooftop_dawn.png',
@@ -213,6 +215,7 @@ const IMAGE_FILES = [
   'styles_06_fabric_stopmotion_04_church_pew_082316.png',
   'teddy_melancholy_01_alone_in_house_01_window_watching_082316.png',
   'teddy_melancholy_01_alone_in_house_03_kitchen_table_082316.png',
+  'teddy_melancholy_01_alone_in_house_04_old_photos_082316.png',
   'teddy_melancholy_01_alone_in_house_05_stairs_sitting_082316.png',
   'teddy_melancholy_01_alone_in_house_07_piano_keys_082316.png',
   'teddy_melancholy_01_alone_in_house_08_doorway_leaving_082316.png',

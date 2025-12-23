@@ -34,6 +34,8 @@ function ensureCatalogLoaded() {
  */
 const ALLOWED_ORIGINS = [
   'https://lean-wintermute.github.io',
+  'https://nutcracker-3e8fb.web.app',
+  'https://nutcracker-3e8fb.firebaseapp.com',
   'http://localhost:5000',
   'http://127.0.0.1:5000'
 ];

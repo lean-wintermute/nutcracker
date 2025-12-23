@@ -18,10 +18,10 @@
     <!-- Open Graph meta tags for social sharing -->
     <meta property="og:title" content="Christmas Stories">
     <meta property="og:description" content="Rank holiday imagery with Elo ratings. Vote on AI-generated scenes and see how your taste compares to the crowd.">
-    <meta property="og:image" content="https://lean-wintermute.github.io/nutcracker/images/teddy_melancholy_01_alone_in_house_01_window_watching_082316.png">
+    <meta property="og:image" content="https://nutcracker-3e8fb.web.app/images/teddy_melancholy_01_alone_in_house_01_window_watching_082316.png">
     <meta property="og:image:width" content="1408">
     <meta property="og:image:height" content="768">
-    <meta property="og:url" content="https://lean-wintermute.github.io/nutcracker/">
+    <meta property="og:url" content="https://nutcracker-3e8fb.web.app/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <!-- Inline script to prevent FOUC (Flash of Unstyled Content) -->
@@ -631,6 +631,23 @@
         .rank-badge.gold { background: linear-gradient(135deg, #f5af19, #f12711); }
         .rank-badge.silver { background: linear-gradient(135deg, #bdc3c7, #7f8c8d); }
         .rank-badge.bronze { background: linear-gradient(135deg, #cd7f32, #8b4513); }
+
+        /* Generated image badge (sparkle) */
+        .generated-badge {
+            position: absolute;
+            top: 4%;
+            right: 4%;
+            background: linear-gradient(135deg, #9333ea, #7c3aed);
+            color: white;
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            padding: clamp(2px, 0.4vw, 6px) clamp(6px, 0.8vw, 10px);
+            border-radius: clamp(6px, 1vw, 12px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 8px rgba(147, 51, 234, 0.4);
+        }
+        .generated-badge::before {
+            content: '✨ ';
+        }
 
         /* Glow for top 3 cards */
         .rank-card.top-gold { box-shadow: 0 0 24px rgba(245, 175, 25, 0.6), 0 0 8px rgba(245, 175, 25, 0.3); }
@@ -1724,6 +1741,207 @@
             margin: 0;
         }
 
+        /* Seed Input Dialog for Scene Generation */
+        .seed-dialog {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            z-index: 2200;
+        }
+
+        .seed-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .seed-dialog[open] {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seed-dialog-content {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            width: 90vw;
+            max-width: 380px;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .seed-dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .seed-dialog-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin: 0;
+        }
+
+        .seed-dialog-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--color-surface);
+            border-radius: 50%;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .seed-dialog-close:hover {
+            background: var(--color-surface-hover);
+            color: var(--color-text);
+        }
+
+        .seed-dialog-animal {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+        }
+
+        .seed-dialog-animal-icon {
+            font-size: 2rem;
+        }
+
+        .seed-dialog-animal-name {
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .seed-dialog-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-size: 1rem;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        .seed-dialog-input:focus {
+            outline: none;
+            border-color: #c9a227;
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+        }
+
+        .seed-dialog-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .seed-dialog-hint {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: 16px;
+        }
+
+        .seed-dialog-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .seed-dialog-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .seed-dialog-btn--cancel {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-muted);
+        }
+
+        .seed-dialog-btn--cancel:hover {
+            background: var(--color-surface-hover);
+            color: var(--color-text);
+        }
+
+        .seed-dialog-btn--generate {
+            background: linear-gradient(135deg, #c9a227, #a88b1f);
+            border: none;
+            color: #fff;
+        }
+
+        .seed-dialog-btn--generate:hover {
+            background: linear-gradient(135deg, #d4ad2c, #b8991f);
+            transform: translateY(-1px);
+        }
+
+        .seed-dialog-btn--generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Imagine Scene Result Lightbox */
+        .imagine-scene-result {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .imagine-scene-result.hidden { display: none; }
+
+        .imagine-scene-result img {
+            max-width: 90vw;
+            max-height: 70vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .imagine-scene-result-info {
+            text-align: center;
+            margin-top: 16px;
+            color: #fff;
+        }
+
+        .imagine-scene-result-prompt {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 8px auto 0;
+        }
+
+        .imagine-scene-result-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
         /* Imagine Audio Player */
         .imagine-audio-player {
             position: fixed;
@@ -2067,7 +2285,55 @@
             <span id="imagine-error-message"></span>
             <button id="imagine-error-close" class="imagine-error-close" aria-label="Close">×</button>
         </div>
+
+        <!-- Imagine Scene Result Overlay -->
+        <div id="imagine-scene-result" class="imagine-scene-result hidden">
+            <img id="imagine-scene-img" src="" alt="Generated scene">
+            <div class="imagine-scene-result-info">
+                <h3 id="imagine-scene-title">Generated Scene</h3>
+                <p id="imagine-scene-prompt" class="imagine-scene-result-prompt"></p>
+            </div>
+            <div class="imagine-scene-result-actions">
+                <a id="imagine-scene-download" href="" download="" class="lightbox-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                </a>
+                <button id="imagine-scene-close" class="lightbox-btn lightbox-btn--close" aria-label="Close">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
+
+    <!-- Seed Input Dialog for Scene Generation -->
+    <dialog class="seed-dialog" id="seedDialog">
+        <div class="seed-dialog-content">
+            <div class="seed-dialog-header">
+                <h3>Create New Scene</h3>
+                <button class="seed-dialog-close" id="seedDialogClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="seed-dialog-animal" id="seedDialogAnimal">
+                <span class="seed-dialog-animal-icon" id="seedDialogAnimalIcon"></span>
+                <span class="seed-dialog-animal-name" id="seedDialogAnimalName"></span>
+            </div>
+            <input
+                type="text"
+                class="seed-dialog-input"
+                id="seedDialogInput"
+                placeholder="Describe the scene... (optional)"
+                maxlength="40"
+                aria-label="Scene description"
+            >
+            <p class="seed-dialog-hint">Leave blank for a random magical scene, or describe what you'd like to see.</p>
+            <div class="seed-dialog-actions">
+                <button class="seed-dialog-btn seed-dialog-btn--cancel" id="seedDialogCancel">Cancel</button>
+                <button class="seed-dialog-btn seed-dialog-btn--generate" id="seedDialogGenerate">Generate</button>
+            </div>
+        </div>
+    </dialog>
 
     <!-- Help/FAQ dialog -->
     <dialog class="help-dialog" id="helpDialog">
@@ -2658,6 +2924,7 @@
                 }
 
                 const altText = img.description ? `${img.name}: ${img.description}` : img.name;
+                const generatedBadge = img.isGenerated ? '<div class="generated-badge">AI</div>' : '';
                 card.innerHTML = `
                     <button class="rank-card-link" data-src="${escapeHtml(img.src)}" data-name="${escapeHtml(img.name)}" data-id="${escapeHtml(img.id)}" data-rank="${localRank}" title="${escapeHtml(img.description || img.name)}" aria-label="View ${escapeHtml(img.name)} full size">
                         <img src="${escapeHtml(img.src)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" width="1408" height="768">
@@ -2673,6 +2940,7 @@
                         </svg>
                     </button>
                     ${comparisonHtml}
+                    ${generatedBadge}
                     <div class="${badgeClass}">#${i + 1}</div>
                     <div class="rank-card-footer">
                         <div class="rank-card-title">${escapeHtml(img.name)}</div>
@@ -3049,7 +3317,7 @@
                     }])
                 );
                 
-                // Rebuild images array
+                // Rebuild images array from static catalog
                 images = IMAGE_FILES
                     .filter(f => typeof f === 'string' && f.endsWith('.png'))
                     .map(f => {
@@ -3059,13 +3327,36 @@
                             src: IMAGE_BASE + encodeURIComponent(f),
                             name: cat.displayName || f.replace('.png', '').replace(/_/g, ' ').replace(/082316$/, '').trim(),
                             description: cat.description || '',
-                            category: cat.category || 'unknown'
+                            category: cat.category || 'unknown',
+                            isGenerated: false
                         };
                     });
-                
-                console.log('[Init] Loaded ' + images.length + ' images from catalog');
-                
-                // Now initialize the app
+
+                console.log('[Init] Loaded ' + images.length + ' static images from catalog');
+
+                // Load generated images from Firestore (async, merge when ready)
+                if (window.firebaseAPI?.loadGeneratedImages) {
+                    window.firebaseAPI.loadGeneratedImages().then(generatedImages => {
+                        if (generatedImages && generatedImages.length > 0) {
+                            // Merge generated images (avoid duplicates by ID)
+                            const existingIds = new Set(images.map(img => img.id));
+                            const newImages = generatedImages.filter(img => !existingIds.has(img.id));
+                            images = [...images, ...newImages];
+                            console.log(`[Init] Added ${newImages.length} generated images, total: ${images.length}`);
+                            // Reinitialize state and ratings for new images
+                            newImages.forEach(img => {
+                                if (!state.ratings[img.id]) {
+                                    state.ratings[img.id] = DEFAULT_ELO;
+                                }
+                            });
+                            updateStats();
+                        }
+                    }).catch(err => {
+                        console.warn('[Init] Failed to load generated images:', err);
+                    });
+                }
+
+                // Initialize the app with static images first
                 loadState();
                 updateStats();
                 showPair();
@@ -4505,6 +4796,44 @@
                     alert(`❌ Failed to clear votes: ${e.message}`);
                     return { success: false, error: e.message };
                 }
+            },
+
+            // Load generated images from Firestore image_catalog collection
+            loadGeneratedImages: async () => {
+                // Wait for auth if not ready
+                if (!userId) {
+                    for (let i = 0; i < 30 && !userId; i++) {
+                        await new Promise(r => setTimeout(r, 100));
+                    }
+                }
+
+                try {
+                    console.log('[Firebase] Loading generated images from catalog...');
+                    const catalogRef = collection(db, 'image_catalog');
+                    const q = query(catalogRef, orderBy('createdAt', 'desc'), limit(100));
+                    const snapshot = await getDocs(q);
+
+                    const generatedImages = [];
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        if (data.isGenerated && data.src) {
+                            generatedImages.push({
+                                id: docSnap.id,
+                                src: data.src,
+                                name: data.name || `Generated ${data.category}`,
+                                description: data.description || '',
+                                category: data.category || 'generated',
+                                isGenerated: true
+                            });
+                        }
+                    });
+
+                    console.log(`[Firebase] Loaded ${generatedImages.length} generated images`);
+                    return generatedImages;
+                } catch (e) {
+                    console.error('[Firebase] Failed to load generated images:', e);
+                    return [];
+                }
             }
         };
 
@@ -4771,7 +5100,199 @@
                 .replace(/\b\w/g, c => c.toUpperCase());
         }
 
-        // Initialize Imagine Bar (always loads data, checks access on generate)
+        // ============================================
+        // IMAGINE SCENES - Image Generation (Mode B)
+        // ============================================
+
+        const IMAGINE_SCENES_URL = 'https://us-central1-nutcracker-3e8fb.cloudfunctions.net/imagineScenes';
+
+        // Animal definitions for scene generation
+        const SCENE_ANIMALS = {
+            whale: { id: 'whale', name: 'Whale', icon: '🐋' },
+            panda: { id: 'panda', name: 'Panda', icon: '🐼' },
+            bear: { id: 'bear', name: 'Bear', icon: '🐻' },
+            lion: { id: 'lion', name: 'Lion', icon: '🦁' }
+        };
+
+        let pendingSceneAnimal = null;
+
+        // Open seed dialog for scene generation
+        function openSeedDialog(animalId) {
+            const animal = SCENE_ANIMALS[animalId];
+            if (!animal) return;
+
+            pendingSceneAnimal = animalId;
+            const dialog = document.getElementById('seedDialog');
+            const iconEl = document.getElementById('seedDialogAnimalIcon');
+            const nameEl = document.getElementById('seedDialogAnimalName');
+            const inputEl = document.getElementById('seedDialogInput');
+
+            iconEl.textContent = animal.icon;
+            nameEl.textContent = animal.name;
+            inputEl.value = '';
+
+            dialog.showModal();
+            inputEl.focus();
+        }
+
+        // Close seed dialog
+        function closeSeedDialog() {
+            const dialog = document.getElementById('seedDialog');
+            dialog.close();
+            pendingSceneAnimal = null;
+        }
+
+        // Generate scene with seed
+        async function imagineGenerateScene(animalId, seed = '') {
+            if (!imagineAuthReady || !imagineIdToken) {
+                throw new Error('Not authenticated');
+            }
+
+            const currentToken = await auth.currentUser.getIdToken();
+            const loadingEl = document.getElementById('imagine-loading');
+            const progressEl = document.getElementById('imagine-progress');
+            const remainingEl = document.getElementById('imagine-remaining');
+
+            loadingEl.classList.remove('hidden');
+            progressEl.textContent = `Creating ${SCENE_ANIMALS[animalId]?.name || animalId} scene...`;
+            remainingEl.textContent = '';
+
+            try {
+                const response = await fetch(IMAGINE_SCENES_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ animalId, seed: seed.trim() })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || result.error) {
+                    throw { code: result.code || 'unknown', message: result.message || 'Generation failed' };
+                }
+
+                const { imageId, imageUrl, enhancedPrompt, animal } = result;
+
+                // Add to local images array for immediate voting
+                if (imageId && imageUrl) {
+                    const animalName = SCENE_ANIMALS[animal]?.name || animal;
+                    const newImage = {
+                        id: imageId,
+                        src: imageUrl,
+                        name: `${animalName} - ${seed.trim().substring(0, 30) || 'Custom Scene'}`,
+                        description: enhancedPrompt?.substring(0, 200) || '',
+                        category: animal,
+                        isGenerated: true
+                    };
+                    // Add to images array if not already present
+                    if (!images.find(img => img.id === imageId)) {
+                        images.push(newImage);
+                        if (!state.ratings[imageId]) {
+                            state.ratings[imageId] = DEFAULT_ELO;
+                        }
+                        console.log(`[ImagineScenes] Added new image to gallery: ${imageId}`);
+                        updateStats();
+                    }
+                }
+
+                // Show result in overlay
+                showSceneResult(imageUrl, animal, enhancedPrompt);
+
+                return { success: true, imageId, imageUrl, enhancedPrompt };
+            } catch (error) {
+                console.error('[ImagineScenes] Generation failed', error);
+                const errorEl = document.getElementById('imagine-error');
+                const msgEl = document.getElementById('imagine-error-message');
+                msgEl.textContent = error.message || 'Scene generation failed. Please try again.';
+                errorEl.classList.remove('hidden');
+                setTimeout(() => errorEl.classList.add('hidden'), 5000);
+                throw error;
+            } finally {
+                loadingEl.classList.add('hidden');
+            }
+        }
+
+        // Show generated scene result
+        function showSceneResult(imageUrl, animal, enhancedPrompt) {
+            const resultEl = document.getElementById('imagine-scene-result');
+            const imgEl = document.getElementById('imagine-scene-img');
+            const titleEl = document.getElementById('imagine-scene-title');
+            const promptEl = document.getElementById('imagine-scene-prompt');
+            const downloadEl = document.getElementById('imagine-scene-download');
+
+            const animalInfo = SCENE_ANIMALS[animal] || { name: animal, icon: '' };
+
+            imgEl.src = imageUrl;
+            imgEl.alt = `Generated ${animalInfo.name} scene`;
+            titleEl.textContent = `${animalInfo.icon} ${animalInfo.name} Scene`;
+            promptEl.textContent = enhancedPrompt || '';
+            downloadEl.href = imageUrl;
+            downloadEl.download = `${animal}_scene_${Date.now()}.png`;
+
+            resultEl.classList.remove('hidden');
+        }
+
+        // Close scene result
+        function closeSceneResult() {
+            const resultEl = document.getElementById('imagine-scene-result');
+            resultEl.classList.add('hidden');
+        }
+
+        // Initialize seed dialog handlers
+        function initSeedDialog() {
+            const dialog = document.getElementById('seedDialog');
+            const closeBtn = document.getElementById('seedDialogClose');
+            const cancelBtn = document.getElementById('seedDialogCancel');
+            const generateBtn = document.getElementById('seedDialogGenerate');
+            const inputEl = document.getElementById('seedDialogInput');
+
+            if (!dialog) return;
+
+            closeBtn.addEventListener('click', closeSeedDialog);
+            cancelBtn.addEventListener('click', closeSeedDialog);
+
+            generateBtn.addEventListener('click', async () => {
+                if (!pendingSceneAnimal) return;
+                const seed = inputEl.value;
+                closeSeedDialog();
+                try {
+                    await imagineGenerateScene(pendingSceneAnimal, seed);
+                } catch (e) {
+                    // Error already handled in imagineGenerateScene
+                }
+            });
+
+            // Submit on Enter
+            inputEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    generateBtn.click();
+                }
+            });
+
+            // Close on backdrop click
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) closeSeedDialog();
+            });
+
+            // Close on Escape
+            dialog.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeSeedDialog();
+            });
+
+            // Scene result close handler
+            document.getElementById('imagine-scene-close')?.addEventListener('click', closeSceneResult);
+            document.getElementById('imagine-scene-result')?.addEventListener('click', (e) => {
+                if (e.target.id === 'imagine-scene-result') closeSceneResult();
+            });
+        }
+
+        // Initialize seed dialog on load
+        initSeedDialog();
+
+        // Initialize Imagine Bar
         async function initImagineBar() {
             const ninja = document.getElementById('imagineOmnibar');
             const stub = document.getElementById('imagineBar');
@@ -4814,7 +5335,48 @@
                 return;
             }
 
-            // Build actions - check access when user selects an action
+            // Build quick actions for currently displayed images (Mode A fix)
+            const quickActions = [];
+            if (state.currentPair?.left) {
+                quickActions.push({
+                    id: 'current-left',
+                    title: `Story for: ${state.currentPair.left.name}`,
+                    section: 'Current Images',
+                    icon: '◀',
+                    handler: async () => {
+                        try {
+                            await imagineGenerateStory(state.currentPair.left.id);
+                        } catch (e) { /* handled */ }
+                    }
+                });
+            }
+            if (state.currentPair?.right) {
+                quickActions.push({
+                    id: 'current-right',
+                    title: `Story for: ${state.currentPair.right.name}`,
+                    section: 'Current Images',
+                    icon: '▶',
+                    handler: async () => {
+                        try {
+                            await imagineGenerateStory(state.currentPair.right.id);
+                        } catch (e) { /* handled */ }
+                    }
+                });
+            }
+
+            // Build scene generation actions (Mode B)
+            const sceneActions = Object.values(SCENE_ANIMALS).map(animal => ({
+                id: `scene-${animal.id}`,
+                title: `Create ${animal.name} Scene`,
+                section: 'Create New Scene',
+                icon: animal.icon,
+                keywords: `generate new image ${animal.name} ${animal.id}`,
+                handler: () => {
+                    openSeedDialog(animal.id);
+                }
+            }));
+
+            // Build story actions from image catalog
             const imageActions = Object.entries(imageDescriptions).map(([id, description]) => ({
                 id: `image-${id}`,
                 title: formatImagineTitle(id),
@@ -4837,8 +5399,9 @@
                 }
             }));
 
-            ninja.data = imageActions;
-            console.log(`[ImagineBar] Loaded ${imageActions.length} images`);
+            // Combine: Quick Actions first, then Scene Actions, then all images
+            ninja.data = [...quickActions, ...sceneActions, ...imageActions];
+            console.log(`[ImagineBar] Loaded ${quickActions.length} quick + ${sceneActions.length} scenes + ${imageActions.length} images`);
 
             // Click handler for stub button
             if (stub) {

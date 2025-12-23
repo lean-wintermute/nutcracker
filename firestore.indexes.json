@@ -23,6 +23,14 @@
         { "fieldPath": "animal", "order": "ASCENDING" },
         { "fieldPath": "eloScore", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "image_catalog",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isGenerated", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

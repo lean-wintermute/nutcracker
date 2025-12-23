@@ -29,6 +29,11 @@ admin.initializeApp();
 const { imagineScenes } = require('./imagineScenes');
 exports.imagineScenes = imagineScenes;
 
+// Import image catalog sync functions
+const { syncImageCatalog, scheduledCatalogSync } = require('./syncImageCatalog');
+exports.syncImageCatalog = syncImageCatalog;
+exports.scheduledCatalogSync = scheduledCatalogSync;
+
 /**
  * HTTPS Cloud Function for the helpbot endpoint.
  * Accepts POST requests with message data and returns LLM responses.
@@ -88,6 +93,8 @@ exports.helpbot = onRequest(
     // CORS headers - restrict to Nutcracker domains only
     const allowedOrigins = [
       'https://lean-wintermute.github.io',
+      'https://nutcracker-3e8fb.web.app',
+      'https://nutcracker-3e8fb.firebaseapp.com',
       'http://localhost:5000', // Local dev
       'http://127.0.0.1:5000', // Local dev
     ];

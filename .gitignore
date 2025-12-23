@@ -10,3 +10,10 @@ node_modules/
 
 # Lighthouse reports (generate locally as needed)
 lighthouse-*.report.*
+
+# Test logs and results
+logs/
+.testrig_results/
+
+# OS files
+.DS_Store

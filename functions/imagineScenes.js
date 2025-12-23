@@ -31,6 +31,8 @@ const geminiKey = defineSecret('GEMINI_API_KEY');
  */
 const allowedOrigins = [
   'https://lean-wintermute.github.io',
+  'https://nutcracker-3e8fb.web.app',
+  'https://nutcracker-3e8fb.firebaseapp.com',
   'http://localhost:5000',
   'http://127.0.0.1:5000',
 ];
@@ -161,8 +163,12 @@ const imagineScenes = onRequest(
         { userId, animal, seed: seed.trim() }
       );
 
-      // 10. Save to Firestore
+      // 10. Save to Firestore (both legacy collection and unified catalog)
       const db = admin.firestore();
+      const now = admin.firestore.FieldValue.serverTimestamp();
+      const expiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);  // 90 days TTL
+
+      // Legacy collection for backwards compatibility
       const imageDoc = await db.collection('imagined_images').add({
         userId,
         animal,
@@ -171,8 +177,26 @@ const imagineScenes = onRequest(
         storagePath: storageResult.path,
         imageUrl: storageResult.url,
         eloScore: 1200,  // Starting Elo rating
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),  // 90 days TTL
+        createdAt: now,
+        expiresAt,
+      });
+
+      // Unified image_catalog collection for frontend consumption
+      // Uses imageDoc.id as document ID for consistency
+      await db.collection('image_catalog').doc(imageDoc.id).set({
+        id: imageDoc.id,
+        filename: `${imageDoc.id}.png`,  // Virtual filename for compatibility
+        src: storageResult.url,
+        name: `${animal.charAt(0).toUpperCase() + animal.slice(1)} - ${seed.trim().substring(0, 30)}`,
+        description: enhanced.enhanced.substring(0, 200),
+        category: animal,
+        series: 'generated',
+        isGenerated: true,
+        userId,
+        storagePath: storageResult.path,
+        eloScore: 1200,
+        createdAt: now,
+        expiresAt,
       });
 
       // 11. Confirm quota reservation

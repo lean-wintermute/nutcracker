@@ -9,5 +9,86 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "hosting": {
+    "public": "deploy",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "functions/**",
+      "*.md",
+      "*.json",
+      "!image-catalog.json",
+      "!chatbot-config.json",
+      "!manifest.json"
+    ],
+    "headers": [
+      {
+        "source": "images/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "imagined/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=86400"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800"
+          }
+        ]
+      },
+      {
+        "source": "sw.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/imagineScenes",
+        "function": {
+          "functionId": "imagineScenes",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/helpbot",
+        "function": {
+          "functionId": "helpbot",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/generateStory",
+        "function": {
+          "functionId": "generateStory",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false
   }
 }

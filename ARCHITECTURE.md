@@ -1,8 +1,12 @@
 # Nutcracker Architecture
 
+> **Version**: 2.0.0 | **Updated**: 2025-12-22
+
 ## Overview
 
-Nutcracker is a single-file web application for Elo-based image ranking. It prioritizes simplicity, offline-first operation, and zero-friction user experience.
+Nutcracker is a Firebase-hosted web application for Elo-based image ranking with AI image generation. It combines a static image corpus with user-generated scenes in a unified catalog.
+
+**Live URL**: https://nutcracker-3e8fb.web.app
 
 ## Use Cases
 
@@ -93,6 +97,163 @@ Rankings Flow:
 | Timing | Pause on hover/focus, "Keep open" option |
 | Reduced motion | `prefers-reduced-motion` media query |
 
+## Infrastructure
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Firebase Hosting                              │
+│                    nutcracker-3e8fb.web.app                         │
+│                                                                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
+│  │  index.html  │  │   sw.js      │  │ manifest.json│              │
+│  │  (PWA)       │  │  (offline)   │  │  (install)   │              │
+│  └──────────────┘  └──────────────┘  └──────────────┘              │
+└─────────────────────────────┬───────────────────────────────────────┘
+                              │
+          ┌───────────────────┼───────────────────┐
+          ▼                   ▼                   ▼
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│  Firebase        │  │  Cloud           │  │  Firestore       │
+│  Storage         │  │  Functions       │  │                  │
+│                  │  │                  │  │                  │
+│  /images/*       │  │  imagineScenes   │  │  image_catalog   │
+│  (static corpus) │  │  syncCatalog     │  │  votes           │
+│                  │  │  helpbot         │  │  imagine_users   │
+│  /imagined/*     │  │  generateStory   │  │  system          │
+│  (user-generated)│  │                  │  │                  │
+└──────────────────┘  └──────────────────┘  └──────────────────┘
+```
+
+### Unified Image Catalog
+
+All images (static corpus + user-generated) share a single Firestore collection:
+
+```
+image_catalog/{imageId}
+├── id: string              # Document ID
+├── filename: string        # e.g., "whale_cafe.png"
+├── src: string             # Full URL (Storage or signed URL)
+├── name: string            # Display name
+├── description: string     # Scene description
+├── category: string        # whale, bear, lion, panda, etc.
+├── series: string          # Style series or "generated"
+├── isGenerated: boolean    # false = static, true = user-generated
+├── userId?: string         # Only for generated images
+├── storagePath?: string    # Only for generated images
+├── eloScore: number        # Default 1200
+├── createdAt: Timestamp
+├── updatedAt?: Timestamp
+└── expiresAt?: Date        # 90-day TTL for generated images
+```
+
+**Benefits**:
+- Single source of truth for all images
+- Frontend loads once, gets everything
+- Generated images appear alongside corpus in voting + rankings
+- Unified Elo calculations
+
+### Single Source of Truth (File Level)
+
+`image-catalog.json` is the canonical source for image lists. All consumers read from it:
+
+```
+image-catalog.json (SINGLE SOURCE)
+        │
+        ├──► sw.js (dynamically loads on install)
+        ├──► syncImageCatalog.js (syncs to Firestore)
+        └──► index.html (fallback if Firestore unavailable)
+```
+
+**Sync Workflow**:
+```bash
+# After adding/removing images:
+python scripts/sync-catalog.py --fix   # Syncs catalog with images/
+# Then copy to deploy/ and push to GitHub Pages
+```
+
+**NEVER**:
+- Hardcode image lists in sw.js
+- Maintain separate catalogs that can drift
+- Update images without running sync-catalog.py
+
+**Directory Structure**:
+```
+Nutcracker/
+├── images/                    # Source images (synced with deploy)
+├── image-catalog.json         # Root catalog (synced with images/)
+├── deploy/
+│   ├── images/                # Production images (curated set)
+│   ├── image-catalog.json     # Deploy catalog (matches deploy/images/)
+│   └── sw.js                  # Reads from image-catalog.json dynamically
+└── scripts/
+    └── sync-catalog.py        # Syncs catalog ↔ images folder
+```
+
+**Note**: Root and deploy should stay in sync. Archive removed images to `images/_removed_for_balance/`.
+
+### Image Loading Flow
+
+```
+Page Load
+    │
+    ▼
+┌─────────────────────┐
+│ Wait for Firebase   │
+│ auth ready          │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐     ┌─────────────────────┐
+│ Fetch image_catalog │────►│ Success: Use        │
+│ from Firestore      │     │ Firestore images    │
+└──────────┬──────────┘     └─────────────────────┘
+           │ Failure
+           ▼
+┌─────────────────────┐     ┌─────────────────────┐
+│ Fetch local         │────►│ Success: Use        │
+│ image-catalog.json  │     │ local JSON          │
+└─────────────────────┘     └─────────────────────┘
+```
+
+### Cloud Functions
+
+| Function | Trigger | Purpose |
+|----------|---------|---------|
+| `imagineScenes` | HTTP POST | Generate AI images, write to both collections |
+| `syncImageCatalog` | HTTP POST | Upload static catalog to Firestore |
+| `scheduledCatalogSync` | Weekly cron | Maintenance sync of static catalog |
+| `helpbot` | HTTP POST | AI chatbot for user questions |
+| `generateStory` | HTTP POST | TTS audio story generation |
+| `cleanupExpiredLogs` | Daily cron | Delete expired log documents |
+
+### Storage Structure
+
+```
+Firebase Storage (nutcracker-3e8fb.appspot.com)
+├── images/                    # Static corpus (public read)
+│   ├── whale_cafe.png
+│   ├── bear_park_bench.png
+│   └── ... (240 images)
+│
+└── imagined/                  # User-generated (public read)
+    └── {userId}/
+        └── {uuid}.png
+```
+
+### Security Rules
+
+**Firestore** (`firestore.rules`):
+- `image_catalog`: Public read, Cloud Function write only
+- `votes`: Authenticated create, public read
+- `imagine_users`: Owner read, Cloud Function write only
+- `system`: Admin only
+
+**Storage** (`storage.rules`):
+- `images/**`: Public read, no client write
+- `imagined/**`: Public read, no client write
+
 ## Technical Architecture
 
 ### Data Model
@@ -138,211 +299,41 @@ newLoserRating = oldRating + K * (0 - expectedScore)
 
 This ensures balanced coverage while maintaining randomness.
 
-## Firebase Integration (Optional)
+## Deployment
 
-### When to Use Firebase
-
-- Multi-device sync for same user
-- Aggregating votes from multiple users
-- Persistent cloud backup
-- Real-time collaboration
-
-### Firebase Setup
-
-#### 1. Create Firebase Project
+### Deploy Everything
 
 ```bash
-# Install Firebase CLI
-npm install -g firebase-tools
+cd /path/to/Nutcracker
 
-# Login
-firebase login
+# Deploy hosting, functions, rules
+firebase deploy --project nutcracker-3e8fb
 
-# Create project at https://console.firebase.google.com
-# Enable Firestore and Anonymous Authentication
+# One-time: Upload static images to Storage
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/serviceAccount.json
+node scripts/upload-images-to-storage.js
+
+# Sync static catalog to Firestore
+curl -X POST https://us-central1-nutcracker-3e8fb.cloudfunctions.net/syncImageCatalog
 ```
 
-#### 2. Get Configuration
+### Local Development
 
-From Firebase Console > Project Settings > Your Apps > Web App:
+```bash
+# Start emulators
+firebase emulators:start
 
-```javascript
-// pragma: allowlist nextline secret
-const firebaseConfig = {
-  apiKey: "AIza...",  // pragma: allowlist secret
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123...",
-  appId: "1:123...:web:abc..."
-};
+# Or serve frontend only
+cd deploy && python -m http.server 5000
 ```
 
-#### 3. Firestore Security Rules
+### Environment Variables
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Votes collection - anyone can write, read own
-    match /votes/{voteId} {
-      allow create: if request.auth != null;
-      allow read: if request.auth != null &&
-                    request.auth.uid == resource.data.visitorId;
-    }
-
-    // Feedback collection
-    match /feedback/{feedbackId} {
-      allow create: if request.auth != null &&
-                      request.resource.data.visitorId == request.auth.uid;
-      allow read: if request.auth != null;
-    }
-
-    // Suggestions collection
-    match /suggestions/{suggestionId} {
-      allow create: if request.auth != null &&
-                      request.resource.data.text.size() <= 500;
-      allow read: if false; // Admin only
-    }
-
-    // Aggregated rankings (read-only, updated by cloud function)
-    match /rankings/{imageId} {
-      allow read: if true;
-      allow write: if false;
-    }
-  }
-}
-```
-
-#### 4. Integration Code
-
-Replace the Firebase stub in `index.html`:
-
-```html
-<!-- Add before closing </body> tag -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-  import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
-  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-
-  const firebaseConfig = {
-    // Your config here
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // Anonymous auth
-  let userId = null;
-  signInAnonymously(auth).then((result) => {
-    userId = result.user.uid;
-    // Sync localStorage visitorId with Firebase UID
-    localStorage.setItem('bearRanker_visitorId', userId);
-  });
-
-  // Override stub with real implementation
-  window.firebaseAPI = {
-    isReady: () => userId !== null,
-    getVisitorId: () => userId,
-
-    submitVote: async (winnerId, loserId) => {
-      if (!userId) return false;
-      try {
-        await addDoc(collection(db, 'votes'), {
-          visitorId: userId,
-          winner: winnerId,
-          loser: loserId,
-          timestamp: serverTimestamp()
-        });
-        return true;
-      } catch (e) {
-        console.error('Vote sync failed:', e);
-        return false;
-      }
-    },
-
-    submitFeedback: async (imageId, tags) => {
-      if (!userId) return false;
-      try {
-        await addDoc(collection(db, 'feedback'), {
-          visitorId: userId,
-          imageId,
-          tags,
-          timestamp: serverTimestamp()
-        });
-        return true;
-      } catch (e) {
-        console.error('Feedback sync failed:', e);
-        return false;
-      }
-    },
-
-    submitSuggestion: async (text) => {
-      if (!userId) return false;
-      try {
-        await addDoc(collection(db, 'suggestions'), {
-          visitorId: userId,
-          text: text.substring(0, 500),
-          timestamp: serverTimestamp()
-        });
-        return true;
-      } catch (e) {
-        console.error('Suggestion sync failed:', e);
-        return false;
-      }
-    },
-
-    resetIdentity: () => {
-      auth.signOut().then(() => {
-        localStorage.removeItem('bearRanker_visitorId');
-        location.reload();
-      });
-    }
-  };
-</script>
-```
-
-#### 5. Update CSP for Firebase
-
-```html
-<meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' https://www.gstatic.com;
-  connect-src 'self' https://*.googleapis.com https://*.firebaseio.com;
-  img-src 'self' data: blob:;
-  style-src 'self' 'unsafe-inline';
-  frame-ancestors 'none';
-">
-```
-
-### Cloud Function for Aggregation (Optional)
-
-```javascript
-// functions/index.js
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-admin.initializeApp();
-
-exports.aggregateRankings = functions.firestore
-  .document('votes/{voteId}')
-  .onCreate(async (snap, context) => {
-    const vote = snap.data();
-    const db = admin.firestore();
-
-    // Update winner
-    await db.doc(`rankings/${vote.winner}`).set({
-      wins: admin.firestore.FieldValue.increment(1),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-
-    // Update loser
-    await db.doc(`rankings/${vote.loser}`).set({
-      losses: admin.firestore.FieldValue.increment(1),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-  });
-```
+| Variable | Purpose | Where |
+|----------|---------|-------|
+| `GEMINI_API_KEY` | Image generation | Firebase Secret |
+| `ANTHROPIC_KEY` | Helpbot AI | Firebase Secret |
+| `GITHUB_TOKEN` | Issue creation | Firebase Secret |
 
 ## Performance Considerations
 
@@ -508,17 +499,31 @@ imagined_images/{imageId}
 
 ### UI Components
 
-```html
-<div class="imagine-bar">
-  <select id="animal-selector">...</select>
-  <input type="text" id="scene-seed" maxlength="40">
-  <span class="char-counter">0/40</span>
-  <button id="imagine-btn">Imagine It</button>
-  <div class="quota-display">24 remaining</div>
-</div>
+Mode B is integrated into the existing ninja-keys omnibar (Cmd+K):
+
+```
+ninja-keys menu structure:
+├── Current Images (Mode A quick access)
+│   ├── Story for: [Left Image Name]
+│   └── Story for: [Right Image Name]
+├── Create New Scene (Mode B)
+│   ├── 🐋 Create Whale Scene
+│   ├── 🐼 Create Panda Scene
+│   ├── 🐻 Create Bear Scene
+│   └── 🦁 Create Lion Scene
+└── Generate Story (Mode A full catalog)
+    └── [All 230 images searchable]
 ```
 
-Generated images in gallery receive `class="generated"` for sparkle badge (✨).
+Selecting a Mode B animal opens a seed dialog:
+```html
+<dialog id="seedDialog">
+  <input id="seedDialogInput" maxlength="40" placeholder="Describe the scene...">
+  <button>Generate</button>
+</dialog>
+```
+
+Generated images in gallery receive `class="generated-badge"` for sparkle badge (✨ AI).
 
 ### Configuration
 
@@ -535,9 +540,24 @@ Generated images in gallery receive `class="generated"` for sparkle badge (✨).
 
 ---
 
-## Future Considerations
+## Implementation Status
 
-- **Image Lazy Generation**: Generate pairs on-demand for large image sets
-- **Mode A (New Animals)**: AI-generated animal variants
-- **Mode C (Audio Stories)**: Audio narratives for scenes
-- **Gallery Filtering**: Separate generated vs. original images
+### Completed (v3.0)
+- ✅ **Mode A Audio Stories**: Full ninja-keys integration with current image quick access
+- ✅ **Mode B Image Generation**: Whale, Panda, Bear, Lion via ninja-keys + seed dialog
+- ✅ **Data Sync**: image-catalog.json ↔ image-descriptions.json (230 entries)
+- ✅ **Generated Image Gallery**: Firestore `image_catalog` → merged into voting pool
+- ✅ **Sparkle Badge**: `✨ AI` badge on generated images in rankings
+
+### Remaining Gaps
+| Gap | Priority | Description |
+|-----|----------|-------------|
+| Quota display | P2 | Show "X remaining" in UI (backend tracks, frontend doesn't display) |
+| Generated image filtering | P3 | Filter rankings by original vs generated |
+| Storage cleanup | P3 | TTL cleanup for expired generated images |
+| Hippo animal | P3 | Exists in catalog but not in Mode B frontend |
+
+### Future Considerations
+- **Mode C (Audio Stories)**: Audio narratives for scenes (infrastructure exists)
+- **Gallery Lazy Loading**: Paginate large image sets
+- **Social Features**: Share generated scenes, public galleries

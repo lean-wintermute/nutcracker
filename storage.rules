@@ -1,23 +1,34 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Generated images from imagineScenes Cloud Function
-    // Write: Admin SDK only (Cloud Function uses service account)
-    // Read: Public (images shown in voting gallery)
-    match /imagined/{imageId} {
-      allow read: if true;
-      allow write: if false;  // Admin SDK bypasses rules
-    }
-
-    // Static image catalog (if migrated to Storage)
+    // Static image corpus - public read, no client writes
+    // These are the original AI-generated images for voting
     match /images/{imageId} {
       allow read: if true;
-      allow write: if false;
+      allow write: if false;  // Admin SDK only (via scripts)
     }
 
-    // Deny all other paths
+    // Generated "imagined" scenes - public read for gallery/sharing
+    // Created by imagineScenes Cloud Function using Admin SDK
+    match /imagined/{imageId} {
+      allow read: if true;
+      allow write: if false;  // Cloud Function uses Admin SDK
+    }
+
+    // User uploads - disabled for now (no user upload feature)
+    // If enabled in future, add auth + size limits:
+    // match /uploads/{userId}/{allPaths=**} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null
+    //                && request.auth.uid == userId
+    //                && request.resource.size < 5 * 1024 * 1024  // 5MB limit
+    //                && request.resource.contentType.matches('image/.*');
+    // }
+
+    // Default: deny all other paths
     match /{allPaths=**} {
-      allow read, write: if false;
+      allow read: if false;
+      allow write: if false;
     }
   }
 }

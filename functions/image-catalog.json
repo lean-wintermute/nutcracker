@@ -239,23 +239,11 @@
       "series": "01"
     },
     {
-      "filename": "alive_01_invisible_among_crowd_02_train_station_082316.png",
-      "displayName": "Alive 01 Invisible Among Crowd 02 Train Station",
-      "description": "Alive invisible among crowd train station",
-      "category": "alive"
-    },
-    {
       "filename": "alive_02_awkward_interactions_01_bartender_stare_082316.png",
       "displayName": "Awkward Glance",
       "description": "Bartender staring awkwardly",
       "category": "alive",
       "series": "02"
-    },
-    {
-      "filename": "alive_02_awkward_interactions_02_bus_driver_082316.png",
-      "displayName": "Alive 02 Awkward Interactions 02 Bus Driver",
-      "description": "Alive awkward interactions bus driver",
-      "category": "alive"
     },
     {
       "filename": "alive_03_one_kind_soul_01_child_waves_082316.png",
@@ -265,12 +253,6 @@
       "series": "03"
     },
     {
-      "filename": "alive_03_one_kind_soul_02_old_man_bench_082316.png",
-      "displayName": "Alive 03 One Kind Soul 02 Old Man Bench",
-      "description": "Alive one kind soul old man bench",
-      "category": "alive"
-    },
-    {
       "filename": "alive_04_complete_solitude_01_empty_playground_082316.png",
       "displayName": "Empty Swings",
       "description": "Alone in empty playground",
@@ -278,10 +260,11 @@
       "series": "04"
     },
     {
-      "filename": "alive_04_complete_solitude_02_closed_shop_082316.png",
-      "displayName": "Alive 04 Complete Solitude 02 Closed Shop",
-      "description": "Alive complete solitude closed shop",
-      "category": "alive"
+      "filename": "animated_01_invisible_crowd_01_shopping_street_082316.png",
+      "displayName": "Shopping Phantom",
+      "description": "Invisible on shopping street",
+      "category": "animated",
+      "series": "01"
     },
     {
       "filename": "animated_02_awkward_notice_01_hotel_desk_082316.png",
@@ -298,10 +281,11 @@
       "series": "03"
     },
     {
-      "filename": "bear_cgi_park_bench.png",
-      "displayName": "Bear Park Bench",
-      "description": "Bear cgi park bench",
-      "category": "bear"
+      "filename": "animated_04_total_solitude_01_diner_3am_082316.png",
+      "displayName": "3AM Diner",
+      "description": "Alone at 3am diner",
+      "category": "animated",
+      "series": "04"
     },
     {
       "filename": "bear_cgi_rooftop_dawn.png",
@@ -311,11 +295,38 @@
       "series": "cgi"
     },
     {
+      "filename": "bear_claymation_cafe_window.png",
+      "displayName": "Bear Cafe Window",
+      "description": "Claymation bear at cafe window",
+      "category": "bear",
+      "series": "claymation"
+    },
+    {
       "filename": "bear_claymation_rooftop_dawn.png",
       "displayName": "Bear Rooftop Dawn",
       "description": "Claymation bear at rooftop dawn",
       "category": "bear",
       "series": "claymation"
+    },
+    {
+      "filename": "bear_claymation_sharing_meal.png",
+      "displayName": "Bear Sharing Meal",
+      "description": "",
+      "category": "bear"
+    },
+    {
+      "filename": "bear_claymation_train_platform.png",
+      "displayName": "Bear Train Platform",
+      "description": "Claymation bear at train platform",
+      "category": "bear",
+      "series": "claymation"
+    },
+    {
+      "filename": "bear_handdrawn_cafe_window.png",
+      "displayName": "Bear Cafe Window",
+      "description": "Handdrawn bear at cafe window",
+      "category": "bear",
+      "series": "handdrawn"
     },
     {
       "filename": "bear_handdrawn_park_bench.png",
@@ -325,21 +336,28 @@
       "series": "handdrawn"
     },
     {
-      "filename": "bear_puppet_cafe_window.png",
-      "displayName": "Bear Cafe Window",
-      "description": "Bear puppet cafe window",
+      "filename": "bear_handdrawn_train_platform.png",
+      "displayName": "Bear Train Platform",
+      "description": "Handdrawn bear at train platform",
+      "category": "bear",
+      "series": "handdrawn"
+    },
+    {
+      "filename": "bear_puppet_climbing_fire_escape.png",
+      "displayName": "Bear Climbing Fire Escape",
+      "description": "",
       "category": "bear"
     },
     {
       "filename": "bear_puppet_foggy_pier.png",
       "displayName": "Bear Foggy Pier",
-      "description": "Bear puppet foggy pier",
+      "description": "",
       "category": "bear"
     },
     {
-      "filename": "bear_puppet_park_bench.png",
-      "displayName": "Bear Park Bench",
-      "description": "Bear puppet park bench",
+      "filename": "bear_puppet_playing_chess.png",
+      "displayName": "Bear Playing Chess",
+      "description": "",
       "category": "bear"
     },
     {
@@ -350,15 +368,9 @@
       "series": "puppet"
     },
     {
-      "filename": "bear_puppet_train_platform.png",
-      "displayName": "Bear Train Platform",
-      "description": "Bear puppet train platform",
-      "category": "bear"
-    },
-    {
-      "filename": "bear_stopmotion_cafe_window.png",
-      "displayName": "Bear Cafe Window",
-      "description": "Bear stopmotion cafe window",
+      "filename": "bear_puppet_wind_leaves.png",
+      "displayName": "Bear Wind Leaves",
+      "description": "",
       "category": "bear"
     },
     {
@@ -376,9 +388,15 @@
       "series": "stopmotion"
     },
     {
-      "filename": "bear_stopmotion_train_platform.png",
-      "displayName": "Bear Train Platform",
-      "description": "Bear stopmotion train platform",
+      "filename": "bear_stopmotion_running_station.png",
+      "displayName": "Bear Running Station",
+      "description": "",
+      "category": "bear"
+    },
+    {
+      "filename": "bear_stopmotion_streetlamp_reading.png",
+      "displayName": "Bear Streetlamp Reading",
+      "description": "",
       "category": "bear"
     },
     {
@@ -410,9 +428,16 @@
       "series": "cgi"
     },
     {
-      "filename": "hippo_cgi_subway_car.png",
-      "displayName": "Hippo Subway Car",
-      "description": "Hippo cgi subway car",
+      "filename": "hippo_claymation_bus_stop.png",
+      "displayName": "Hippo Bus Stop",
+      "description": "Claymation hippo at bus stop",
+      "category": "hippo",
+      "series": "claymation"
+    },
+    {
+      "filename": "hippo_claymation_climbing_fire_escape.png",
+      "displayName": "Hippo Climbing Fire Escape",
+      "description": "",
       "category": "hippo"
     },
     {
@@ -430,6 +455,33 @@
       "series": "claymation"
     },
     {
+      "filename": "hippo_claymation_phone_booth.png",
+      "displayName": "Hippo Phone Booth",
+      "description": "Claymation hippo at phone booth",
+      "category": "hippo",
+      "series": "claymation"
+    },
+    {
+      "filename": "hippo_claymation_subway_car.png",
+      "displayName": "Hippo Subway Car",
+      "description": "Claymation hippo at subway car",
+      "category": "hippo",
+      "series": "claymation"
+    },
+    {
+      "filename": "hippo_claymation_wind_leaves.png",
+      "displayName": "Hippo Wind Leaves",
+      "description": "",
+      "category": "hippo"
+    },
+    {
+      "filename": "hippo_handdrawn_bus_stop.png",
+      "displayName": "Hippo Bus Stop",
+      "description": "Handdrawn hippo at bus stop",
+      "category": "hippo",
+      "series": "handdrawn"
+    },
+    {
       "filename": "hippo_handdrawn_diner_booth.png",
       "displayName": "Hippo Diner Booth",
       "description": "Handdrawn hippo at diner booth",
@@ -440,6 +492,20 @@
       "filename": "hippo_handdrawn_laundromat.png",
       "displayName": "Hippo Laundromat",
       "description": "Handdrawn hippo at laundromat",
+      "category": "hippo",
+      "series": "handdrawn"
+    },
+    {
+      "filename": "hippo_handdrawn_phone_booth.png",
+      "displayName": "Hippo Phone Booth",
+      "description": "Handdrawn hippo at phone booth",
+      "category": "hippo",
+      "series": "handdrawn"
+    },
+    {
+      "filename": "hippo_handdrawn_subway_car.png",
+      "displayName": "Hippo Subway Car",
+      "description": "Handdrawn hippo at subway car",
       "category": "hippo",
       "series": "handdrawn"
     },
@@ -465,11 +531,29 @@
       "series": "puppet"
     },
     {
+      "filename": "hippo_puppet_night_market.png",
+      "displayName": "Hippo Night Market",
+      "description": "",
+      "category": "hippo"
+    },
+    {
       "filename": "hippo_puppet_phone_booth.png",
       "displayName": "Hippo Phone Booth",
       "description": "Puppet hippo at phone booth",
       "category": "hippo",
       "series": "puppet"
+    },
+    {
+      "filename": "hippo_puppet_snow_bench.png",
+      "displayName": "Hippo Snow Bench",
+      "description": "",
+      "category": "hippo"
+    },
+    {
+      "filename": "hippo_stopmotion_antique_radio.png",
+      "displayName": "Hippo Antique Radio",
+      "description": "",
+      "category": "hippo"
     },
     {
       "filename": "hippo_stopmotion_bus_stop.png",
@@ -500,9 +584,9 @@
       "series": "stopmotion"
     },
     {
-      "filename": "hippo_stopmotion_subway_car.png",
-      "displayName": "Hippo Subway Car",
-      "description": "Hippo stopmotion subway car",
+      "filename": "hippo_stopmotion_teaching_child.png",
+      "displayName": "Hippo Teaching Child",
+      "description": "",
       "category": "hippo"
     },
     {
@@ -513,23 +597,11 @@
       "series": "cgi"
     },
     {
-      "filename": "lion_cgi_cafe_window.png",
-      "displayName": "Lion Cafe Window",
-      "description": "Lion cgi cafe window",
-      "category": "lion"
-    },
-    {
       "filename": "lion_cgi_hotel_lobby.png",
       "displayName": "Lion Hotel Lobby",
       "description": "Cgi lion at hotel lobby",
       "category": "lion",
       "series": "cgi"
-    },
-    {
-      "filename": "lion_cgi_park_bench.png",
-      "displayName": "Lion Park Bench",
-      "description": "Lion cgi park bench",
-      "category": "lion"
     },
     {
       "filename": "lion_cgi_rooftop_dawn.png",
@@ -546,12 +618,6 @@
       "series": "cgi"
     },
     {
-      "filename": "lion_cgi_train_platform.png",
-      "displayName": "Lion Train Platform",
-      "description": "Lion cgi train platform",
-      "category": "lion"
-    },
-    {
       "filename": "lion_claymation_bookshop.png",
       "displayName": "Lion Bookshop",
       "description": "Claymation lion at bookshop",
@@ -559,11 +625,30 @@
       "series": "claymation"
     },
     {
+      "filename": "lion_claymation_cafe_window.png",
+      "displayName": "Lion Cafe Window",
+      "description": "Claymation lion at cafe window",
+      "category": "lion",
+      "series": "claymation"
+    },
+    {
+      "filename": "lion_claymation_helping_stranger.png",
+      "displayName": "Lion Helping Stranger",
+      "description": "",
+      "category": "lion"
+    },
+    {
       "filename": "lion_claymation_hotel_lobby.png",
       "displayName": "Lion Hotel Lobby",
       "description": "Claymation lion at hotel lobby",
       "category": "lion",
       "series": "claymation"
+    },
+    {
+      "filename": "lion_claymation_library_ladder.png",
+      "displayName": "Lion Library Ladder",
+      "description": "",
+      "category": "lion"
     },
     {
       "filename": "lion_claymation_park_bench.png",
@@ -580,6 +665,12 @@
       "series": "claymation"
     },
     {
+      "filename": "lion_claymation_running_station.png",
+      "displayName": "Lion Running Station",
+      "description": "",
+      "category": "lion"
+    },
+    {
       "filename": "lion_claymation_street_corner.png",
       "displayName": "Lion Street Corner",
       "description": "Claymation lion at street corner",
@@ -587,9 +678,23 @@
       "series": "claymation"
     },
     {
+      "filename": "lion_claymation_train_platform.png",
+      "displayName": "Lion Train Platform",
+      "description": "Claymation lion at train platform",
+      "category": "lion",
+      "series": "claymation"
+    },
+    {
       "filename": "lion_handdrawn_bookshop.png",
       "displayName": "Lion Bookshop",
       "description": "Handdrawn lion at bookshop",
+      "category": "lion",
+      "series": "handdrawn"
+    },
+    {
+      "filename": "lion_handdrawn_cafe_window.png",
+      "displayName": "Lion Cafe Window",
+      "description": "Handdrawn lion at cafe window",
       "category": "lion",
       "series": "handdrawn"
     },
@@ -629,6 +734,12 @@
       "series": "handdrawn"
     },
     {
+      "filename": "lion_puppet_bakery_morning.png",
+      "displayName": "Lion Bakery Morning",
+      "description": "",
+      "category": "lion"
+    },
+    {
       "filename": "lion_puppet_bookshop.png",
       "displayName": "Lion Bookshop",
       "description": "Puppet lion at bookshop",
@@ -636,23 +747,11 @@
       "series": "puppet"
     },
     {
-      "filename": "lion_puppet_cafe_window.png",
-      "displayName": "Lion Cafe Window",
-      "description": "Lion puppet cafe window",
-      "category": "lion"
-    },
-    {
       "filename": "lion_puppet_hotel_lobby.png",
       "displayName": "Lion Hotel Lobby",
       "description": "Puppet lion at hotel lobby",
       "category": "lion",
       "series": "puppet"
-    },
-    {
-      "filename": "lion_puppet_park_bench.png",
-      "displayName": "Lion Park Bench",
-      "description": "Lion puppet park bench",
-      "category": "lion"
     },
     {
       "filename": "lion_puppet_rooftop_dawn.png",
@@ -669,23 +768,11 @@
       "series": "puppet"
     },
     {
-      "filename": "lion_puppet_train_platform.png",
-      "displayName": "Lion Train Platform",
-      "description": "Lion puppet train platform",
-      "category": "lion"
-    },
-    {
       "filename": "lion_stopmotion_bookshop.png",
       "displayName": "Lion Bookshop",
       "description": "Stopmotion lion at bookshop",
       "category": "lion",
       "series": "stopmotion"
-    },
-    {
-      "filename": "lion_stopmotion_cafe_window.png",
-      "displayName": "Lion Cafe Window",
-      "description": "Lion stopmotion cafe window",
-      "category": "lion"
     },
     {
       "filename": "lion_stopmotion_hotel_lobby.png",
@@ -697,13 +784,7 @@
     {
       "filename": "lion_stopmotion_neon_alley.png",
       "displayName": "Lion Neon Alley",
-      "description": "Lion stopmotion neon alley",
-      "category": "lion"
-    },
-    {
-      "filename": "lion_stopmotion_park_bench.png",
-      "displayName": "Lion Park Bench",
-      "description": "Lion stopmotion park bench",
+      "description": "",
       "category": "lion"
     },
     {
@@ -721,9 +802,9 @@
       "series": "stopmotion"
     },
     {
-      "filename": "lion_stopmotion_train_platform.png",
-      "displayName": "Lion Train Platform",
-      "description": "Lion stopmotion train platform",
+      "filename": "lion_stopmotion_umbrella_sharing.png",
+      "displayName": "Lion Umbrella Sharing",
+      "description": "",
       "category": "lion"
     },
     {
@@ -734,23 +815,11 @@
       "series": "01"
     },
     {
-      "filename": "living_01_tiny_hiding_02_coat_pocket_082316.png",
-      "displayName": "Living 01 Tiny Hiding 02 Coat Pocket",
-      "description": "Living tiny hiding coat pocket",
-      "category": "living"
-    },
-    {
       "filename": "living_01_tiny_hiding_03_shelf_peek_082316.png",
       "displayName": "Shelf Spy",
       "description": "Peeking from shelf",
       "category": "living",
       "series": "01"
-    },
-    {
-      "filename": "living_01_tiny_hiding_04_table_dash_082316.png",
-      "displayName": "Living 01 Tiny Hiding 04 Table Dash",
-      "description": "Living tiny hiding table dash",
-      "category": "living"
     },
     {
       "filename": "living_02_child_wandering_01_crosswalk_082316.png",
@@ -767,12 +836,6 @@
       "series": "02"
     },
     {
-      "filename": "living_02_child_wandering_03_bench_slump_082316.png",
-      "displayName": "Living 02 Child Wandering 03 Bench Slump",
-      "description": "Living child wandering bench slump",
-      "category": "living"
-    },
-    {
       "filename": "living_02_child_wandering_04_door_pushing_082316.png",
       "displayName": "Heavy Door",
       "description": "Pushing heavy door",
@@ -787,23 +850,11 @@
       "series": "03"
     },
     {
-      "filename": "living_03_human_confronting_02_bus_boarding_082316.png",
-      "displayName": "Living 03 Human Confronting 02 Bus Boarding",
-      "description": "Living human confronting bus boarding",
-      "category": "living"
-    },
-    {
       "filename": "living_03_human_confronting_03_elevator_nod_082316.png",
       "displayName": "Elevator Nod",
       "description": "Nodding in elevator",
       "category": "living",
       "series": "03"
-    },
-    {
-      "filename": "living_03_human_confronting_04_bench_sitting_082316.png",
-      "displayName": "Living 03 Human Confronting 04 Bench Sitting",
-      "description": "Living human confronting bench sitting",
-      "category": "living"
     },
     {
       "filename": "living_03_human_confronting_05_window_reflection_082316.png",
@@ -848,12 +899,6 @@
       "series": "cgi"
     },
     {
-      "filename": "panda_cgi_cafe_window.png",
-      "displayName": "Panda Cafe Window",
-      "description": "Panda cgi cafe window",
-      "category": "panda"
-    },
-    {
       "filename": "panda_cgi_diner_booth.png",
       "displayName": "Panda Diner Booth",
       "description": "Cgi panda at diner booth",
@@ -861,27 +906,16 @@
       "series": "cgi"
     },
     {
-      "filename": "panda_cgi_park_bench.png",
-      "displayName": "Panda Park Bench",
-      "description": "Panda cgi park bench",
-      "category": "panda"
-    },
-    {
-      "filename": "panda_cgi_subway_car.png",
-      "displayName": "Panda Subway Car",
-      "description": "Panda cgi subway car",
-      "category": "panda"
-    },
-    {
-      "filename": "panda_cgi_train_platform.png",
-      "displayName": "Panda Train Platform",
-      "description": "Panda cgi train platform",
-      "category": "panda"
-    },
-    {
       "filename": "panda_claymation_bookshop.png",
       "displayName": "Panda Bookshop",
       "description": "Claymation panda at bookshop",
+      "category": "panda",
+      "series": "claymation"
+    },
+    {
+      "filename": "panda_claymation_cafe_window.png",
+      "displayName": "Panda Cafe Window",
+      "description": "Claymation panda at cafe window",
       "category": "panda",
       "series": "claymation"
     },
@@ -893,6 +927,12 @@
       "series": "claymation"
     },
     {
+      "filename": "panda_claymation_night_market.png",
+      "displayName": "Panda Night Market",
+      "description": "",
+      "category": "panda"
+    },
+    {
       "filename": "panda_claymation_park_bench.png",
       "displayName": "Panda Park Bench",
       "description": "Claymation panda at park bench",
@@ -900,9 +940,36 @@
       "series": "claymation"
     },
     {
+      "filename": "panda_claymation_subway_car.png",
+      "displayName": "Panda Subway Car",
+      "description": "Claymation panda at subway car",
+      "category": "panda",
+      "series": "claymation"
+    },
+    {
+      "filename": "panda_claymation_train_platform.png",
+      "displayName": "Panda Train Platform",
+      "description": "Claymation panda at train platform",
+      "category": "panda",
+      "series": "claymation"
+    },
+    {
+      "filename": "panda_claymation_walking_rain.png",
+      "displayName": "Panda Walking Rain",
+      "description": "",
+      "category": "panda"
+    },
+    {
       "filename": "panda_handdrawn_bookshop.png",
       "displayName": "Panda Bookshop",
       "description": "Handdrawn panda at bookshop",
+      "category": "panda",
+      "series": "handdrawn"
+    },
+    {
+      "filename": "panda_handdrawn_cafe_window.png",
+      "displayName": "Panda Cafe Window",
+      "description": "Handdrawn panda at cafe window",
       "category": "panda",
       "series": "handdrawn"
     },
@@ -921,6 +988,13 @@
       "series": "handdrawn"
     },
     {
+      "filename": "panda_handdrawn_subway_car.png",
+      "displayName": "Panda Subway Car",
+      "description": "Handdrawn panda at subway car",
+      "category": "panda",
+      "series": "handdrawn"
+    },
+    {
       "filename": "panda_handdrawn_train_platform.png",
       "displayName": "Panda Train Platform",
       "description": "Handdrawn panda at train platform",
@@ -935,9 +1009,9 @@
       "series": "puppet"
     },
     {
-      "filename": "panda_puppet_cafe_window.png",
-      "displayName": "Panda Cafe Window",
-      "description": "Panda puppet cafe window",
+      "filename": "panda_puppet_dancing_streetlight.png",
+      "displayName": "Panda Dancing Streetlight",
+      "description": "",
       "category": "panda"
     },
     {
@@ -948,9 +1022,15 @@
       "series": "puppet"
     },
     {
-      "filename": "panda_puppet_train_platform.png",
-      "displayName": "Panda Train Platform",
-      "description": "Panda puppet train platform",
+      "filename": "panda_puppet_flower_shop.png",
+      "displayName": "Panda Flower Shop",
+      "description": "",
+      "category": "panda"
+    },
+    {
+      "filename": "panda_puppet_neon_alley.png",
+      "displayName": "Panda Neon Alley",
+      "description": "",
       "category": "panda"
     },
     {
@@ -959,12 +1039,6 @@
       "description": "Stopmotion panda at bookshop",
       "category": "panda",
       "series": "stopmotion"
-    },
-    {
-      "filename": "panda_stopmotion_cafe_window.png",
-      "displayName": "Panda Cafe Window",
-      "description": "Panda stopmotion cafe window",
-      "category": "panda"
     },
     {
       "filename": "panda_stopmotion_diner_booth.png",
@@ -976,25 +1050,13 @@
     {
       "filename": "panda_stopmotion_museum_alone.png",
       "displayName": "Panda Museum Alone",
-      "description": "Panda stopmotion museum alone",
+      "description": "",
       "category": "panda"
     },
     {
-      "filename": "panda_stopmotion_park_bench.png",
-      "displayName": "Panda Park Bench",
-      "description": "Panda stopmotion park bench",
-      "category": "panda"
-    },
-    {
-      "filename": "panda_stopmotion_subway_car.png",
-      "displayName": "Panda Subway Car",
-      "description": "Panda stopmotion subway car",
-      "category": "panda"
-    },
-    {
-      "filename": "panda_stopmotion_train_platform.png",
-      "displayName": "Panda Train Platform",
-      "description": "Panda stopmotion train platform",
+      "filename": "panda_stopmotion_sharing_meal.png",
+      "displayName": "Panda Sharing Meal",
+      "description": "",
       "category": "panda"
     },
     {
@@ -1003,18 +1065,6 @@
       "description": "Tiny bear on cafe table",
       "category": "realistic",
       "series": "01"
-    },
-    {
-      "filename": "realistic_02_child_sized_01_park_bench_082316.png",
-      "displayName": "Realistic 02 Child Sized 01 Park Bench",
-      "description": "Realistic child sized park bench",
-      "category": "realistic"
-    },
-    {
-      "filename": "realistic_02_child_sized_02_diner_booth_082316.png",
-      "displayName": "Realistic 02 Child Sized 02 Diner Booth",
-      "description": "Realistic child sized diner booth",
-      "category": "realistic"
     },
     {
       "filename": "realistic_03_human_scale_01_bar_ordering_082316.png",
@@ -1029,12 +1079,6 @@
       "description": "Giant in convenience store",
       "category": "realistic",
       "series": "04"
-    },
-    {
-      "filename": "realistic_04_giant_looming_02_subway_car_082316.png",
-      "displayName": "Realistic 04 Giant Looming 02 Subway Car",
-      "description": "Realistic giant looming subway car",
-      "category": "realistic"
     },
     {
       "filename": "solitude_01_alone_in_house_01_frosted_window_082316.png",
@@ -1103,6 +1147,13 @@
       "filename": "styles_01_stop_motion_03_diner_booth_082316.png",
       "displayName": "Stop-Motion Booth",
       "description": "Stop-motion diner booth",
+      "category": "styles",
+      "series": "01"
+    },
+    {
+      "filename": "styles_01_stop_motion_04_phone_booth_082316.png",
+      "displayName": "Stop-Motion Call",
+      "description": "Stop-motion phone booth",
       "category": "styles",
       "series": "01"
     },
@@ -1233,10 +1284,11 @@
       "series": "01"
     },
     {
-      "filename": "teddy_melancholy_01_alone_in_house_02_empty_chair_082316.png",
-      "displayName": "Teddy Melancholy 01 Alone In House 02 Empty Chair",
-      "description": "Teddy melancholy alone in house empty chair",
-      "category": "teddy"
+      "filename": "teddy_melancholy_01_alone_in_house_03_kitchen_table_082316.png",
+      "displayName": "Kitchen Quiet",
+      "description": "Bear at kitchen table",
+      "category": "teddy",
+      "series": "01"
     },
     {
       "filename": "teddy_melancholy_01_alone_in_house_04_old_photos_082316.png",
@@ -1251,12 +1303,6 @@
       "description": "Bear sitting on stairs",
       "category": "teddy",
       "series": "01"
-    },
-    {
-      "filename": "teddy_melancholy_01_alone_in_house_06_bedroom_dawn_082316.png",
-      "displayName": "Teddy Melancholy 01 Alone In House 06 Bedroom Dawn",
-      "description": "Teddy melancholy alone in house bedroom dawn",
-      "category": "teddy"
     },
     {
       "filename": "teddy_melancholy_01_alone_in_house_07_piano_keys_082316.png",
@@ -1280,22 +1326,18 @@
       "series": "02"
     },
     {
-      "filename": "teddy_melancholy_02_bar_christmas_03_bartender_chat_082316.png",
-      "displayName": "Teddy Melancholy 02 Bar Christmas 03 Bartender Chat",
-      "description": "Teddy melancholy bar christmas bartender chat",
-      "category": "teddy"
+      "filename": "teddy_melancholy_02_bar_christmas_02_jukebox_glow_082316.png",
+      "displayName": "Jukebox Glow",
+      "description": "Bear by jukebox glow",
+      "category": "teddy",
+      "series": "02"
     },
     {
-      "filename": "teddy_melancholy_02_bar_christmas_05_last_call_082316.png",
-      "displayName": "Teddy Melancholy 02 Bar Christmas 05 Last Call",
-      "description": "Teddy melancholy bar christmas last call",
-      "category": "teddy"
-    },
-    {
-      "filename": "teddy_melancholy_02_bar_christmas_06_mirror_behind_bar_082316.png",
-      "displayName": "Teddy Melancholy 02 Bar Christmas 06 Mirror Behind Bar",
-      "description": "Teddy melancholy bar christmas mirror behind bar",
-      "category": "teddy"
+      "filename": "teddy_melancholy_02_bar_christmas_04_window_booth_082316.png",
+      "displayName": "Booth View",
+      "description": "Bear in window booth",
+      "category": "teddy",
+      "series": "02"
     },
     {
       "filename": "teddy_melancholy_02_bar_christmas_07_payphone_082316.png",
@@ -1319,16 +1361,11 @@
       "series": "03"
     },
     {
-      "filename": "teddy_melancholy_03_riding_bus_02_back_seat_082316.png",
-      "displayName": "Teddy Melancholy 03 Riding Bus 02 Back Seat",
-      "description": "Teddy melancholy riding bus back seat",
-      "category": "teddy"
-    },
-    {
-      "filename": "teddy_melancholy_03_riding_bus_04_fluorescent_082316.png",
-      "displayName": "Teddy Melancholy 03 Riding Bus 04 Fluorescent",
-      "description": "Teddy melancholy riding bus fluorescent",
-      "category": "teddy"
+      "filename": "teddy_melancholy_03_riding_bus_03_bus_stop_082316.png",
+      "displayName": "Waiting Stop",
+      "description": "Bear at bus stop",
+      "category": "teddy",
+      "series": "03"
     },
     {
       "filename": "teddy_melancholy_03_riding_bus_05_driver_nod_082316.png",
@@ -1338,15 +1375,16 @@
       "series": "03"
     },
     {
-      "filename": "teddy_melancholy_03_riding_bus_06_shopping_bags_082316.png",
-      "displayName": "Teddy Melancholy 03 Riding Bus 06 Shopping Bags",
-      "description": "Teddy melancholy riding bus shopping bags",
-      "category": "teddy"
-    },
-    {
       "filename": "teddy_melancholy_03_riding_bus_07_sleeping_082316.png",
       "displayName": "Transit Sleep",
       "description": "Bear sleeping on bus",
+      "category": "teddy",
+      "series": "03"
+    },
+    {
+      "filename": "teddy_melancholy_03_riding_bus_08_end_of_line_082316.png",
+      "displayName": "End of Line",
+      "description": "Bear at end of line",
       "category": "teddy",
       "series": "03"
     },
@@ -1358,22 +1396,18 @@
       "series": "04"
     },
     {
-      "filename": "teddy_melancholy_04_office_alone_02_computer_glow_082316.png",
-      "displayName": "Teddy Melancholy 04 Office Alone 02 Computer Glow",
-      "description": "Teddy melancholy office alone computer glow",
-      "category": "teddy"
+      "filename": "teddy_melancholy_04_office_alone_03_break_room_082316.png",
+      "displayName": "Break Room",
+      "description": "Bear in break room",
+      "category": "teddy",
+      "series": "04"
     },
     {
-      "filename": "teddy_melancholy_04_office_alone_04_window_view_082316.png",
-      "displayName": "Teddy Melancholy 04 Office Alone 04 Window View",
-      "description": "Teddy melancholy office alone window view",
-      "category": "teddy"
-    },
-    {
-      "filename": "teddy_melancholy_04_office_alone_06_elevator_082316.png",
-      "displayName": "Teddy Melancholy 04 Office Alone 06 Elevator",
-      "description": "Teddy melancholy office alone elevator",
-      "category": "teddy"
+      "filename": "teddy_melancholy_04_office_alone_05_conference_room_082316.png",
+      "displayName": "Empty Meeting",
+      "description": "Bear in conference room",
+      "category": "teddy",
+      "series": "04"
     },
     {
       "filename": "teddy_melancholy_04_office_alone_07_parking_garage_082316.png",
@@ -1425,10 +1459,11 @@
       "series": "cgi"
     },
     {
-      "filename": "whale_cgi_subway_car.png",
-      "displayName": "Whale Subway Car",
-      "description": "Whale cgi subway car",
-      "category": "whale"
+      "filename": "whale_claymation_bus_stop.png",
+      "displayName": "Whale Bus Stop",
+      "description": "Claymation whale at bus stop",
+      "category": "whale",
+      "series": "claymation"
     },
     {
       "filename": "whale_claymation_hotel_lobby.png",
@@ -1445,11 +1480,44 @@
       "series": "claymation"
     },
     {
+      "filename": "whale_claymation_phone_booth.png",
+      "displayName": "Whale Phone Booth",
+      "description": "Claymation whale at phone booth",
+      "category": "whale",
+      "series": "claymation"
+    },
+    {
+      "filename": "whale_claymation_snow_bench.png",
+      "displayName": "Whale Snow Bench",
+      "description": "",
+      "category": "whale"
+    },
+    {
       "filename": "whale_claymation_street_corner.png",
       "displayName": "Whale Street Corner",
       "description": "Claymation whale at street corner",
       "category": "whale",
       "series": "claymation"
+    },
+    {
+      "filename": "whale_claymation_streetlamp_reading.png",
+      "displayName": "Whale Streetlamp Reading",
+      "description": "",
+      "category": "whale"
+    },
+    {
+      "filename": "whale_claymation_subway_car.png",
+      "displayName": "Whale Subway Car",
+      "description": "Claymation whale at subway car",
+      "category": "whale",
+      "series": "claymation"
+    },
+    {
+      "filename": "whale_handdrawn_bus_stop.png",
+      "displayName": "Whale Bus Stop",
+      "description": "Handdrawn whale at bus stop",
+      "category": "whale",
+      "series": "handdrawn"
     },
     {
       "filename": "whale_handdrawn_hotel_lobby.png",
@@ -1466,9 +1534,23 @@
       "series": "handdrawn"
     },
     {
+      "filename": "whale_handdrawn_phone_booth.png",
+      "displayName": "Whale Phone Booth",
+      "description": "Handdrawn whale at phone booth",
+      "category": "whale",
+      "series": "handdrawn"
+    },
+    {
       "filename": "whale_handdrawn_street_corner.png",
       "displayName": "Whale Street Corner",
       "description": "Handdrawn whale at street corner",
+      "category": "whale",
+      "series": "handdrawn"
+    },
+    {
+      "filename": "whale_handdrawn_subway_car.png",
+      "displayName": "Whale Subway Car",
+      "description": "Handdrawn whale at subway car",
       "category": "whale",
       "series": "handdrawn"
     },
@@ -1503,7 +1585,7 @@
     {
       "filename": "whale_puppet_rooftop_stars.png",
       "displayName": "Whale Rooftop Stars",
-      "description": "Whale puppet rooftop stars",
+      "description": "",
       "category": "whale"
     },
     {
@@ -1519,6 +1601,18 @@
       "description": "Stopmotion whale at bus stop",
       "category": "whale",
       "series": "stopmotion"
+    },
+    {
+      "filename": "whale_stopmotion_dancing_streetlight.png",
+      "displayName": "Whale Dancing Streetlight",
+      "description": "",
+      "category": "whale"
+    },
+    {
+      "filename": "whale_stopmotion_foggy_pier.png",
+      "displayName": "Whale Foggy Pier",
+      "description": "",
+      "category": "whale"
     },
     {
       "filename": "whale_stopmotion_hotel_lobby.png",
@@ -1542,17 +1636,17 @@
       "series": "stopmotion"
     },
     {
+      "filename": "whale_stopmotion_playing_chess.png",
+      "displayName": "Whale Playing Chess",
+      "description": "",
+      "category": "whale"
+    },
+    {
       "filename": "whale_stopmotion_street_corner.png",
       "displayName": "Whale Street Corner",
       "description": "Stopmotion whale at street corner",
       "category": "whale",
       "series": "stopmotion"
-    },
-    {
-      "filename": "whale_stopmotion_subway_car.png",
-      "displayName": "Whale Subway Car",
-      "description": "Whale stopmotion subway car",
-      "category": "whale"
     }
   ],
   "categories": {

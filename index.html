@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#1a1a2e" id="themeColor">
     <meta name="color-scheme" content="dark light">
     <!-- Security: CSP to prevent XSS (worker-src for service worker) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://*.cloudfunctions.net https://*.a.run.app; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://unpkg.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://*.cloudfunctions.net https://*.a.run.app; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1647,6 +1647,206 @@
             }
         }
 
+
+        /* Imagine Bar keyboard hint */
+        .imagine-kbd {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            margin-left: 8px;
+        }
+
+        /* Ninja Keys Theming */
+        ninja-keys {
+            --ninja-width: 640px;
+            --ninja-accent-color: #c9a227;
+            --ninja-modal-background: #1a1a2e;
+            --ninja-text-color: #eee;
+            --ninja-selected-background: rgba(201, 162, 39, 0.2);
+            --ninja-secondary-text-color: #888;
+            --ninja-footer-background: #16213e;
+            --ninja-z-index: 1000;
+        }
+
+        ninja-keys::part(ninja-input) {
+            font-size: 16px;
+            padding: 16px 20px;
+        }
+
+        ninja-keys::part(ninja-action) {
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+
+        /* Imagine Loading Overlay */
+        .imagine-loading {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            backdrop-filter: blur(4px);
+        }
+
+        .imagine-loading.hidden { display: none; }
+
+        .imagine-loading-content {
+            text-align: center;
+            color: #fff;
+        }
+
+        .imagine-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(201, 162, 39, 0.3);
+            border-top-color: #c9a227;
+            border-radius: 50%;
+            animation: imagine-spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes imagine-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #imagine-progress {
+            font-size: 18px;
+            margin: 0 0 8px;
+        }
+
+        .imagine-remaining {
+            font-size: 14px;
+            color: #888;
+            margin: 0;
+        }
+
+        /* Imagine Audio Player */
+        .imagine-audio-player {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            min-width: 320px;
+            max-width: 400px;
+        }
+
+        .imagine-audio-player.hidden { display: none; }
+
+        .imagine-audio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        #imagine-audio-title {
+            font-size: 14px;
+            color: #c9a227;
+            font-weight: 500;
+        }
+
+        .imagine-audio-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .imagine-audio-close:hover { color: #fff; }
+
+        .imagine-audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .imagine-play-btn {
+            background: #c9a227;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #1a1a2e;
+            flex-shrink: 0;
+        }
+
+        .imagine-play-btn:hover { background: #dab52f; }
+
+        .imagine-seek-slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #333;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .imagine-seek-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #c9a227;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .imagine-time {
+            font-size: 12px;
+            color: #888;
+            flex-shrink: 0;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* Imagine Error Toast */
+        .imagine-error {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4444;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1002;
+            box-shadow: 0 4px 16px rgba(255, 68, 68, 0.3);
+        }
+
+        .imagine-error.hidden { display: none; }
+
+        .imagine-error-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            opacity: 0.7;
+        }
+
+        .imagine-error-close:hover { opacity: 1; }
+
         /* ============================================
            SKELETON LOADING
            ============================================ */
@@ -1712,6 +1912,8 @@
     </style>
     <!-- Fuse.js for fuzzy FAQ matching -->
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js" integrity="sha384-PCSoOZTpbkikBEtd/+uV3WNdc676i9KUf01KOA8CnJotvlx8rRrETbDuwdjqTYvt" crossorigin="anonymous"></script>
+    <!-- Ninja Keys Command Palette -->
+    <script type="module" src="https://unpkg.com/ninja-keys?module"></script>
 </head>
 <body>
     <!-- Skip link for keyboard/screen reader users -->
@@ -1814,12 +2016,57 @@
         </footer>
 
         <!-- Imagine bar (at bottom of page content) -->
-        <button class="imagine-bar" id="imagineBar" aria-label="Suggest new scenes">
+        <button class="imagine-bar" id="imagineBar" aria-label="Generate AI stories">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/>
             </svg>
-            <span>Coming soon! Tap <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align: middle; margin: 0 2px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> for more</span>
+            <span>Generate Stories <span class="imagine-kbd">⌘K</span></span>
         </button>
+
+        <!-- Ninja Keys Omnibar -->
+        <ninja-keys
+            id="imagineOmnibar"
+            class="dark"
+            placeholder="Search stories or press ↵ to generate..."
+            openHotkey="cmd+k,ctrl+k"
+            closeHotkey="esc">
+        </ninja-keys>
+
+        <!-- Imagine Loading State -->
+        <div id="imagine-loading" class="imagine-loading hidden">
+            <div class="imagine-loading-content">
+                <div class="imagine-spinner"></div>
+                <p id="imagine-progress">Warming up...</p>
+                <p class="imagine-remaining" id="imagine-remaining"></p>
+            </div>
+        </div>
+
+        <!-- Imagine Audio Player -->
+        <div id="imagine-audio-player" class="imagine-audio-player hidden">
+            <div class="imagine-audio-header">
+                <span id="imagine-audio-title">Story</span>
+                <button id="imagine-audio-close" class="imagine-audio-close" aria-label="Close">×</button>
+            </div>
+            <div class="imagine-audio-controls">
+                <button id="imagine-play-btn" class="imagine-play-btn" aria-label="Play">
+                    <svg id="imagine-play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="imagine-pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+                        <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+                    </svg>
+                </button>
+                <input type="range" id="imagine-seek-slider" class="imagine-seek-slider" min="0" max="100" value="0">
+                <span id="imagine-time" class="imagine-time">0:00 / 0:00</span>
+            </div>
+            <audio id="imagine-audio" preload="metadata"></audio>
+        </div>
+
+        <!-- Imagine Error Toast -->
+        <div id="imagine-error" class="imagine-error hidden">
+            <span id="imagine-error-message"></span>
+            <button id="imagine-error-close" class="imagine-error-close" aria-label="Close">×</button>
+        </div>
     </div>
 
     <!-- Help/FAQ dialog -->
@@ -3007,11 +3254,8 @@
         });
 
         // ============================================
-        // IMAGINE BAR (opens Elf dialog)
+        // IMAGINE BAR - Handled in module script above
         // ============================================
-        document.getElementById('imagineBar').addEventListener('click', () => {
-            document.getElementById('helpDialog').showModal();
-        });
 
         // ============================================
         // THEME TOGGLE
@@ -4000,7 +4244,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, deleteDoc, doc, writeBatch } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, getDoc, query, orderBy, limit, serverTimestamp, deleteDoc, doc, writeBatch } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
         // Firebase config is intentionally public - security via Firestore rules
         const firebaseConfig = {  // pragma: allowlist secret
@@ -4287,6 +4531,291 @@
 
         // Handle hash change (browser back/forward)
         window.addEventListener('hashchange', handleDeepLink);
+
+        // ============================================
+        // IMAGINE BAR - Audio Story Generation
+        // ============================================
+
+        const IMAGINE_FUNCTION_URL = 'https://us-central1-nutcracker-3e8fb.cloudfunctions.net/generateStory';
+
+        let imagineAuthReady = false;
+        let imagineUserId = null;
+        let imagineIdToken = null;
+
+        // WAV Header Construction for Gemini TTS PCM output
+        function createWavHeader(dataSize, sampleRate = 24000, channels = 1, bitsPerSample = 16) {
+            const header = new ArrayBuffer(44);
+            const view = new DataView(header);
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + dataSize, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, channels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * channels * bitsPerSample / 8, true);
+            view.setUint16(32, channels * bitsPerSample / 8, true);
+            view.setUint16(34, bitsPerSample, true);
+            writeString(36, 'data');
+            view.setUint32(40, dataSize, true);
+            return header;
+        }
+
+        function base64ToWavBlob(base64Audio) {
+            const binaryString = atob(base64Audio);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const wavHeader = createWavHeader(bytes.length);
+            return new Blob([wavHeader, bytes], { type: 'audio/wav' });
+        }
+
+        // Audio Player
+        const imagineAudioPlayer = {
+            audio: null,
+            isPlaying: false,
+            blobUrl: null,
+
+            init() {
+                this.audio = document.getElementById('imagine-audio');
+                this.playBtn = document.getElementById('imagine-play-btn');
+                this.playIcon = document.getElementById('imagine-play-icon');
+                this.pauseIcon = document.getElementById('imagine-pause-icon');
+                this.seekSlider = document.getElementById('imagine-seek-slider');
+                this.timeDisplay = document.getElementById('imagine-time');
+                this.playerEl = document.getElementById('imagine-audio-player');
+                this.titleEl = document.getElementById('imagine-audio-title');
+                this.closeBtn = document.getElementById('imagine-audio-close');
+                if (this.playBtn) this.bindEvents();
+            },
+
+            bindEvents() {
+                this.playBtn.addEventListener('click', () => this.togglePlay());
+                this.closeBtn.addEventListener('click', () => this.hide());
+                this.audio.addEventListener('loadedmetadata', () => {
+                    this.seekSlider.max = Math.floor(this.audio.duration);
+                    this.updateTimeDisplay();
+                });
+                this.audio.addEventListener('timeupdate', () => {
+                    this.seekSlider.value = Math.floor(this.audio.currentTime);
+                    this.updateTimeDisplay();
+                });
+                this.audio.addEventListener('ended', () => {
+                    this.isPlaying = false;
+                    this.updatePlayButton();
+                });
+                this.seekSlider.addEventListener('input', () => {
+                    this.audio.currentTime = this.seekSlider.value;
+                });
+            },
+
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            },
+
+            updateTimeDisplay() {
+                const current = this.formatTime(this.audio.currentTime || 0);
+                const duration = this.formatTime(this.audio.duration || 0);
+                this.timeDisplay.textContent = `${current} / ${duration}`;
+            },
+
+            updatePlayButton() {
+                this.playIcon.style.display = this.isPlaying ? 'none' : 'block';
+                this.pauseIcon.style.display = this.isPlaying ? 'block' : 'none';
+            },
+
+            togglePlay() {
+                if (this.isPlaying) {
+                    this.audio.pause();
+                } else {
+                    this.audio.play();
+                }
+                this.isPlaying = !this.isPlaying;
+                this.updatePlayButton();
+            },
+
+            play(audioBase64, title) {
+                if (this.blobUrl) URL.revokeObjectURL(this.blobUrl);
+                const wavBlob = base64ToWavBlob(audioBase64);
+                this.blobUrl = URL.createObjectURL(wavBlob);
+                this.audio.src = this.blobUrl;
+                this.titleEl.textContent = title;
+                this.show();
+                this.audio.play();
+                this.isPlaying = true;
+                this.updatePlayButton();
+            },
+
+            show() { this.playerEl.classList.remove('hidden'); },
+            hide() {
+                this.playerEl.classList.add('hidden');
+                this.audio.pause();
+                this.isPlaying = false;
+                this.updatePlayButton();
+            }
+        };
+
+        // Check feature access
+        async function checkImagineAccess() {
+            if (!imagineUserId) return false;
+            try {
+                const configDoc = await getDoc(doc(db, 'imagine_config', 'settings'));
+                if (!configDoc.exists()) return true;
+                const config = configDoc.data();
+                if (config.enabled === false) return false;
+                if (config.testMode === true) {
+                    const whitelist = config.testUsers || [];
+                    if (!whitelist.includes(imagineUserId)) {
+                        console.log('[ImagineBar] User not in test whitelist');
+                        return false;
+                    }
+                }
+                return true;
+            } catch (error) {
+                console.error('[ImagineBar] Feature check failed', error);
+                return true;
+            }
+        }
+
+        // Generate story
+        async function imagineGenerateStory(imageId) {
+            if (!imagineAuthReady || !imagineIdToken) {
+                throw new Error('Not authenticated');
+            }
+            const currentToken = await auth.currentUser.getIdToken();
+            const loadingEl = document.getElementById('imagine-loading');
+            const progressEl = document.getElementById('imagine-progress');
+            const remainingEl = document.getElementById('imagine-remaining');
+
+            loadingEl.classList.remove('hidden');
+            progressEl.textContent = 'Generating your story...';
+            remainingEl.textContent = '';
+
+            try {
+                const response = await fetch(IMAGINE_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ imageId })
+                });
+                const result = await response.json();
+                if (!response.ok || result.error) {
+                    throw { code: result.code || 'unknown', message: result.message || 'Generation failed' };
+                }
+                const { audioBase64, duration, imageTitle, remaining } = result;
+                remainingEl.textContent = `${remaining} stories remaining`;
+                progressEl.textContent = 'Playing...';
+                imagineAudioPlayer.play(audioBase64, imageTitle);
+                return { success: true };
+            } catch (error) {
+                console.error('[ImagineBar] Generation failed', error);
+                const errorEl = document.getElementById('imagine-error');
+                const msgEl = document.getElementById('imagine-error-message');
+                msgEl.textContent = error.message || 'Generation failed. Please try again.';
+                errorEl.classList.remove('hidden');
+                setTimeout(() => errorEl.classList.add('hidden'), 5000);
+                throw error;
+            } finally {
+                loadingEl.classList.add('hidden');
+            }
+        }
+
+        // Format image title
+        function formatImagineTitle(imageId) {
+            return imageId
+                .replace(/\.png$/, '')
+                .replace(/^\d+_/, '')
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        // Initialize Imagine Bar
+        async function initImagineBar() {
+            const ninja = document.getElementById('imagineOmnibar');
+            const stub = document.getElementById('imagineBar');
+            if (!ninja) return;
+
+            // Offline detection
+            if (!navigator.onLine) {
+                if (stub) stub.style.display = 'none';
+                console.log('[ImagineBar] Offline - hidden');
+                return;
+            }
+
+            window.addEventListener('online', () => {
+                if (stub) stub.style.display = '';
+            });
+            window.addEventListener('offline', () => {
+                if (stub) stub.style.display = 'none';
+                ninja.close();
+            });
+
+            // Load image catalog
+            let imageDescriptions = {};
+            try {
+                const response = await fetch('image-descriptions.json');
+                imageDescriptions = await response.json();
+            } catch (error) {
+                console.error('[ImagineBar] Failed to load catalog', error);
+                return;
+            }
+
+            // Build actions
+            const imageActions = Object.entries(imageDescriptions).map(([id, description]) => ({
+                id: `image-${id}`,
+                title: formatImagineTitle(id),
+                section: 'Generate Story',
+                keywords: description,
+                handler: async () => {
+                    try {
+                        await imagineGenerateStory(id);
+                    } catch (e) { /* handled */ }
+                }
+            }));
+
+            ninja.data = imageActions;
+            console.log(`[ImagineBar] Loaded ${imageActions.length} images`);
+
+            // Click handler for stub
+            if (stub) {
+                stub.addEventListener('click', () => ninja.open());
+            }
+
+            // Error close button
+            document.getElementById('imagine-error-close')?.addEventListener('click', () => {
+                document.getElementById('imagine-error').classList.add('hidden');
+            });
+        }
+
+        // Auth state listener for Imagine Bar
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                imagineAuthReady = true;
+                imagineUserId = user.uid;
+                imagineIdToken = await user.getIdToken();
+                console.log('[ImagineBar] Auth ready, UID:', user.uid);
+
+                const hasAccess = await checkImagineAccess();
+                if (hasAccess) {
+                    imagineAudioPlayer.init();
+                    initImagineBar();
+                } else {
+                    const stub = document.getElementById('imagineBar');
+                    if (stub) stub.style.display = 'none';
+                }
+            }
+        });
     </script>
 
     <!-- Credit block -->

@@ -4541,6 +4541,11 @@
         let imagineAuthReady = false;
         let imagineUserId = null;
         let imagineIdToken = null;
+        let imagineAccessChecked = false;
+        let imagineHasAccess = false;
+
+        // Test mode: add ?imagine=test to URL to bypass access checks
+        const imagineTestMode = new URLSearchParams(window.location.search).get('imagine') === 'test';
 
         // WAV Header Construction for Gemini TTS PCM output
         function createWavHeader(dataSize, sampleRate = 24000, channels = 1, bitsPerSample = 16) {
@@ -4666,22 +4671,48 @@
 
         // Check feature access
         async function checkImagineAccess() {
+            if (imagineAccessChecked) return imagineHasAccess;
             if (!imagineUserId) return false;
+
+            // Test mode bypass via URL param
+            if (imagineTestMode) {
+                console.log('[ImagineBar] Test mode enabled via URL param');
+                imagineAccessChecked = true;
+                imagineHasAccess = true;
+                return true;
+            }
+
             try {
                 const configDoc = await getDoc(doc(db, 'imagine_config', 'settings'));
-                if (!configDoc.exists()) return true;
+                if (!configDoc.exists()) {
+                    console.log('[ImagineBar] No config doc - access granted');
+                    imagineAccessChecked = true;
+                    imagineHasAccess = true;
+                    return true;
+                }
                 const config = configDoc.data();
-                if (config.enabled === false) return false;
+                if (config.enabled === false) {
+                    console.log('[ImagineBar] Feature disabled');
+                    imagineAccessChecked = true;
+                    imagineHasAccess = false;
+                    return false;
+                }
                 if (config.testMode === true) {
                     const whitelist = config.testUsers || [];
                     if (!whitelist.includes(imagineUserId)) {
-                        console.log('[ImagineBar] User not in test whitelist');
+                        console.log('[ImagineBar] User not in test whitelist:', imagineUserId);
+                        imagineAccessChecked = true;
+                        imagineHasAccess = false;
                         return false;
                     }
                 }
+                imagineAccessChecked = true;
+                imagineHasAccess = true;
                 return true;
             } catch (error) {
                 console.error('[ImagineBar] Feature check failed', error);
+                imagineAccessChecked = true;
+                imagineHasAccess = true;
                 return true;
             }
         }
@@ -4740,26 +4771,38 @@
                 .replace(/\b\w/g, c => c.toUpperCase());
         }
 
-        // Initialize Imagine Bar
+        // Initialize Imagine Bar (always loads data, checks access on generate)
         async function initImagineBar() {
             const ninja = document.getElementById('imagineOmnibar');
             const stub = document.getElementById('imagineBar');
-            if (!ninja) return;
-
-            // Offline detection
-            if (!navigator.onLine) {
-                if (stub) stub.style.display = 'none';
-                console.log('[ImagineBar] Offline - hidden');
+            if (!ninja) {
+                console.log('[ImagineBar] ninja-keys element not found');
                 return;
             }
 
-            window.addEventListener('online', () => {
-                if (stub) stub.style.display = '';
-            });
-            window.addEventListener('offline', () => {
+            // Offline detection - hide bar when offline
+            const updateOfflineState = () => {
+                if (!navigator.onLine) {
+                    if (stub) stub.style.display = 'none';
+                    ninja.close();
+                    console.log('[ImagineBar] Offline - hidden');
+                } else {
+                    // Only show if we have access or haven't checked yet
+                    if (stub && (imagineHasAccess || !imagineAccessChecked || imagineTestMode)) {
+                        stub.style.display = '';
+                    }
+                }
+            };
+
+            window.addEventListener('online', updateOfflineState);
+            window.addEventListener('offline', updateOfflineState);
+
+            // Initial offline check
+            if (!navigator.onLine) {
                 if (stub) stub.style.display = 'none';
-                ninja.close();
-            });
+                console.log('[ImagineBar] Offline on init - hidden');
+                return;
+            }
 
             // Load image catalog
             let imageDescriptions = {};
@@ -4771,13 +4814,23 @@
                 return;
             }
 
-            // Build actions
+            // Build actions - check access when user selects an action
             const imageActions = Object.entries(imageDescriptions).map(([id, description]) => ({
                 id: `image-${id}`,
                 title: formatImagineTitle(id),
                 section: 'Generate Story',
                 keywords: description,
                 handler: async () => {
+                    // Check access on action (not on load)
+                    const hasAccess = await checkImagineAccess();
+                    if (!hasAccess) {
+                        const errorEl = document.getElementById('imagine-error');
+                        const msgEl = document.getElementById('imagine-error-message');
+                        msgEl.textContent = 'This feature is not available yet. Stay tuned!';
+                        errorEl.classList.remove('hidden');
+                        setTimeout(() => errorEl.classList.add('hidden'), 5000);
+                        return;
+                    }
                     try {
                         await imagineGenerateStory(id);
                     } catch (e) { /* handled */ }
@@ -4787,7 +4840,7 @@
             ninja.data = imageActions;
             console.log(`[ImagineBar] Loaded ${imageActions.length} images`);
 
-            // Click handler for stub
+            // Click handler for stub button
             if (stub) {
                 stub.addEventListener('click', () => ninja.open());
             }
@@ -4806,13 +4859,16 @@
                 imagineIdToken = await user.getIdToken();
                 console.log('[ImagineBar] Auth ready, UID:', user.uid);
 
+                // Always initialize audio player and bar
+                imagineAudioPlayer.init();
+                initImagineBar();
+
+                // Check access in background to update UI if needed
                 const hasAccess = await checkImagineAccess();
-                if (hasAccess) {
-                    imagineAudioPlayer.init();
-                    initImagineBar();
-                } else {
+                if (!hasAccess && !imagineTestMode) {
                     const stub = document.getElementById('imagineBar');
                     if (stub) stub.style.display = 'none';
+                    console.log('[ImagineBar] Access denied - bar hidden');
                 }
             }
         });

@@ -224,8 +224,8 @@ async function handleHelpbotRequest(body, db) {
       // Fallback if GitHub fails
       response =
         classification.type === 'bug'
-          ? `Thanks for letting us know about this issue. We've noted it and will look into it. Try refreshing the page in the meantime!`
-          : `Thanks for the suggestion! We've noted it down. Love hearing ideas from our users!`;
+          ? 'Thanks for letting us know about this issue. We\'ve noted it and will look into it. Try refreshing the page in the meantime!'
+          : 'Thanks for the suggestion! We\'ve noted it down. Love hearing ideas from our users!';
     }
   } else if (classification.type === 'off_topic') {
     // Redirect off-topic queries - friendly but firm

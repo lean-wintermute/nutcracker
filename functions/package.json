@@ -1,7 +1,7 @@
 {
   "name": "nutcracker-helpbot",
-  "version": "1.0.0",
-  "description": "Helpbot backend for Nutcracker app",
+  "version": "1.1.0",
+  "description": "Helpbot and Imagine Bar backend for Nutcracker app",
   "main": "index.js",
   "engines": {
     "node": ">=20"
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
+    "@google/generative-ai": "^0.21.0",
     "@octokit/rest": "^20.0.2",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^7.0.2"

@@ -1,6 +1,6 @@
 # Christmas Stories
 
-> **Version**: 1.0.0 | **Status**: Production | **Updated**: 2025-12-22
+> **Version**: 1.1.0 | **Status**: Production | **Updated**: 2025-12-22
 
 A holiday-themed image ranking tool using Elo ratings
 
@@ -71,7 +71,7 @@ Nutcracker/
 ├── index.html          # Main PWA (single-file, ~3500 lines)
 ├── manifest.json       # PWA manifest
 ├── sw.js              # Service worker for offline
-├── images/            # 30 holiday-themed images
+├── images/            # 240 holiday-themed images
 ├── chatbot-config.json # Helpbot FAQ configuration
 ├── functions/         # Firebase Cloud Functions
 │   ├── index.js       # Function entry point
@@ -98,6 +98,7 @@ Bug reports and feedback are automatically synced to GitHub Issues with:
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| **1.1.0** | 2025-12-22 | Corpus rebalance: replaced 32 style duplicates with varied scenes (action, weather, night, interaction), dynamic catalog loading, sync tooling |
 | **1.0.0** | 2025-12-22 | Production release with all V1.0 features |
 | **0.9.0** | 2025-12-22 | Compare With Global, social sharing, analytics export |
 | **0.8.0** | 2025-12-22 | AI Helpbot with Firebase Functions, GitHub issue sync |
@@ -112,8 +113,8 @@ Bug reports and feedback are automatically synced to GitHub Issues with:
 ## Adding Your Own Images
 
 1. Fork this repository
-2. Replace images in the `images/` directory
-3. Update the `IMAGE_FILES` array in `index.html`
+2. Add/replace images in the `images/` directory
+3. Run `python scripts/sync-catalog.py --fix` to update the catalog
 4. Deploy to GitHub Pages or any static host
 
 ## Browser Support

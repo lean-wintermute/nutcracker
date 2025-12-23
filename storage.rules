@@ -1,0 +1,23 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Generated images from imagineScenes Cloud Function
+    // Write: Admin SDK only (Cloud Function uses service account)
+    // Read: Public (images shown in voting gallery)
+    match /imagined/{imageId} {
+      allow read: if true;
+      allow write: if false;  // Admin SDK bypasses rules
+    }
+
+    // Static image catalog (if migrated to Storage)
+    match /images/{imageId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Deny all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

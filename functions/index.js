@@ -6,6 +6,7 @@
  * - GitHub issue creation/updates for bugs and feedback
  * - General help responses via Claude Haiku
  * - Rate limiting and Firestore logging
+ * - Imagine Bar story generation (Phase 1)
  */
 
 const { onRequest } = require('firebase-functions/v2/https');
@@ -13,6 +14,9 @@ const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { defineSecret } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const { handleHelpbotRequest } = require('./lib/handler');
+
+// Import Imagine Bar
+const { generateStory } = require('./lib/imagine-bar');
 
 // Define secrets for v2 functions
 const anthropicKey = defineSecret('ANTHROPIC_KEY');
@@ -188,3 +192,6 @@ exports.cleanupExpiredLogs = onSchedule(
       throw error; // Re-throw to mark the function execution as failed
     }
   });
+
+// Imagine Bar - Story Generation (Phase 1)
+exports.generateStory = generateStory;
